@@ -1,6 +1,6 @@
 package com.cristhianbonilla.com.chilapp.DependencyInjection.module
 
-import com.cristhianbonilla.com.domain.LoginDomain
+import com.cristhianbonilla.com.domain.repositories.login.LoginDomain
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -1,9 +1,10 @@
 package com.cristhianbonilla.com.chilapp
 
 import android.app.Application
-import com.cristhianbonilla.com.chilapp.DependencyInjection.module.ChilappComponent
+import com.cristhianbonilla.com.chilapp.DependencyInjection.components.ChilappComponent
+import com.cristhianbonilla.com.chilapp.DependencyInjection.components.DaggerChilappComponent
 import com.cristhianbonilla.com.chilapp.DependencyInjection.module.ChilappModule
-import com.cristhianbonilla.com.chilapp.DependencyInjection.module.DaggerChilappComponent
+
 
 private lateinit var chilappComponent: ChilappComponent
 class App : Application(){
