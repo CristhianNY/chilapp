@@ -2,6 +2,7 @@ package com.cristhianbonilla.com.chilapp.DependencyInjection.components
 
 import com.cristhianbonilla.com.chilapp.DependencyInjection.module.ChilappModule
 import com.cristhianbonilla.com.chilapp.MainActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.feature.login.LoginActivty
 import dagger.Component
 import javax.inject.Singleton
 
@@ -10,4 +11,5 @@ import javax.inject.Singleton
 interface ChilappComponent{
 
     fun inject(mainActivity: MainActivity)
+    fun inject(loginActivty: LoginActivty)
 }
