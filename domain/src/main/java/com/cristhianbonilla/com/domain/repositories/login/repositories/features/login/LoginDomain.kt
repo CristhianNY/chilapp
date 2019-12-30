@@ -1,7 +1,6 @@
-package com.cristhianbonilla.com.domain.repositories.login
+package com.cristhianbonilla.com.domain.repositories.login.repositories.features.login
 
 import com.cristhianbonilla.com.domain.dtos.UserDto
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginRepository
 
 class LoginDomain(loginRepository : LoginRepository){
 
