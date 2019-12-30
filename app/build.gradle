@@ -5,10 +5,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
 
-    dataBinding{
+    dataBinding {
         enabled = true
     }
 
@@ -35,6 +36,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
@@ -49,16 +53,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-    implementation 'com.google.firebase:firebase-auth:17.0.0'
-    implementation 'com.google.firebase:firebase-database:18.0.1'
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
-    implementation 'com.facebook.android:facebook-login:[5,6)'
-    implementation 'com.facebook.android:account-kit-sdk:4.+'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation project(":domain")
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
