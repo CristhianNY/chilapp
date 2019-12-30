@@ -2,8 +2,6 @@
     <string name="app_name">Chilapp</string>
     <string name="no_content">Sem dados</string>
     <string name="no_internet">Sem internet</string>
-    <string name="facebook_app_id">1388643377951400</string>
-    <string name="fb_login_protocol_scheme">fb1388643377951400</string>
     <string name="ACCOUNT_KIT_CLIENT_TOKEN">bae985e09e06ebae784d542c6e1a0a53</string>
     <string name="email_hint">Correo Electronico</string>
     <string name="name_hint">Nombre o Apodo</string>
@@ -15,4 +13,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Muro</string>
     <string name="title_notifications">Perfil</string>
+
+    <string name="facebook_application_id">637032393709943</string>
+    <string name="fb_login_protocol_scheme">fb637032393709943</string>
+
 </resources>
