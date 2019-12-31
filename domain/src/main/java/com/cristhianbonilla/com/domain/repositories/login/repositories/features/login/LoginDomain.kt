@@ -3,6 +3,7 @@ package com.cristhianbonilla.com.domain.repositories.login.repositories.features
 import android.content.Context
 import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.repository.LoginRepository
+import java.util.*
 
 class LoginDomain(loginRepository : LoginRepository){
 
@@ -27,6 +28,18 @@ class LoginDomain(loginRepository : LoginRepository){
 
     fun deleteeUserPreference(key:String , contex:Context){
         loginRepository.deleteUserPreference(key, contex)
+    }
+
+     fun getAge(year: Int, month: Int, day: Int): String? {
+        val dob: Calendar = Calendar.getInstance()
+        val today: Calendar = Calendar.getInstance()
+        dob.set(year, month, day)
+        var age: Int = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR)
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--
+        }
+        val ageInt = age
+        return ageInt.toString()
     }
 
 

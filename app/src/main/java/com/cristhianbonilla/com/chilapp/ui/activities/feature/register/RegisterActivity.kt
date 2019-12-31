@@ -5,9 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
+import com.afollestad.vvalidator.form
+import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
+import kotlinx.android.synthetic.main.activity_register.*
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 import javax.xml.datatype.DatatypeConstants.MONTHS
 
 class RegisterActivity : AppCompatActivity() {
@@ -22,9 +28,16 @@ class RegisterActivity : AppCompatActivity() {
     val month = c.get(Calendar.MONTH)
     val day = c.get(Calendar.DAY_OF_MONTH)
 
+    lateinit var bitdDate:String
+
+    @Inject
+    lateinit var loginDomain : LoginDomain
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        (application as App).getComponent().inject(this)
 
         initViews()
 
@@ -32,7 +45,12 @@ class RegisterActivity : AppCompatActivity() {
 
             showdatePicker()
         })
+
+        btnRegister.setOnClickListener(View.OnClickListener {
+          formValidation()
+        })
     }
+
 
     private fun initViews(){
 
@@ -45,9 +63,52 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun showdatePicker() {
         val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            editAge.setText("$dayOfMonth /$monthOfYear/$year")
+            editAge.setText(loginDomain.getAge(year,monthOfYear,dayOfMonth))
+           // editAge.setText("$dayOfMonth /$monthOfYear/
+            // editAge.setText("$dayOfMonth /$monthOfYear/$year")
+            bitdDate = "$dayOfMonth /$monthOfYear/$year"
+
+            if(loginDomain.getAge(year,monthOfYear,dayOfMonth)?.toInt()!! <14){
+                ageMessage.visibility = View.VISIBLE
+            }else{
+                ageMessage.visibility = View.INVISIBLE
+            }
+
         }, year, month, day)
 
         dpd.show()
+    }
+
+    private fun formValidation() {
+        form {
+            input(R.id.edit_username) {
+                isNotEmpty().description("Por favor ingresa un nombre de usuario")
+            }
+
+            input(R.id.edit_last_name) {
+                isNotEmpty().description("Por favor ingresa tu apellido")
+            }
+
+            input(R.id.edit_last_name) {
+                isNotEmpty().description("Por favor ingresa tu apellido")
+            }
+
+            input(R.id.edit_email) {
+                isEmail().description("Por favor ingresa un correo electronico valido")
+                isNotEmpty().description("Por favor ingresa un correo electronico valido")
+            }
+
+            input(R.id.edit_age) {
+                isNotEmpty().description("Por favor ingresa una fecha para determinar tu edad")
+                isNumber().atLeast(14).description("Debes ser mayor de 14 años o mas para poder registrarte")
+
+            }
+
+            submitWith(R.id.btnRegister) { result ->
+                // this block is only called if form is valid.
+                // do something with a valid form state.
+                Toast.makeText(applicationContext,"el formulario es valido",Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }
