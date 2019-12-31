@@ -16,5 +16,13 @@
 
     <string name="facebook_application_id">637032393709943</string>
     <string name="fb_login_protocol_scheme">fb637032393709943</string>
+    <string name="register">Registro</string>
+    <string name="tag">Chilapp tendra tus datos de forma confidencial</string>
+    <string name="your_name">Nombre</string>
+    <string name="e_mail">Correo Electronico</string>
+    <string name="last_name">Apellido</string>
+    <string name="age">Edad</string>
+    <string name="swipe_right_for_login">Desliza para volver al login</string>
+    <string name="login">entrar</string>
 
 </resources>

@@ -4,9 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import com.cristhianbonilla.com.chilapp.App
+import com.cristhianbonilla.com.chilapp.MainActivity
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -22,16 +26,50 @@ class LoginActivty : AppCompatActivity() {
     @Inject
     lateinit var loginDomain : LoginDomain
 
+    lateinit var bntLogin: Button
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         (application as App).getComponent().inject(this)
 
         setContentView(R.layout.login_activity)
+
+        initViews()
+
+        validateUserLogin()
+
+        bntLogin.setOnClickListener(View.OnClickListener {
+            showSingUpOptinons()
+
+        })
+
+    }
+
+    private fun initViews(){
         val user = FirebaseAuth.getInstance().currentUser
 
-        if(user==null){
-            showSingUpOptinons()
+        bntLogin = findViewById<Button>(R.id.bnt_login)
+    }
+
+    private fun validateUserLogin(){
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if(user!=null){
+        val userNamePreference =  loginDomain.getUserNamePreference("nombre",this)
+
+        if(userNamePreference == null){
+
+            val intent = Intent(this,RegisterActivity::class.java)
+
+            startActivity(intent)
+
+        }else{
+            val intent = Intent(this,MainActivity::class.java)
+
+            startActivity(intent)
+         }
         }
 
     }
@@ -56,7 +94,7 @@ class LoginActivty : AppCompatActivity() {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
 
-
+                validateUserLogin()
 
                 Toast.makeText(this, user?.email, Toast.LENGTH_LONG).show();
                 // ...

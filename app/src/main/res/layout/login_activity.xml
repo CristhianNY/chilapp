@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
-
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".ui.activities.feature.login.LoginActivty">
 
     <Button
-        android:id="@+id/btn_enter"
+        android:id="@+id/bnt_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Entrar"
-        android:background="@drawable/login_btn"
-        android:textColor="@color/white"
-        android:gravity="center"></Button>
-
+        android:background="@drawable/btn_custom"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_centerInParent="true"
+        android:textColor="@android:color/white"
+        android:text="@string/login"/>
 
 </LinearLayout>
