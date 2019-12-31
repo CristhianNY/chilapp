@@ -26,7 +26,7 @@ class LoginActivty : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         (application as App).getComponent().inject(this)
-        
+
         setContentView(R.layout.login_activity)
         val user = FirebaseAuth.getInstance().currentUser
 
