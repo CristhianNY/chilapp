@@ -1,6 +1,7 @@
 package com.cristhianbonilla.com.chilapp.ui.activities.feature.register
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,7 +9,9 @@ import android.widget.EditText
 import android.widget.Toast
 import com.afollestad.vvalidator.form
 import com.cristhianbonilla.com.chilapp.App
+import com.cristhianbonilla.com.chilapp.MainActivity
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.chilapp.contrats.UserPreferenceValidator
 import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.google.firebase.auth.FirebaseAuth
@@ -32,6 +35,8 @@ class RegisterActivity : AppCompatActivity() {
 
     lateinit var bitdDate:String
 
+    lateinit var validateUserPreferen : UserPreferenceValidator
+
     @Inject
     lateinit var loginDomain : LoginDomain
 
@@ -48,9 +53,26 @@ class RegisterActivity : AppCompatActivity() {
             showdatePicker()
         })
 
+        validateUserPreferen = UserPreferenceValidator()
+
+        validateUserRegistered()
+
         btnRegister.setOnClickListener(View.OnClickListener {
           formValidation()
         })
+    }
+
+    private fun validateUserRegistered() {
+        loginDomain.getUserNamePreference("userName", this)?.let {
+            if (validateUserPreferen.validateIfUserPrefereceIsSaved(
+                    it
+                )
+            ) {
+                val intent = Intent(this, MainActivity::class.java)
+
+                startActivity(intent)
+            }
+        }
     }
 
 

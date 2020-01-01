@@ -15,7 +15,9 @@ class LoginRepository :
     override fun saveUser(user: UserDto, contex:Context) {
 
         mDatabase = FirebaseDatabase.getInstance().reference
-        mDatabase!!.child("User").child(user.userId).setValue(user);
+        mDatabase!!.child("User").child(user.userId).setValue(user)
+
+        saveUserPreference(user,contex)
     }
 
     override fun saveUserPreference(user: UserDto, context: Context) {
@@ -26,6 +28,8 @@ class LoginRepository :
         editor.putString("userName", user.name)
         editor.putString("userEmail", user.email)
         editor.putString("userPhone", user.phone)
+        editor.putString("userID", user.userId)
+        editor.putString("usetBirthDate", user.birthDate)
         editor.apply()
 
 
