@@ -117,7 +117,7 @@ class RegisterActivity : AppCompatActivity() {
 
     fun saveUser(){
         val user = FirebaseAuth.getInstance().currentUser
-        var userD:UserDto = UserDto(editUsername.text.toString(),editLastName.text.toString(),editEmail.text.toString(),bitdDate,
+        var userD = UserDto(editUsername.text.toString(),editLastName.text.toString(),editEmail.text.toString(),bitdDate,
             user?.phoneNumber.toString())
 
         loginDomain.saveUser(userD,this)
