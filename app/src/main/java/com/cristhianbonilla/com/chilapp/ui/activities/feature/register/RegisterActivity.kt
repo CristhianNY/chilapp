@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
             editAge.setText(loginDomain.getAge(year,monthOfYear,dayOfMonth))
            // editAge.setText("$dayOfMonth /$monthOfYear/
             // editAge.setText("$dayOfMonth /$monthOfYear/$year")
-            bitdDate = "$dayOfMonth /$monthOfYear/$year"
+            bitdDate = "$dayOfMonth/$monthOfYear/$year"
 
             if(loginDomain.getAge(year,monthOfYear,dayOfMonth)?.toInt()!! <14){
                 ageMessage.visibility = View.VISIBLE
@@ -118,7 +118,7 @@ class RegisterActivity : AppCompatActivity() {
     fun saveUser(){
         val user = FirebaseAuth.getInstance().currentUser
         var userD = UserDto(editUsername.text.toString(),editLastName.text.toString(),editEmail.text.toString(),bitdDate,
-            user?.phoneNumber.toString())
+            user?.phoneNumber.toString(), user?.uid.toString())
 
         loginDomain.saveUser(userD,this)
     }
