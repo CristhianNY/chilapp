@@ -26,5 +26,6 @@
     <string name="login">entrar</string>
     <string name="age_permited">Recuerdad que la edad permitida es de 14 años minimo</string>
     <string name="age_not_permitted">No tienes la edad suficiente para usar la app</string>
+    <string name="info_registro">Registrate y empieza a disfrutar</string>
 
 </resources>

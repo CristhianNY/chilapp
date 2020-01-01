@@ -9,7 +9,9 @@ import android.widget.Toast
 import com.afollestad.vvalidator.form
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_register.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -107,8 +109,17 @@ class RegisterActivity : AppCompatActivity() {
             submitWith(R.id.btnRegister) { result ->
                 // this block is only called if form is valid.
                 // do something with a valid form state.
-                Toast.makeText(applicationContext,"el formulario es valido",Toast.LENGTH_LONG).show()
+              saveUser()
             }
         }
+    }
+
+
+    fun saveUser(){
+        val user = FirebaseAuth.getInstance().currentUser
+        var userD:UserDto = UserDto(editUsername.text.toString(),editLastName.text.toString(),editEmail.text.toString(),bitdDate,
+            user?.phoneNumber.toString())
+
+        loginDomain.saveUser(userD,this)
     }
 }
