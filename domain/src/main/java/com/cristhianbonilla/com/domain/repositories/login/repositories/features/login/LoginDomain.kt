@@ -3,13 +3,19 @@ package com.cristhianbonilla.com.domain.repositories.login.repositories.features
 import android.content.Context
 import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.repository.LoginRepository
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 class LoginDomain(loginRepository : LoginRepository){
 
+    val user = FirebaseAuth.getInstance().currentUser
+
     var loginRepository : LoginRepository = loginRepository
 
     fun saveUser(user:UserDto , contex:Context){
+
+        FirebaseDatabase.getInstance().getReference("disconnectmessage").onDisconnect().setValue("I disconnected!")
 
         loginRepository.saveUser(user, contex)
     }
