@@ -23,19 +23,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.feature.register.RegisterActivity"></activity>
-        <activity
-            android:name=".ui.activities.feature.login.LoginActivty"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".ui.activities.feature.Splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.activities.feature.register.RegisterActivity" />
+        <activity
+            android:name=".ui.activities.feature.login.LoginActivty"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"
+            android:theme="@style/HomeActivity"/>
     </application>
 
 </manifest>
