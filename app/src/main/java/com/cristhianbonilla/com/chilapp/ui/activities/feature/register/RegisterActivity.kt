@@ -143,5 +143,14 @@ class RegisterActivity : AppCompatActivity() {
             user?.phoneNumber.toString(), user?.uid.toString())
 
         loginDomain.saveUser(userD,this)
+
+        goToHome()
+    }
+
+    fun goToHome(){
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        finish()
+        startActivity(intent)
     }
 }

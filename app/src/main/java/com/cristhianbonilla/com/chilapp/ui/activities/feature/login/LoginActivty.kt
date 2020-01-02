@@ -62,12 +62,14 @@ class LoginActivty : AppCompatActivity() {
         if(userNamePreference == null){
 
             val intent = Intent(this,RegisterActivity::class.java)
-
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            finish()
             startActivity(intent)
 
         }else{
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             val intent = Intent(this,MainActivity::class.java)
-
+            finish()
             startActivity(intent)
          }
         }

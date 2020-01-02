@@ -1,6 +1,7 @@
 package com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.repository
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.google.firebase.database.DatabaseReference
@@ -50,7 +51,9 @@ class LoginRepository :
         return settings.getString("userName",null)
     }
 
-    override fun deleteUserPreference(key: String, contex: Context) {
-
+    override fun deleteUserPreference(context: Context) {
+        val settings =
+            context.getSharedPreferences("UserProfile", Context.MODE_PRIVATE)
+        settings.edit().clear().commit()
     }
 }

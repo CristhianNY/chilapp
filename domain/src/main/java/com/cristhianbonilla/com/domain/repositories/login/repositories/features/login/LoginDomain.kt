@@ -32,8 +32,8 @@ class LoginDomain(loginRepository : LoginRepository){
         return loginRepository.getUserNamePreference(key, contex)
     }
 
-    fun deleteeUserPreference(key:String , contex:Context){
-        loginRepository.deleteUserPreference(key, contex)
+    fun deleteeUserPreference(context:Context){
+        loginRepository.deleteUserPreference(context)
     }
 
      fun getAge(year: Int, month: Int, day: Int): String? {

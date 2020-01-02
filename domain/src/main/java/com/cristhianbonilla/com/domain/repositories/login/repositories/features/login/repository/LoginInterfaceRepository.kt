@@ -9,5 +9,5 @@ interface LoginInterfaceRepository {
     fun saveUserPreference(user:UserDto, contex:Context)
     fun getUserPreference(key:String, contex:Context)
     fun getUserNamePreference(key:String, contex:Context) : String?
-    fun deleteUserPreference(key:String, contex:Context)
+    fun deleteUserPreference(contex:Context)
 }
