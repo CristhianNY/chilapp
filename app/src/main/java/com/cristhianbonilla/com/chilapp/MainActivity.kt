@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.cristhianbonilla.com.chilapp.ui.activities.feature.base.BaseActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.feature.login.LoginActivty
 import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var loginDomain : LoginDomain

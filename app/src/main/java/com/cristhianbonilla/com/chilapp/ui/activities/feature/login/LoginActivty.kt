@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.MainActivity
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.chilapp.ui.activities.feature.base.BaseActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.firebase.ui.auth.AuthUI
@@ -17,7 +18,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
-class LoginActivty : AppCompatActivity() {
+class LoginActivty : BaseActivity() {
 
     private val RC_SIGN_IN : Int = 5656
     private val providers = arrayListOf(
