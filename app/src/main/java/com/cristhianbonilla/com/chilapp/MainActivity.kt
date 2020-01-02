@@ -1,9 +1,14 @@
 package com.cristhianbonilla.com.chilapp
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -18,11 +23,14 @@ import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
+private const val PERMISSION_REQUEST = 10
 
 class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var loginDomain : LoginDomain
+
+    private var permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +43,14 @@ class MainActivity : BaseActivity() {
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if(checkPermissions(this,permissions)){
+            Toast.makeText(this,"Permisos aprobados", Toast.LENGTH_SHORT).show()
+        }else{
+
+                requestPermissions(permissions, PERMISSION_REQUEST)
+            }
+        }
         setSupportActionBar(toolbar_support)
 
         val appBarConfiguration = AppBarConfiguration(
@@ -76,7 +92,45 @@ class MainActivity : BaseActivity() {
                 startActivity(intent)
             }
     }
+    fun checkPermissions(context: Context,permissionsArray:Array<String>):Boolean{
 
+        var allSuccess = true
 
+        for (i in permissionsArray.indices){
+            if(checkCallingOrSelfPermission(permissionsArray[i]) == PackageManager.PERMISSION_DENIED){
+                allSuccess = false
+            }
+        }
+        return allSuccess
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var allSuccess = true
+        if(requestCode == PERMISSION_REQUEST){
+            for (i in permissions.indices){
+                allSuccess = false
+
+                if(grantResults[i] == PackageManager.PERMISSION_DENIED){
+                    var requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(permissions[i])
+
+                    if(requestAgain){
+                        Toast.makeText(this,"permiso rechazado", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this,"Ve a Ajustes y dale permisos a la apo", Toast.LENGTH_SHORT).show()
+                    }
+                    } else {
+                }
+            }
+
+        }
+        if(allSuccess){
+            Toast.makeText(this,"Todos los permisos aprobados", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
+
