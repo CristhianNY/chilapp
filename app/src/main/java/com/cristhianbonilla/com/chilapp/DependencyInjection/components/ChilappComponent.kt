@@ -5,7 +5,7 @@ import com.cristhianbonilla.com.chilapp.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.feature.Splash.SplashActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.feature.login.LoginActivty
 import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.dashboard.DashboardFragment
+import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.DashboardFragment
 import dagger.Component
 import javax.inject.Singleton
 

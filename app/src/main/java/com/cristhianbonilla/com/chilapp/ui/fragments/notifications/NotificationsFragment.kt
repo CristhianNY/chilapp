@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.ui.activities.feature.notifications
+package com.cristhianbonilla.com.chilapp.ui.fragments.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater

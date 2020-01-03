@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.ui.activities.feature.notifications
+package com.cristhianbonilla.com.chilapp.ui.fragments.notifications
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
