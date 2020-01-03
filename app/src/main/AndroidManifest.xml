@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.feature.Splash.SplashActivity">
+        <activity android:name="com.cristhianbonilla.com.chilapp.ui.activities.Splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,9 +31,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.feature.register.RegisterActivity" />
+        <activity android:name="com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity" />
         <activity
-            android:name=".ui.activities.feature.login.LoginActivty"
+            android:name="com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

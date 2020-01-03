@@ -1,8 +1,7 @@
-package com.cristhianbonilla.com.chilapp.ui.activities.feature.login
+package com.cristhianbonilla.com.chilapp.ui.activities.login
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -10,8 +9,8 @@ import android.widget.Toast
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.MainActivity
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.base.BaseActivity
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse

@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.ui.activities.feature.register
+package com.cristhianbonilla.com.chilapp.ui.activities.register
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import com.afollestad.vvalidator.form
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.MainActivity
@@ -16,10 +15,8 @@ import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_register.*
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import javax.xml.datatype.DatatypeConstants.MONTHS
 
 class RegisterActivity : AppCompatActivity() {
 

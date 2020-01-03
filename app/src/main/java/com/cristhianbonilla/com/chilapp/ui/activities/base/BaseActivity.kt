@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.ui.activities.feature.base
+package com.cristhianbonilla.com.chilapp.ui.activities.base
 
 import android.os.Bundle
 import android.os.PersistableBundle

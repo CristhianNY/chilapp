@@ -1,9 +1,5 @@
 package com.cristhianbonilla.com.chilapp.contrats
 
-import android.content.Intent
-import com.cristhianbonilla.com.chilapp.MainActivity
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
-
 
 class UserPreferenceValidator : ValidatorUserPreferenceInterface {
 

@@ -1,14 +1,13 @@
-package com.cristhianbonilla.com.chilapp.ui.activities.feature.Splash
+package com.cristhianbonilla.com.chilapp.ui.activities.Splash
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.MainActivity
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.base.BaseActivity
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.login.LoginActivty
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
+import com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.google.firebase.auth.FirebaseAuth
 import java.lang.Exception

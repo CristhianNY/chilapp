@@ -10,14 +10,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.base.BaseActivity
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.login.LoginActivty
-import com.cristhianbonilla.com.chilapp.ui.activities.feature.register.RegisterActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.toolbar.*
