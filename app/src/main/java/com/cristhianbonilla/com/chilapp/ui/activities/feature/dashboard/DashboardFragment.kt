@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.ui.dashboard
+package com.cristhianbonilla.com.chilapp.ui.activities.feature.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater

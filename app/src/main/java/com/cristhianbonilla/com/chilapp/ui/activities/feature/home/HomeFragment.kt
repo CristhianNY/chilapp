@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.ui.home
+package com.cristhianbonilla.com.chilapp.ui.activities.feature.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
