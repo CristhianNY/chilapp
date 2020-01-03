@@ -10,4 +10,5 @@ interface LoginInterfaceRepository {
     fun getUserPreference(key:String, contex:Context)
     fun getUserNamePreference(key:String, contex:Context) : String?
     fun deleteUserPreference(contex:Context)
+    fun getUserPreferenceDto(contex: Context) : UserDto
 }

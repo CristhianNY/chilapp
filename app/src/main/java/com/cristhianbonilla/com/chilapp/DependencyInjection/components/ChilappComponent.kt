@@ -6,6 +6,7 @@ import com.cristhianbonilla.com.chilapp.ui.activities.Splash.SplashActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
 import com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.DashboardFragment
+import com.cristhianbonilla.com.chilapp.ui.fragments.home.HomeFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -18,4 +19,5 @@ interface ChilappComponent{
     fun inject(registerActivity: RegisterActivity)
     fun inject(splashActivity: SplashActivity)
     fun inject(dashboardFragment: DashboardFragment)
+    fun inject(homeFragment: HomeFragment)
 }

@@ -9,8 +9,6 @@ import java.util.*
 
 class LoginDomain(loginRepository : LoginRepository){
 
-    val user = FirebaseAuth.getInstance().currentUser
-
     var loginRepository : LoginRepository = loginRepository
 
     fun saveUser(user:UserDto , contex:Context){
@@ -20,12 +18,8 @@ class LoginDomain(loginRepository : LoginRepository){
         loginRepository.saveUser(user, contex)
     }
 
-    fun saveUserPreference(user:UserDto , contex:Context){
-        loginRepository.saveUserPreference(user, contex)
-    }
-
-    fun getUserPreference(key:String , contex:Context){
-        loginRepository.getUserPreference(key, contex)
+    fun getUserPreference(key:String , contex:Context) : UserDto{
+       return loginRepository.getUserPreferenceDto(contex)
     }
 
     fun getUserNamePreference(key:String , contex:Context) : String?{
