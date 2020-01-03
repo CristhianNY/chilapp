@@ -3,7 +3,7 @@ package com.cristhianbonilla.com.chilapp.ui.activities.Splash
 import android.content.Intent
 import android.os.Bundle
 import com.cristhianbonilla.com.chilapp.App
-import com.cristhianbonilla.com.chilapp.MainActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty

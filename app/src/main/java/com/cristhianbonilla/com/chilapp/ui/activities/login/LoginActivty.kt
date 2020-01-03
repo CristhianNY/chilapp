@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.cristhianbonilla.com.chilapp.App
-import com.cristhianbonilla.com.chilapp.MainActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity
@@ -68,7 +68,8 @@ class LoginActivty : BaseActivity() {
 
         }else{
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this,
+                MainActivity::class.java)
             finish()
             startActivity(intent)
          }

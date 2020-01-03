@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp
+package com.cristhianbonilla.com.chilapp.ui.activities
 
 import android.Manifest
 import android.content.Context
@@ -14,6 +14,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.cristhianbonilla.com.chilapp.App
+import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
@@ -48,14 +50,18 @@ class MainActivity : BaseActivity() {
             Toast.makeText(this,"Permisos aprobados", Toast.LENGTH_SHORT).show()
         }else{
 
-                requestPermissions(permissions, PERMISSION_REQUEST)
+                requestPermissions(permissions,
+                    PERMISSION_REQUEST
+                )
             }
         }
         setSupportActionBar(toolbar_support)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home,
+                R.id.navigation_dashboard,
+                R.id.navigation_notifications
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

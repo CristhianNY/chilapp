@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.EditText
 import com.afollestad.vvalidator.form
 import com.cristhianbonilla.com.chilapp.App
-import com.cristhianbonilla.com.chilapp.MainActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.contrats.UserPreferenceValidator
 import com.cristhianbonilla.com.domain.dtos.UserDto
