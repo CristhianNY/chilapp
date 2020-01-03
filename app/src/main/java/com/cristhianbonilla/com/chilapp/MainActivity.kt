@@ -30,6 +30,8 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var loginDomain : LoginDomain
 
+    var permissionIsGranted : Boolean = true
+
     private var permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +101,7 @@ class MainActivity : BaseActivity() {
         for (i in permissionsArray.indices){
             if(checkCallingOrSelfPermission(permissionsArray[i]) == PackageManager.PERMISSION_DENIED){
                 allSuccess = false
+                permissionIsGranted = false
             }
         }
         return allSuccess
