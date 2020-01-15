@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -47,16 +49,19 @@ class MainActivity : BaseActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        val model = ViewModelProviders.of(this)[MainViewModel::class.java]
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if(checkPermissions(this,permissions)){
+            model.select(true)
             Toast.makeText(this,"Permisos aprobados", Toast.LENGTH_SHORT).show()
         }else{
 
                 requestPermissions(permissions,
                     PERMISSION_REQUEST
                 )
+            model.select(false)
             }
         }
         setSupportActionBar(toolbar_support)

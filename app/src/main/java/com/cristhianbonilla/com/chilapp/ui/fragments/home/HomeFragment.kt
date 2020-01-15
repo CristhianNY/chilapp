@@ -1,5 +1,6 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.home
 
+import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.chilapp.ui.activities.MainViewModel
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
@@ -25,6 +31,12 @@ class HomeFragment : Fragment() {
     lateinit var loginDomain: LoginDomain
 
     private lateinit var homeViewModel: HomeViewModel
+    private var isPermissionsProvide : Boolean = false
+
+    private var permissions = arrayOf(
+        Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+
     lateinit var ACTIVITY: MainActivity
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +54,7 @@ class HomeFragment : Fragment() {
         ACTIVITY = context as MainActivity
 
 
-        if(ACTIVITY.permissionIsGranted){
+        if(this.activity?.let { ACTIVITY.checkPermissions(it,permissions) }!!){
 
             Toast.makeText(context,"Hola si tiene ",Toast.LENGTH_SHORT).show()
             saveContactsToFirebase()
@@ -53,14 +65,18 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    fun loadContacts(c: Context) {
+        Toast.makeText(context,"QUe pasa  ",Toast.LENGTH_SHORT).show()
+    }
+
     fun saveContactsToFirebase(){
 
        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-        context?.let { ACTIVITY.homeDomain.saveContactsPhoneIntoFirebase(it, user) }
+
+        Observable.just(activity?.let { ACTIVITY.homeDomain.saveContactsPhoneIntoFirebase(it, user).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({  }, { throwable ->
+            Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()
+        }) } )
     }
-
-
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -71,5 +87,19 @@ class HomeFragment : Fragment() {
 
         // Now you can access loginViewModel here and onCreateView too
         // (shared instance with the Activity and the other Fragment)
+    }
+
+    private fun createButtonClickObservable(): Observable<String> {
+        // 2
+        return Observable.create { emitter ->
+            // 3
+
+
+            // 5
+            emitter.setCancellable {
+                // 6
+              //
+            }
+        }
     }
 }
