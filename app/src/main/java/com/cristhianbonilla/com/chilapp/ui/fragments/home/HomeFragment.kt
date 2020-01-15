@@ -13,13 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.ui.activities.MainViewModel
+import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
+import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
@@ -57,7 +58,7 @@ class HomeFragment : Fragment() {
         if(this.activity?.let { ACTIVITY.checkPermissions(it,permissions) }!!){
 
             Toast.makeText(context,"Hola si tiene ",Toast.LENGTH_SHORT).show()
-            saveContactsToFirebase()
+            registersSaveContactsToFirebase()
         }else{
             Toast.makeText(context,"No tiene  ",Toast.LENGTH_SHORT).show()
         }
@@ -69,14 +70,32 @@ class HomeFragment : Fragment() {
         Toast.makeText(context,"QUe pasa  ",Toast.LENGTH_SHORT).show()
     }
 
-    fun saveContactsToFirebase(){
+    fun registersSaveContactsToFirebase(){
 
        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
-        Observable.just(activity?.let { ACTIVITY.homeDomain.saveContactsPhoneIntoFirebase(it, user).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({  }, { throwable ->
+        Observable.just(activity?.let { saveContactsPhoneIntoFirebase(user).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({  }, { throwable ->
             Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()
         }) } )
     }
+
+    fun saveContactsPhoneIntoFirebase(user: UserDto?) : Completable {
+
+        return Completable.create { emitter ->
+
+            try {
+                activity?.let { ACTIVITY.homeDomain.saveContactsPhoneIntoFirebase(it, user) }
+                if(emitter != null && !emitter.isDisposed){
+                    emitter?.onComplete()
+                }
+            }catch (e: Exception){
+                if (emitter != null && !emitter.isDisposed) {
+                    emitter?.onError(e)
+                }
+            }
+        }
+    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

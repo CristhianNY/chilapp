@@ -10,22 +10,8 @@ import java.util.concurrent.TimeUnit
 class HomeDomain(homerepository: HomeRepository){
     var homeRepository : HomeRepository = homerepository
 
-    fun saveContactsPhoneIntoFirebase(context: Context, userPhonenumber: UserDto?) : Completable {
-
-
-        return Completable.create { emitter ->
-
-            try {
-                homeRepository.saveContactsPhoneIntoFirebase(context,userPhonenumber)
-                if(emitter != null && !emitter.isDisposed){
-                    emitter?.onComplete()
-                }
-            }catch (e:Exception){
-                if (emitter != null && !emitter.isDisposed) {
-                    emitter?.onError(e)
-                }
-            }
-        }
+    fun saveContactsPhoneIntoFirebase(context: Context, userPhonenumber: UserDto?){
+        homeRepository.saveContactsPhoneIntoFirebase(context,userPhonenumber)
     }
 
 }
