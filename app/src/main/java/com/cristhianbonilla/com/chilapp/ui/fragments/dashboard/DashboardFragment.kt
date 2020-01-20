@@ -4,27 +4,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
+import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
+import com.cristhianbonilla.com.chilapp.ui.fragments.home.HomeFragment
+import com.cristhianbonilla.com.chilapp.ui.fragments.home.HomeViewModel
 import com.cristhianbonilla.com.domain.dtos.SecretPost
+import com.cristhianbonilla.com.domain.dtos.UserDto
+import com.cristhianbonilla.com.domain.repositories.login.repositories.features.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import java.lang.Exception
 import javax.inject.Inject
 
-class DashboardFragment : Fragment() {
+class DashboardFragment :BaseFragment(){
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var secretPostRecyclerView: RecyclerView
 
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
 
-    @Inject
-    lateinit var homeDomain: HomeDomain
+    lateinit var btnSendSecretPost : Button
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,11 +56,34 @@ class DashboardFragment : Fragment() {
 
         initRecyclerViewSecretPost(root)
 
+        initViews(root)
+
         loadPost()
 
+        btnSendSecretPost.setOnClickListener(View.OnClickListener {
+
+          saveSecretPost()
+
+        })
         return root
 
 
+    }
+
+    private fun initViews(root: View?){
+
+        btnSendSecretPost = root?.findViewById(R.id.btn_send_post) as Button
+
+    }
+
+    private fun saveSecretPost() {
+
+        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+
+        Observable.just(activity?.let { saveSecretPost(user).subscribeOn(
+            Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({  }, { throwable ->
+            Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()
+        }) } )
     }
 
     private fun initRecyclerViewSecretPost(root: View?){
@@ -60,6 +97,23 @@ class DashboardFragment : Fragment() {
             secretPostRecyclerView.adapter = secretPostRvAdapter
         }
 
+    }
+
+    private fun saveSecretPost(user: UserDto?) : Completable {
+
+        return Completable.create { emitter ->
+
+            try {
+                activity?.let { ACTIVITY.dashBoardDomain.saveSecretPost() }
+                if(emitter != null && !emitter.isDisposed){
+                    emitter?.onComplete()
+                }
+            }catch (e: Exception){
+                if (emitter != null && !emitter.isDisposed) {
+                    emitter?.onError(e)
+                }
+            }
+        }
     }
 
     private fun loadPost(){

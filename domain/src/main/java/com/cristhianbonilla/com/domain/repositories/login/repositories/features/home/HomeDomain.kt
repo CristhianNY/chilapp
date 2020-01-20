@@ -16,6 +16,7 @@ class HomeDomain(homerepository: HomeRepository){
 
     fun getFriendsPost(){
 
+
     }
 
 

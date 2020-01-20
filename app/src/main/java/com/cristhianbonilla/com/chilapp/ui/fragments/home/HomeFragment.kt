@@ -13,6 +13,7 @@
     import androidx.lifecycle.ViewModelProviders
     import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
     import com.cristhianbonilla.com.chilapp.R
+    import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
     import com.cristhianbonilla.com.domain.dtos.UserDto
     import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
     import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
@@ -23,16 +24,13 @@
     import java.lang.Exception
     import javax.inject.Inject
 
-    class HomeFragment : Fragment() {
+    class HomeFragment : BaseFragment() {
 
         private lateinit var homeViewModel: HomeViewModel
-        private var isPermissionsProvide : Boolean = false
 
         private var permissions = arrayOf(
             Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-
-        lateinit var ACTIVITY: MainActivity
 
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -47,7 +45,6 @@
                 textView.text = it
             })
 
-            ACTIVITY = context as MainActivity
 
             if(this.activity?.let { ACTIVITY.checkPermissions(it,permissions) }!!){
 

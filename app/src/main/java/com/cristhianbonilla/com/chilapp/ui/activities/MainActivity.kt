@@ -20,6 +20,7 @@ import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
+import com.cristhianbonilla.com.domain.repositories.login.repositories.features.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
 import com.firebase.ui.auth.AuthUI
@@ -35,6 +36,9 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var homeDomain: HomeDomain
+
+    @Inject
+    lateinit var dashBoardDomain: DashBoardDomain
 
     var permissionIsGranted : Boolean = true
 

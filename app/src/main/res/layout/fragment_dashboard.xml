@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:id="@+id/edit_what_are_you_thinkgin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

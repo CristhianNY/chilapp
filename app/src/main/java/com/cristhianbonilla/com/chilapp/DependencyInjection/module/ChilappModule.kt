@@ -1,5 +1,7 @@
 package com.cristhianbonilla.com.chilapp.DependencyInjection.module
 
+import com.cristhianbonilla.com.domain.repositories.login.repositories.features.dashboard.DashBoardDomain
+import com.cristhianbonilla.com.domain.repositories.login.repositories.features.dashboard.repository.DashBoardRepository
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.repository.HomeRepository
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
@@ -23,5 +25,12 @@ class ChilappModule{
     fun provideHomeDomain()=
         HomeDomain(
             homerepository = HomeRepository()
+        )
+
+    @Provides
+    @Singleton
+    fun provideDashBoardDomain()=
+        DashBoardDomain(
+            dashBoardRepository = DashBoardRepository()
         )
 }
