@@ -10,6 +10,7 @@ import com.cristhianbonilla.com.domain.dtos.UserDto
 import com.cristhianbonilla.com.domain.repositories.login.repositories.features.base.BaseRepository
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
+import io.michaelrocks.libphonenumber.android.Phonenumber
 import java.util.regex.Pattern
 
 
@@ -34,20 +35,12 @@ class HomeRepository : BaseRepository(), HomeRepositoryInterface{
 
             contact.name = name
 
-           if(getCountryIsoCode(number) == "GR"|| getCountryIsoCode(number) == "BE" ||getCountryIsoCode(number) == "NL" || getCountryIsoCode(number) == "RU"||getCountryIsoCode(number) == "GI"||getCountryIsoCode(number) == "IN"){
-
-               contact.number = "+57"+number
-               contactList.add(contact)
-
-           }else{
-
-                   if(getCountryIsoCode(number)!=null){
-                       contact.number = number
-                       contactList.add(contact)
-                   }
-
-
-           }
+            if(formatPhoneNumber(number)!=null){
+                val countryCode = formatPhoneNumber(number)?.countryCode
+                val newPhoneNumber = formatPhoneNumber(number)?.nationalNumber
+                contact.number = "+$countryCode$newPhoneNumber"
+                contactList.add(contact)
+            }
         }
         print(contactList)
         contacts.close()
@@ -63,8 +56,8 @@ class HomeRepository : BaseRepository(), HomeRepositoryInterface{
 
     }
 
-    private fun getCountryIsoCode(number: String): String? {
-        val validatedNumber = if (number.startsWith("+")) number else "+$number"
+    private fun formatPhoneNumber(number: String): Phonenumber.PhoneNumber? {
+        val validatedNumber = if (number.trim().startsWith("+")) number else "+57$number"
 
         val phoneNumber = try {
             phoneNumberUtil.parse(validatedNumber, null)
@@ -74,7 +67,7 @@ class HomeRepository : BaseRepository(), HomeRepositoryInterface{
         }
         if(phoneNumber == null) return null
 
-        return phoneNumberUtil.getRegionCodeForCountryCode(phoneNumber.countryCode)
+        return phoneNumber
     }
 
 

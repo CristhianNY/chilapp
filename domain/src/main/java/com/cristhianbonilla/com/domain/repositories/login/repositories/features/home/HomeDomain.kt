@@ -14,4 +14,9 @@ class HomeDomain(homerepository: HomeRepository){
         homeRepository.saveContactsPhoneIntoFirebase(context,userPhonenumber)
     }
 
+    fun getFriendsPost(){
+
+    }
+
+
 }
