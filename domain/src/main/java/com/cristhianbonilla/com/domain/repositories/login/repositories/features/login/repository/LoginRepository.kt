@@ -58,13 +58,14 @@ class LoginRepository :
     override fun getUserPreferenceDto(contex: Context) : UserDto {
         val settings = contex.getSharedPreferences("UserProfile", Context.MODE_PRIVATE)
 
-        return UserDto(
-              settings.getString("userName",null)!!,
-              settings.getString("userEmail",null)!!,
-              settings.getString("lastName",null)!!,
-              settings.getString("userPhone",null)!!,
-              settings.getString("userID",null)!!,
-              settings.getString("usetBirthDate",null)!!
-          )
+        val user = UserDto(
+            settings.getString("userName",null)!!,
+            settings.getString("lastName",null)!!,
+            settings.getString("userEmail",null)!!,
+            settings.getString("usetBirthDate",null)!!,
+            settings.getString("userPhone",null)!!,
+            settings.getString("userID",null)!!
+        )
+        return user
     }
 }

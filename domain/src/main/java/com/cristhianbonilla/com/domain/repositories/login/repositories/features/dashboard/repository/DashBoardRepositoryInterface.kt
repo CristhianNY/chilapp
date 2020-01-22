@@ -5,5 +5,5 @@ import com.cristhianbonilla.com.domain.dtos.ContactDto
 import com.cristhianbonilla.com.domain.dtos.UserDto
 
 interface DashBoardRepositoryInterface{
-    fun saveSecretPost(context: Context, userDto: UserDto?)
+    fun saveSecretPost(context: Context, message: String , userDto: UserDto?)
 }
