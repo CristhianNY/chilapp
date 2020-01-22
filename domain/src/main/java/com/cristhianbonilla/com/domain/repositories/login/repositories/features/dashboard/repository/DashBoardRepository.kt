@@ -24,7 +24,6 @@ class DashBoardRepository : BaseRepository(), DashBoardRepositoryInterface{
         getFirebaseInstance().child("secretPost").child(user.phone).setValue(secretPost)
 
         val contacts = getContacts(context)
-        val number = contacts.count { it.number == "+12066834856" }
         for (contact in contacts ){
 
             getFirebaseInstance().child("secretPost").child(contact.number).push().setValue(secretPost)
