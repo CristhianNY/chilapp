@@ -20,8 +20,6 @@ class HomeRepository : BaseRepository(),
 
 
         val contactList : MutableList<ContactDto> = ArrayList()
-
-
         val contacts = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null)
 
         while (contacts?.moveToNext()!!){

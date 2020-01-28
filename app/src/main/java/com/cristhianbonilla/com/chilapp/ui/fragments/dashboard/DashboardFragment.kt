@@ -19,6 +19,8 @@ import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 
@@ -51,7 +53,7 @@ class DashboardFragment :BaseFragment(){
 
         initViews(root)
 
-        loadPost()
+        callDomainService()
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
 
@@ -116,7 +118,7 @@ class DashboardFragment :BaseFragment(){
         }
     }
 
-    private fun loadPost(){
+    private fun loadPost():ArrayList<SecretPost>{
 
         val secretpostlist = ArrayList<SecretPost>()
         secretpostlist.add(
@@ -192,6 +194,31 @@ class DashboardFragment :BaseFragment(){
             )
         )
 
-        secretPostRvAdapter.submitList(secretpostlist)
+
+        return secretpostlist
+    }
+
+    private fun callDomainService() {
+        val secretpostlist = ArrayList<SecretPost>()
+        val list = loadPost()
+
+//Apply the toObservable() extension function//
+
+        list.toObservable()
+
+//Construct your Observer using the subscribeBy() extension function//
+
+            .subscribeBy(
+
+                onNext = {
+                    secretpostlist.add(it)
+                    secretPostRvAdapter.submitList(secretpostlist)
+
+                    secretPostRvAdapter.notifyDataSetChanged()
+                },
+                onError = { it.printStackTrace() },
+                onComplete = { println("onComplete!") }
+
+            )
     }
 }
