@@ -1,20 +1,19 @@
-package com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.repository
+package com.cristhianbonilla.com.chilapp.domain.home.repository
 
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.provider.ContactsContract
-import android.telephony.PhoneNumberUtils
 import android.util.Log
-import com.cristhianbonilla.com.domain.dtos.ContactDto
-import com.cristhianbonilla.com.domain.dtos.UserDto
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.base.BaseRepository
+import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
+import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
-import java.util.regex.Pattern
 
 
-class HomeRepository : BaseRepository(), HomeRepositoryInterface{
+class HomeRepository : BaseRepository(),
+    HomeRepositoryInterface {
 
     lateinit var phoneNumberUtil: PhoneNumberUtil
     override fun saveContactsPhoneIntoFirebase(context: Context, user: UserDto?) {
@@ -31,7 +30,8 @@ class HomeRepository : BaseRepository(), HomeRepositoryInterface{
 
             val name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val number = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            val contact = ContactDto()
+            val contact =
+                ContactDto()
 
             contact.name = name
 
@@ -48,7 +48,7 @@ class HomeRepository : BaseRepository(), HomeRepositoryInterface{
         saveContactInFirebase(contactList,user)
     }
 
-    override fun saveContactInFirebase(contactList: MutableList<ContactDto>,user: UserDto?) {
+    override fun saveContactInFirebase(contactList: MutableList<ContactDto>, user: UserDto?) {
 
         for (contact in contactList){
             getFirebaseInstance().child("contactsByUser").child(user!!.phone).child(contact.number).setValue(contact)

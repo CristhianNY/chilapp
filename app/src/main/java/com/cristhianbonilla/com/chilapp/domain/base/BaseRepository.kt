@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.domain.repositories.login.repositories.features.base
+package com.cristhianbonilla.com.chilapp.domain.base
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase

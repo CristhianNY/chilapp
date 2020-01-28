@@ -1,25 +1,29 @@
-package com.cristhianbonilla.com.domain.repositories.login.repositories.features.dashboard.repository
+package com.cristhianbonilla.com.chilapp.domain.dashboard.repository
 
 import android.content.ContentValues
 import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
-import com.cristhianbonilla.com.domain.dtos.ContactDto
-import com.cristhianbonilla.com.domain.dtos.SecretPost
-import com.cristhianbonilla.com.domain.dtos.UserDto
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.base.BaseRepository
+import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
+import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
 
-class DashBoardRepository : BaseRepository(), DashBoardRepositoryInterface{
+class DashBoardRepository : BaseRepository(),
+    DashBoardRepositoryInterface {
 
     lateinit var phoneNumberUtil: PhoneNumberUtil
 
     override fun saveSecretPost(context: Context, message :String, user: UserDto?) {
 
 
-        var secretPost = SecretPost(user!!.userId,message)
+        var secretPost = SecretPost(
+            user!!.userId,
+            message
+        )
 
         getFirebaseInstance().child("secretPost").child(user.phone).setValue(secretPost)
 
@@ -43,7 +47,8 @@ class DashBoardRepository : BaseRepository(), DashBoardRepositoryInterface{
 
             val name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val number = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            val contact = ContactDto()
+            val contact =
+                ContactDto()
 
             contact.name = name
 

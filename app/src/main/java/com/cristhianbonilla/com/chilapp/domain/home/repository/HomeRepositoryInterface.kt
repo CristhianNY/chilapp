@@ -1,8 +1,8 @@
-package com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.repository
+package com.cristhianbonilla.com.chilapp.domain.home.repository
 
 import android.content.Context
-import com.cristhianbonilla.com.domain.dtos.ContactDto
-import com.cristhianbonilla.com.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 
 interface HomeRepositoryInterface{
     fun saveContactsPhoneIntoFirebase(context: Context , userDto: UserDto?)

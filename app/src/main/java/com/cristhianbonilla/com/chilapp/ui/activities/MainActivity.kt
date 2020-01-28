@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
@@ -20,9 +19,9 @@ import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.dashboard.DashBoardDomain
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
+import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
+import com.cristhianbonilla.com.chilapp.domain.home.HomeDomain
+import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject

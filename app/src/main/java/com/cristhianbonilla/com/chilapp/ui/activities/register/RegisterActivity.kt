@@ -10,9 +10,9 @@ import com.afollestad.vvalidator.form
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.contrats.UserPreferenceValidator
-import com.cristhianbonilla.com.domain.dtos.UserDto
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
+import com.cristhianbonilla.com.chilapp.domain.contrats.UserPreferenceValidator
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
@@ -50,7 +50,8 @@ class RegisterActivity : AppCompatActivity() {
             showdatePicker()
         })
 
-        validateUserPreferen = UserPreferenceValidator()
+        validateUserPreferen =
+            UserPreferenceValidator()
 
         validateUserRegistered()
 
@@ -136,8 +137,14 @@ class RegisterActivity : AppCompatActivity() {
 
     fun saveUser(){
         val user = FirebaseAuth.getInstance().currentUser
-        var userD = UserDto(editUsername.text.toString(),editLastName.text.toString(),editEmail.text.toString(),bitdDate,
-            user?.phoneNumber.toString(), user?.uid.toString())
+        var userD = UserDto(
+            editUsername.text.toString(),
+            editLastName.text.toString(),
+            editEmail.text.toString(),
+            bitdDate,
+            user?.phoneNumber.toString(),
+            user?.uid.toString()
+        )
 
         loginDomain.saveUser(userD,this)
 

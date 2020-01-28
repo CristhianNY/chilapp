@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.domain.dtos.SecretPost
+import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 
 class SecretPostRvAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

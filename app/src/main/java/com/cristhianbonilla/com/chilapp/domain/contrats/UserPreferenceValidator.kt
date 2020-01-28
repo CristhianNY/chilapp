@@ -1,7 +1,8 @@
-package com.cristhianbonilla.com.chilapp.contrats
+package com.cristhianbonilla.com.chilapp.domain.contrats
 
 
-class UserPreferenceValidator : ValidatorUserPreferenceInterface {
+class UserPreferenceValidator :
+    ValidatorUserPreferenceInterface {
 
     override fun validateIfUserPrefereceIsSaved(userName:String): Boolean {
 

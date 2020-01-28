@@ -1,28 +1,22 @@
     package com.cristhianbonilla.com.chilapp.ui.fragments.home
 
     import android.Manifest
-    import android.content.Context
     import android.os.Bundle
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
     import android.widget.TextView
     import android.widget.Toast
-    import androidx.fragment.app.Fragment
     import androidx.lifecycle.Observer
     import androidx.lifecycle.ViewModelProviders
-    import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
     import com.cristhianbonilla.com.chilapp.R
     import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
-    import com.cristhianbonilla.com.domain.dtos.UserDto
-    import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.HomeDomain
-    import com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.LoginDomain
+    import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
     import io.reactivex.Completable
     import io.reactivex.Observable
     import io.reactivex.android.schedulers.AndroidSchedulers
     import io.reactivex.schedulers.Schedulers
     import java.lang.Exception
-    import javax.inject.Inject
 
     class HomeFragment : BaseFragment() {
 

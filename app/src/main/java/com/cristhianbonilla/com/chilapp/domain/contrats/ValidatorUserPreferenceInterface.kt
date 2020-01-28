@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.contrats
+package com.cristhianbonilla.com.chilapp.domain.contrats
 
 interface ValidatorUserPreferenceInterface {
 

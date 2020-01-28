@@ -1,11 +1,8 @@
-package com.cristhianbonilla.com.domain.repositories.login.repositories.features.home
+package com.cristhianbonilla.com.chilapp.domain.home
 
 import android.content.Context
-import com.cristhianbonilla.com.domain.dtos.UserDto
-import com.cristhianbonilla.com.domain.repositories.login.repositories.features.home.repository.HomeRepository
-import io.reactivex.Completable
-import java.lang.Exception
-import java.util.concurrent.TimeUnit
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.domain.home.repository.HomeRepository
 
 class HomeDomain(homerepository: HomeRepository){
     var homeRepository : HomeRepository = homerepository

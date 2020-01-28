@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.domain.dtos
+package com.cristhianbonilla.com.chilapp.domain.dtos
 
 import android.graphics.Bitmap
 

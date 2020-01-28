@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
-import com.cristhianbonilla.com.domain.dtos.SecretPost
-import com.cristhianbonilla.com.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

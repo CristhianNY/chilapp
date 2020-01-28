@@ -1,7 +1,7 @@
-package com.cristhianbonilla.com.domain.repositories.login.repositories.features.login.repository
+package com.cristhianbonilla.com.chilapp.domain.login.repository
 
 import android.content.Context
-import com.cristhianbonilla.com.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -59,12 +59,12 @@ class LoginRepository :
         val settings = contex.getSharedPreferences("UserProfile", Context.MODE_PRIVATE)
 
         val user = UserDto(
-            settings.getString("userName",null)!!,
-            settings.getString("lastName",null)!!,
-            settings.getString("userEmail",null)!!,
-            settings.getString("usetBirthDate",null)!!,
-            settings.getString("userPhone",null)!!,
-            settings.getString("userID",null)!!
+            settings.getString("userName", null)!!,
+            settings.getString("lastName", null)!!,
+            settings.getString("userEmail", null)!!,
+            settings.getString("usetBirthDate", null)!!,
+            settings.getString("userPhone", null)!!,
+            settings.getString("userID", null)!!
         )
         return user
     }
