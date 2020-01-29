@@ -1,15 +1,41 @@
 package com.cristhianbonilla.com.chilapp.domain.dashboard
 
 import android.content.Context
+import com.cristhianbonilla.com.chilapp.App
+import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
+import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.domain.dashboard.repository.DashBoardRepository
+import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
+import javax.inject.Inject
 
-class DashBoardDomain (dashBoardRepository: DashBoardRepository){
+class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) : ListenerDomain{
 
-    var dashBoardRepository = dashBoardRepository
+  var listenerActiv: ListenerActivity
 
-     fun saveSecretPost(contex : Context, message: String, user: UserDto) {
+    var dashBoardRepository:DashBoardRepository
+
+    init {
+        App.instance.getComponent().inject(this)
+
+        listenerActiv = listenerActivity
+        dashBoardRepository = DashBoardRepository(this)
+    }
+
+
+    override fun saveSecretPost(contex : Context, message: String, user: UserDto) {
 
        dashBoardRepository.saveSecretPost(contex,  message, user)
+    }
+
+    override fun getSecretsPost(user: UserDto?){
+
+        dashBoardRepository.readSecrePost(user)
+
+    }
+
+    override fun onReadSecretPost(secretpostList: ArrayList<SecretPost>) {
+
+          listenerActiv.onSecretPostRead(secretpostList)
     }
 }

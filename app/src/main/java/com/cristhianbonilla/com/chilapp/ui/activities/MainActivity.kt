@@ -36,9 +36,6 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var homeDomain: HomeDomain
 
-    @Inject
-    lateinit var dashBoardDomain: DashBoardDomain
-
     var permissionIsGranted : Boolean = true
 
     private var permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)

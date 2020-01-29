@@ -12,10 +12,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
+import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
+import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,8 +28,9 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
+import javax.inject.Inject
 
-class DashboardFragment :BaseFragment(){
+class DashboardFragment :BaseFragment(), ListenerActivity{
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var secretPostRecyclerView: RecyclerView
@@ -34,7 +40,13 @@ class DashboardFragment :BaseFragment(){
     lateinit var btnSendSecretPost : Button
     lateinit var editWhatAreYouThinking : EditText
 
+    @Inject
+    lateinit var dashBoardDomain:  DashBoardDomain
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.instance.getComponent().inject(this)
+        super.onCreate(savedInstanceState)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,7 +65,7 @@ class DashboardFragment :BaseFragment(){
 
         initViews(root)
 
-        callDomainService()
+         callSecretPost()
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
 
@@ -104,7 +116,8 @@ class DashboardFragment :BaseFragment(){
             try {
                 activity?.let {
                     if (user != null) {
-                        ACTIVITY.dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking,user)
+                        dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking,user)
+                      //  ACTIVITY.dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking,user)
                     }
                 }
                 if(emitter != null && !emitter.isDisposed){
@@ -202,11 +215,7 @@ class DashboardFragment :BaseFragment(){
         val secretpostlist = ArrayList<SecretPost>()
         val list = loadPost()
 
-//Apply the toObservable() extension function//
-
         list.toObservable()
-
-//Construct your Observer using the subscribeBy() extension function//
 
             .subscribeBy(
 
@@ -220,5 +229,42 @@ class DashboardFragment :BaseFragment(){
                 onComplete = { println("onComplete!") }
 
             )
+    }
+
+    private fun callSecretPost() {
+
+        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+
+        Observable.just(activity?.let { getSecrePost(user).subscribeOn(
+            Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({  }, { throwable ->
+            Toast.makeText(context, "Error Al traer Datos: ${throwable.message}", Toast.LENGTH_LONG).show()
+        }) } )
+    }
+    private fun getSecrePost(user: UserDto?) : Completable {
+
+        return Completable.create { emitter ->
+
+            try {
+                activity?.let {
+                    if (user != null) {
+                        dashBoardDomain.getSecretsPost(user)
+                      //  ACTIVITY.dashBoardDomain.getSecretsPost(user)
+                    }
+                }
+                if(emitter != null && !emitter.isDisposed){
+                    emitter?.onComplete()
+                }
+            }catch (e: Exception){
+                if (emitter != null && !emitter.isDisposed) {
+                    emitter?.onError(e)
+                }
+            }
+        }
+    }
+    override fun onSecretPostRead(secretpostArrayList: ArrayList<SecretPost>) {
+        secretPostRvAdapter.submitList(secretpostArrayList)
+
+        secretPostRvAdapter.notifyDataSetChanged()
+
     }
 }

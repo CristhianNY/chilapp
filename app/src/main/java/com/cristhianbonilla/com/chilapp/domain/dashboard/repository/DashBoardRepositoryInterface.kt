@@ -5,4 +5,5 @@ import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 
 interface DashBoardRepositoryInterface{
     fun saveSecretPost(context: Context, message: String , userDto: UserDto?)
+    fun readSecrePost( userDto: UserDto?)
 }

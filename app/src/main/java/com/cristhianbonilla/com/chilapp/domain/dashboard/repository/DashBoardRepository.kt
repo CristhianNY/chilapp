@@ -4,16 +4,32 @@ import android.content.ContentValues
 import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
+import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
+import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
+import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
+import javax.inject.Inject
 
-class DashBoardRepository : BaseRepository(),
+class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : BaseRepository(),
     DashBoardRepositoryInterface {
+
+    var listenerDomainmio: ListenerDomain
+
+    init {
+
+        App.instance.getComponent().inject(this)
+
+        listenerDomainmio = listenerDomain
+    }
 
     lateinit var phoneNumberUtil: PhoneNumberUtil
 
@@ -25,8 +41,6 @@ class DashBoardRepository : BaseRepository(),
             message
         )
 
-        getFirebaseInstance().child("secretPost").child(user.phone).setValue(secretPost)
-
         val contacts = getContacts(context)
         for (contact in contacts ){
 
@@ -34,10 +48,29 @@ class DashBoardRepository : BaseRepository(),
         }
     }
 
+    override fun readSecrePost(userDto: UserDto?) {
+        val secretpostlist = ArrayList<SecretPost>()
+        getFirebaseInstance().child("secretPost/${userDto?.phone}").addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    secretpostlist.add(postSnapshot.getValue(SecretPost::class.java)!!)
+                    listenerDomainmio.onReadSecretPost(secretpostlist)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("onCancelled", "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+    }
+
     private fun getContacts (context: Context): List<ContactDto> {
 
         val contactList : MutableList<ContactDto> = ArrayList()
-        val contactListWihoutDuplicationData : MutableList<ContactDto> = ArrayList()
 
         val contacts = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null)
 
