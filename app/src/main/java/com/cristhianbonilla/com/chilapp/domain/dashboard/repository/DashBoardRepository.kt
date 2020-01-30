@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
@@ -42,21 +44,27 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
         )
 
         val contacts = getContacts(context)
+        getFirebaseInstance().child("secretPost").child(user.phone).push().setValue(secretPost)
         for (contact in contacts ){
 
-            getFirebaseInstance().child("secretPost").child(contact.number).push().setValue(secretPost)
+            if(contact.number!= user.phone){
+                getFirebaseInstance().child("secretPost").child(contact.number).push().setValue(secretPost)
+            }
+
         }
     }
 
-    override fun readSecrePost(userDto: UserDto?) {
+    override fun readSecrePost(userDto: UserDto?, root: RecyclerView?) {
         val secretpostlist = ArrayList<SecretPost>()
         getFirebaseInstance().child("secretPost/${userDto?.phone}").addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                secretpostlist.clear()
                 for (postSnapshot in dataSnapshot.children) {
 
-                    secretpostlist.add(postSnapshot.getValue(SecretPost::class.java)!!)
-                    listenerDomainmio.onReadSecretPost(secretpostlist)
+                    var sercretPost = postSnapshot.getValue(SecretPost::class.java)
+                    sercretPost?.let { secretpostlist.add(it) }
+                    listenerDomainmio.onReadSecretPost(secretpostlist,root)
                 }
             }
 
