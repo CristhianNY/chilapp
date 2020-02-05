@@ -39,8 +39,8 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
 
 
         var secretPost = SecretPost(
-            user!!.userId,
-            message
+            message,
+            user!!.userId
         )
 
         val contacts = getContacts(context)

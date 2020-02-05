@@ -14,7 +14,7 @@ class SecretPostViewHolder constructor(
     val secretPostMessage :TextView = itemview.secret_post_message
 
     fun bind(secretPost: SecretPost){
-        ownerAnonymous.setText(secretPost.owner)
+        ownerAnonymous.setText("Todos los post son anonimos")
         secretPostMessage.setText(secretPost.message)
     }
 
