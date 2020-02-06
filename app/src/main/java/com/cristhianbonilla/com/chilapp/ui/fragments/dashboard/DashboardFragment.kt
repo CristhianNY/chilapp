@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
+import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -284,8 +286,12 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         position: Int,
         secretPost: SecretPost
     ) {
+        val dialog: DialogFragment? = CommentsDialogFragment()
 
-        Toast.makeText(App.instance.applicationContext, "Item Click $position ${secretPost.message}", Toast.LENGTH_LONG).show()
+        dialog?.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme)
+
+        dialog?.show(fragmentManager, "Comments")
+
     }
 
     override fun positionListener(view: RecyclerView, position: Int) {
