@@ -2,11 +2,26 @@ package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 
-class SecretPostRvAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SecretPostRvAdapter(
+    listener: RecyclerpostListener,
+    recyclerViewElement: RecyclerView?
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
+    var recyclerpostListener: RecyclerpostListener
+    var recyclerView: RecyclerView
+    lateinit var context: FragmentActivity
+
+    init {
+        recyclerpostListener = listener
+
+        recyclerView = recyclerViewElement!!
+    }
 
     private var secrePostItem : List<SecretPost> = ArrayList()
 
@@ -27,10 +42,14 @@ class SecretPostRvAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+
+            recyclerpostListener.positionListener(recyclerView,position)
+
         when(holder){
             is SecretPostViewHolder->{
-                holder.bind(secrePostItem.get(position))
+                holder.bind(secrePostItem.get(position), recyclerpostListener, position)
             }
+
         }
     }
 }

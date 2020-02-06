@@ -16,20 +16,19 @@ import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
-import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_dashboard.*
-import java.lang.Exception
 import javax.inject.Inject
 
-class DashboardFragment :BaseFragment(), ListenerActivity{
+
+class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var secretPostRecyclerView: RecyclerView
@@ -61,7 +60,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity{
 
         initViews(root)
         secretPostRecyclerView = root?.findViewById(R.id.secret_post_recyclerView) as RecyclerView
-        callSecretPost(secretPostRecyclerView)
+        callSecretPost(secretPostRecyclerView , SecretPostRvAdapter(this,secretPostRecyclerView))
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
 
@@ -92,21 +91,6 @@ class DashboardFragment :BaseFragment(), ListenerActivity{
         editWhatAreYouThinking.text.clear()
     }
 
-    private fun initRecyclerViewSecretPost(root: View? , secretpostlist: ArrayList<SecretPost>){
-
-
-        secretPostRecyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            secretPostRvAdapter = SecretPostRvAdapter()
-            secretPostRvAdapter.submitList(secretpostlist)
-
-            secretPostRvAdapter.notifyDataSetChanged()
-            val topSpacingItemDecoration = TopSpacingItemDecoration(30)
-            addItemDecoration(topSpacingItemDecoration)
-            secretPostRecyclerView.adapter = secretPostRvAdapter
-        }
-
-    }
 
     private fun saveSecretPost(user: UserDto?, messageWhatareYouThinking: String) : Completable {
 
@@ -230,18 +214,22 @@ class DashboardFragment :BaseFragment(), ListenerActivity{
             )
     }
 
-    private fun callSecretPost(root: RecyclerView?) {
+    private fun callSecretPost(
+        root: RecyclerView?,
+        secretPostRvAdapter: SecretPostRvAdapter
+    ) {
 
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
-        Observable.just(activity?.let { getSecrePost(user, root).subscribeOn(
+        Observable.just(activity?.let { getSecrePost(user, root , secretPostRvAdapter).subscribeOn(
             Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({ testing() }, { throwable ->
             Toast.makeText(context, "Error Al traer Datos: ${throwable.message}", Toast.LENGTH_LONG).show()
         }) } )
     }
     private fun getSecrePost(
         user: UserDto?,
-        root: RecyclerView?
+        root: RecyclerView?,
+        secretPostRvAdapter: SecretPostRvAdapter
     ) : Completable {
 
         return Completable.create { emitter ->
@@ -249,7 +237,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity{
             try {
                 activity?.let {
                     if (user != null) {
-                        dashBoardDomain.getSecretsPost(user, root)
+                        dashBoardDomain.getSecretsPost(user, root, secretPostRvAdapter)
                       //  ACTIVITY.dashBoardDomain.getSecretsPost(user)
                     }
                 }
@@ -270,13 +258,37 @@ class DashboardFragment :BaseFragment(), ListenerActivity{
         print("hola")
     }
 
-    override fun onSecretPostRead(secretpostArrayList: ArrayList<SecretPost>, root: RecyclerView?) {
-        secretPostRvAdapter = SecretPostRvAdapter()
-        root?.layoutManager = LinearLayoutManager(activity)
-        root?.adapter = this.secretPostRvAdapter
-        secretPostRvAdapter.submitList(secretpostArrayList)
-        secretPostRvAdapter.notifyDataSetChanged()
+    override fun onSecretPostRead(
+        secretpostArrayList: ArrayList<SecretPost>,
+        root: RecyclerView?,
+        secretPostRvAdapter: SecretPostRvAdapter
+    ) {
+        var linearLayoutManager = LinearLayoutManager(activity)
+        var adapter = secretPostRvAdapter
 
+
+        linearLayoutManager.reverseLayout = true
+        root?.layoutManager = linearLayoutManager
+        root?.adapter = adapter
+
+        val recyclerViewState = root?.layoutManager?.onSaveInstanceState()
+        secretPostRvAdapter.submitList(secretpostArrayList)
+
+        root?.layoutManager?.onRestoreInstanceState(recyclerViewState)
+
+
+    }
+
+    override fun itemCliekc(
+        view: View,
+        position: Int,
+        secretPost: SecretPost
+    ) {
+
+        Toast.makeText(App.instance.applicationContext, "Item Click $position ${secretPost.message}", Toast.LENGTH_LONG).show()
+    }
+
+    override fun positionListener(view: RecyclerView, position: Int) {
 
     }
 }
