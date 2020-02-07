@@ -268,7 +268,6 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         var linearLayoutManager = LinearLayoutManager(activity)
         var adapter = secretPostRvAdapter
 
-
         linearLayoutManager.reverseLayout = true
         root?.layoutManager = linearLayoutManager
         root?.adapter = adapter
