@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.domain.contrats.contracts.RecyclerCommentsPostListener
+import com.cristhianbonilla.com.chilapp.domain.contrats.comments.RecyclerCommentsPostListener
 import com.cristhianbonilla.com.chilapp.domain.dtos.CommentPostDto
 
 class CommentsPostAdapter(
@@ -28,7 +28,7 @@ class CommentsPostAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return  CommentPostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_secret_post,parent,false))
+        return  CommentPostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_comments,parent,false))
 
     }
 
@@ -42,7 +42,6 @@ class CommentsPostAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
 
         recyclerpostListener.positionListener(recyclerView,position)
 

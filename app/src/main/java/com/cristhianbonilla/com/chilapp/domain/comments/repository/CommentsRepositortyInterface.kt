@@ -1,14 +1,14 @@
-package com.cristhianbonilla.com.chilapp.domain.contrats.contracts
+package com.cristhianbonilla.com.chilapp.domain.comments.repository
 
 import androidx.recyclerview.widget.RecyclerView
-import com.cristhianbonilla.com.chilapp.domain.dtos.CommentPostDto
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsPostAdapter
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 
-interface ListenerCommentsActivity{
+interface CommentsRepositortyInterface{
 
-    fun onReadCommentsPost(
-        secreCommentsPost: ArrayList<CommentPostDto>,
+    fun readComments(
+        userDto: UserDto?,
         root: RecyclerView?,
         commentsPostAdapter: CommentsPostAdapter
     )

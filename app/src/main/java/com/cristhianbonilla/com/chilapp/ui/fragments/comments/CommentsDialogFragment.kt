@@ -5,16 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.domain.contrats.contracts.ListenerCommentsActivity
-import com.cristhianbonilla.com.chilapp.domain.contrats.contracts.RecyclerCommentsPostListener
+import com.cristhianbonilla.com.chilapp.domain.contrats.comments.ListenerCommentsActivity
+import com.cristhianbonilla.com.chilapp.domain.contrats.comments.RecyclerCommentsPostListener
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.CommentPostDto
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseDialogFragment
-import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -75,6 +74,7 @@ class CommentsDialogFragment : BaseDialogFragment() , ListenerCommentsActivity, 
             try {
                 activity?.let {
                     if (user != null) {
+                        getCommentsFake(commentsPostAdapter , root)
                        // dashBoardDomain.getSecretsPost(user, root, secretPostRvAdapter)
                         //  ACTIVITY.dashBoardDomain.getSecretsPost(user)
                     }
@@ -91,6 +91,44 @@ class CommentsDialogFragment : BaseDialogFragment() , ListenerCommentsActivity, 
     }
 
 
+    fun getCommentsFake(
+        commentsPostAdapter: CommentsPostAdapter,
+        root: RecyclerView?
+    ){
+
+        var linearLayoutManager = LinearLayoutManager(activity)
+        var adapter = commentsPostAdapter
+
+        linearLayoutManager.reverseLayout = true
+        root?.layoutManager = linearLayoutManager
+        root?.adapter = adapter
+
+        val recyclerViewState = root?.layoutManager?.onSaveInstanceState()
+
+        root?.layoutManager?.onRestoreInstanceState(recyclerViewState)
+        commentsPostAdapter.submitList(loadFake())
+    }
+    fun loadFake() : ArrayList<CommentPostDto>{
+        val comments = ArrayList<CommentPostDto>()
+
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "asdfasdfasdfieiieedasdfasdfasd"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+        comments.add(CommentPostDto(owner = "asdfasdfa",comment = "asdfasdfasd",image = "sdafsdfasdfasdfasdasdfasdf"))
+
+        return comments
+    }
+
     override fun onReadCommentsPost(
         secreCommentsPost: ArrayList<CommentPostDto>,
         root: RecyclerView?,
@@ -100,11 +138,11 @@ class CommentsDialogFragment : BaseDialogFragment() , ListenerCommentsActivity, 
     }
 
     override fun itemCliekc(view: View, position: Int, comment: CommentPostDto) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun positionListener(view: RecyclerView, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 }

@@ -1,5 +1,9 @@
 package com.cristhianbonilla.com.chilapp.DependencyInjection.module
 
+import com.cristhianbonilla.com.chilapp.domain.comments.CommentsDomain
+import com.cristhianbonilla.com.chilapp.domain.comments.repository.CommentsRepository
+import com.cristhianbonilla.com.chilapp.domain.contrats.comments.ListenerCommentsActivity
+import com.cristhianbonilla.com.chilapp.domain.contrats.comments.ListenerCommentsDomain
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
@@ -46,6 +50,18 @@ class ChilappModule{
     @Singleton
     fun getDashBoardRepository(listenerDomain: ListenerDomain): DashBoardRepository {
         return DashBoardRepository(listenerDomain)
+    }
+
+    @Provides
+    @Singleton
+    fun getCommentsDomain(listenerActivity: ListenerCommentsActivity): CommentsDomain {
+        return CommentsDomain(listenerActivity)
+    }
+
+    @Provides
+    @Singleton
+    fun getCommentsRepository(listenerDomain: ListenerCommentsDomain): CommentsRepository {
+        return CommentsRepository(listenerDomain)
     }
 
     @Provides
