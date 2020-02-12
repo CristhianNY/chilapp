@@ -36,11 +36,6 @@ class CommentsPostAdapter(
 
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-
-
-    }
-
     override fun getItemCount(): Int {
         return commentItems.size
     }
