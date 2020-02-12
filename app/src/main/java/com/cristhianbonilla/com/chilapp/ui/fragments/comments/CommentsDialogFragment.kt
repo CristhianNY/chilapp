@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -22,6 +23,8 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import javax.inject.Inject
 
 
@@ -157,7 +160,8 @@ class CommentsDialogFragment : BaseDialogFragment() , ListenerCommentsActivity, 
         var linearLayoutManager = LinearLayoutManager(activity)
         var adapter = commentsPostAdapter
 
-        linearLayoutManager.reverseLayout = true
+        root?.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
+
         root?.layoutManager = linearLayoutManager
         root?.adapter = adapter
 
@@ -167,6 +171,8 @@ class CommentsDialogFragment : BaseDialogFragment() , ListenerCommentsActivity, 
         root?.layoutManager?.onRestoreInstanceState(recyclerViewState)
 
     }
+
+
 
     override fun itemCliekc(view: View, position: Int, comment: CommentPostDto) {
 

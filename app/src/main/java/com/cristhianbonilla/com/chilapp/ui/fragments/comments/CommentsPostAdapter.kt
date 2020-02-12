@@ -2,11 +2,14 @@ package com.cristhianbonilla.com.chilapp.ui.fragments.comments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.contrats.comments.RecyclerCommentsPostListener
 import com.cristhianbonilla.com.chilapp.domain.dtos.CommentPostDto
+import kotlinx.android.synthetic.main.item_secret_post.view.*
 
 class CommentsPostAdapter(
     listener: RecyclerCommentsPostListener,
@@ -17,6 +20,7 @@ class CommentsPostAdapter(
     var recyclerpostListener: RecyclerCommentsPostListener
     var recyclerView: RecyclerView
     lateinit var context: FragmentActivity
+    var lastPosition:Int = -1
 
     init {
         recyclerpostListener = listener
@@ -32,6 +36,11 @@ class CommentsPostAdapter(
 
     }
 
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+
+
+    }
+
     override fun getItemCount(): Int {
         return commentItems.size
     }
@@ -44,6 +53,12 @@ class CommentsPostAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         recyclerpostListener.positionListener(recyclerView,position)
+
+        if(position>lastPosition){
+            holder?.itemView?.animation = AnimationUtils.loadAnimation(App.instance.applicationContext, R.anim.fade_transation_animation)
+            lastPosition = position
+        }
+
 
         when(holder){
             is CommentPostViewHolder ->{
