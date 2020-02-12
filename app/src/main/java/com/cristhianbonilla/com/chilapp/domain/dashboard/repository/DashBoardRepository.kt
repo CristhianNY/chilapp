@@ -6,11 +6,11 @@ import android.provider.ContactsContract
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.App
+import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
+import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
-import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
-import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -36,18 +36,21 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
 
     override fun saveSecretPost(context: Context, message :String, user: UserDto?) {
 
-
-        var secretPost = SecretPost(
-            message,
-            user!!.userId
-        )
+        val Key: String? =   getFirebaseInstance().child("secretPost").child(user!!.phone).push().getKey()
+        var secretPost = Key?.let {
+            SecretPost(
+                message,
+                user!!.userId,
+                it
+            )
+        }
 
         val contacts = getContacts(context)
-        getFirebaseInstance().child("secretPost").child(user.phone).push().setValue(secretPost)
+        getFirebaseInstance().child("secretPost").child(user!!.phone+"/$Key").setValue(secretPost)
         for (contact in contacts ){
 
-            if(contact.number!= user.phone){
-                getFirebaseInstance().child("secretPost").child(contact.number).push().setValue(secretPost)
+            if(contact.number!= user?.phone){
+                getFirebaseInstance().child("secretPost").child(contact.number+"/$Key").setValue(secretPost)
             }
 
         }

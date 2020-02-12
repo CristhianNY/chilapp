@@ -21,8 +21,8 @@ class CommentPostViewHolder constructor(
         listener: RecyclerCommentsPostListener,
         position: Int
     ){
-        ownerAnonymous.setText("Todos los post son anonimos")
-        secretPostMessage.setText("por ahora poner")
+        ownerAnonymous.setText("Un Amigo de whatsapp")
+        secretPostMessage.setText(commentPost.comment)
 
         ownerAnonymous.setOnClickListener(View.OnClickListener {
 

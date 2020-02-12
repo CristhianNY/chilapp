@@ -1,9 +1,11 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
+import kotlinx.android.synthetic.main.counter_panel.view.*
 import kotlinx.android.synthetic.main.item_secret_post.view.*
 
 class SecretPostViewHolder constructor(
@@ -12,6 +14,7 @@ class SecretPostViewHolder constructor(
 
     val ownerAnonymous :TextView = itemview.owner_anonymous
     val secretPostMessage :TextView = itemview.secret_post_message
+    val commentImageButton : ImageView = itemview.commentsCountImageView
 
     fun bind(
         secretPost: SecretPost,
@@ -21,7 +24,7 @@ class SecretPostViewHolder constructor(
         ownerAnonymous.setText("Todos los post son anonimos")
         secretPostMessage.setText(secretPost.message)
 
-        ownerAnonymous.setOnClickListener(View.OnClickListener {
+        commentImageButton.setOnClickListener(View.OnClickListener {
 
             listener.itemCliekc(itemView,position, secretPost )
 

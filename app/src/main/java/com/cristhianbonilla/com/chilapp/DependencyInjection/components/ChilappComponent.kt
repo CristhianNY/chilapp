@@ -1,12 +1,15 @@
 package com.cristhianbonilla.com.chilapp.DependencyInjection.components
 
 import com.cristhianbonilla.com.chilapp.DependencyInjection.module.ChilappModule
+import com.cristhianbonilla.com.chilapp.domain.comments.CommentsDomain
+import com.cristhianbonilla.com.chilapp.domain.comments.repository.CommentsRepository
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dashboard.repository.DashBoardRepository
 import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.Splash.SplashActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
 import com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity
+import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.DashboardFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.home.HomeFragment
 import dagger.Component
@@ -24,6 +27,9 @@ interface ChilappComponent{
     fun inject(splashActivity: SplashActivity)
     fun inject(dashboardFragment: DashboardFragment)
     fun inject(homeFragment: HomeFragment)
+    fun inject(commentsDialogFragment: CommentsDialogFragment)
     fun inject(dashBoardDomain: DashBoardDomain)
+    fun inject(commentsDomain: CommentsDomain)
     fun inject(dashBoardRepository: DashBoardRepository)
+    fun inject(commentsRepository: CommentsRepository)
 }

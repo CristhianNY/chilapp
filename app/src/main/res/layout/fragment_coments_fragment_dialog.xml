@@ -20,7 +20,7 @@
         android:layout_margin="10dp">
 
         <EditText
-            android:id="@+id/edittext_chatbox"
+            android:id="@+id/content_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -31,11 +31,14 @@
             android:hint="Enter message"
             android:maxLines="6" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:src="@drawable/send" />
+        <Button
+            android:id="@+id/btn_send_comment"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/send" />
 
     </LinearLayout>
 </LinearLayout>

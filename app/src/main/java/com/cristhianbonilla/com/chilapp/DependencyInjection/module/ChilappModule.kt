@@ -13,6 +13,7 @@ import com.cristhianbonilla.com.chilapp.domain.home.HomeDomain
 import com.cristhianbonilla.com.chilapp.domain.home.repository.HomeRepository
 import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import com.cristhianbonilla.com.chilapp.domain.login.repository.LoginRepository
+import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.DashboardFragment
 import dagger.Module
 import dagger.Provides
@@ -66,4 +67,7 @@ class ChilappModule{
 
     @Provides
     fun proviedeListenerActivity(): ListenerActivity = DashboardFragment()
+
+    @Provides
+    fun proviedeListenerCommentsActivity(): ListenerCommentsActivity = CommentsDialogFragment()
 }
