@@ -116,7 +116,6 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         }
     }
 
-
     private fun callSecretPost(
         root: RecyclerView?,
         secretPostRvAdapter: SecretPostRvAdapter
@@ -129,6 +128,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
             Toast.makeText(context, "Error Al traer Datos: ${throwable.message}", Toast.LENGTH_LONG).show()
         }) } )
     }
+
     private fun getSecrePost(
         user: UserDto?,
         root: RecyclerView?,
@@ -141,7 +141,6 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
                 activity?.let {
                     if (user != null) {
                         dashBoardDomain.getSecretsPost(user, root, secretPostRvAdapter)
-                      //  ACTIVITY.dashBoardDomain.getSecretsPost(user)
                     }
                 }
                 if(emitter != null && !emitter.isDisposed){
