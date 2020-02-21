@@ -6,6 +6,8 @@ import com.cristhianbonilla.com.chilapp.domain.contrats.comments.ListenerComment
 import com.cristhianbonilla.com.chilapp.domain.contrats.comments.ListenerCommentsDomain
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
+import com.cristhianbonilla.com.chilapp.domain.contrats.home.HomeListenerDomain
+import com.cristhianbonilla.com.chilapp.domain.contrats.home.ListenerHomeFragment
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dashboard.repository.DashBoardRepository
 import com.cristhianbonilla.com.chilapp.domain.dashboard.repository.DashBoardRepositoryInterface
@@ -15,6 +17,7 @@ import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import com.cristhianbonilla.com.chilapp.domain.login.repository.LoginRepository
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.DashboardFragment
+import com.cristhianbonilla.com.chilapp.ui.fragments.home.HomeFragment
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -29,12 +32,6 @@ class ChilappModule{
             loginRepository = LoginRepository()
         )
 
-    @Provides
-    @Singleton
-    fun provideHomeDomain()=
-        HomeDomain(
-            homerepository = HomeRepository()
-        )
 
     @Provides
     @Singleton
@@ -44,9 +41,17 @@ class ChilappModule{
 
     @Provides
     @Singleton
+    fun getHomeDomain(listenerActivity: ListenerHomeFragment): HomeDomain {
+        return HomeDomain(listenerActivity)
+    }
+
+
+    @Provides
+    @Singleton
     fun getDashBoardDomain2(listenerActivity: ListenerActivity): ListenerDomain {
         return DashBoardDomain(listenerActivity)
     }
+
     @Provides
     @Singleton
     fun getDashBoardRepository(listenerDomain: ListenerDomain): DashBoardRepository {
@@ -55,9 +60,16 @@ class ChilappModule{
 
     @Provides
     @Singleton
+    fun getHomeRepository(listenerDomain: HomeListenerDomain): HomeRepository {
+        return HomeRepository(listenerDomain)
+    }
+
+    @Provides
+    @Singleton
     fun getCommentsDomain(listenerActivity: ListenerCommentsActivity): CommentsDomain {
         return CommentsDomain(listenerActivity)
     }
+
 
     @Provides
     @Singleton
@@ -67,6 +79,10 @@ class ChilappModule{
 
     @Provides
     fun proviedeListenerActivity(): ListenerActivity = DashboardFragment()
+
+
+    @Provides
+    fun provideListenerFriendsFragments(): ListenerHomeFragment = HomeFragment()
 
     @Provides
     fun proviedeListenerCommentsActivity(): ListenerCommentsActivity = CommentsDialogFragment()

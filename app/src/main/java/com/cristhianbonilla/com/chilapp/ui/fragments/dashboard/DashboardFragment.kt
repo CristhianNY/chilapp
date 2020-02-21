@@ -62,6 +62,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
 
         initViews(root)
         secretPostRecyclerView = root?.findViewById(R.id.secret_post_recyclerView) as RecyclerView
+
         callSecretPost(secretPostRecyclerView , SecretPostRvAdapter(this,secretPostRecyclerView))
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
