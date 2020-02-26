@@ -45,12 +45,10 @@
 
             friendsRecyclerView =   root?.findViewById(R.id.friendsRecyclerview) as RecyclerView
 
-
-
             if(this.activity?.let { ACTIVITY.checkPermissions(it,permissions) }!!){
 
                 Toast.makeText(context,"Hola si tiene ",Toast.LENGTH_SHORT).show()
-                registersSaveContactsToFirebase()
+                registersSaveContactsToFirebase(friendsRecyclerView,FriendsAdapterRecyclerView(this,friendsRecyclerView))
             }else{
                 Toast.makeText(context,"No tiene  ",Toast.LENGTH_SHORT).show()
             }
@@ -58,17 +56,7 @@
             return root
         }
 
-        private fun getFriends(friendsRecyclerView: RecyclerView, friendsAdapterRecyclerView: FriendsAdapterRecyclerView) {
-
-            val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-
-            Observable.just(activity?.let { getingFriends(user,friendsRecyclerView,friendsAdapterRecyclerView).subscribeOn(
-                Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({  }, { throwable ->
-                Toast.makeText(context, " error: ${throwable.message}", Toast.LENGTH_LONG).show()
-            }) } )
-        }
-
-        private fun getingFriends( user: UserDto?,
+          private fun getingFriends( user: UserDto?,
                                    root: RecyclerView?,
                                    friendsAdapterRecyclerView: FriendsAdapterRecyclerView) : Completable{
 
@@ -93,18 +81,21 @@
 
         }
 
-        private fun registersSaveContactsToFirebase(){
+        private fun registersSaveContactsToFirebase(friendsRecyclerView: RecyclerView, friendsAdapterRecyclerView: FriendsAdapterRecyclerView){
 
            val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
-            Observable.just(activity?.let { saveContactsPhoneIntoFirebase(user).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({getFriends(friendsRecyclerView, FriendsAdapterRecyclerView(this,friendsRecyclerView)) }, { throwable ->
+          /**  Observable.fromCallable { activity?.let { saveContactsPhoneIntoFirebase(user).subscribeOn(Schedulers.io())
+                .mergeWith(getingFriends(user,friendsRecyclerView,friendsAdapterRecyclerView))
+                .observeOn(AndroidSchedulers.mainThread()).subscribe({},{throwable ->
+                Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()})
+            }}**/
+
+            Observable.just(activity?.let { getingFriends(user,friendsRecyclerView,friendsAdapterRecyclerView).
+                subscribeOn(Schedulers.io()).mergeWith(saveContactsPhoneIntoFirebase(user)).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, { throwable ->
                 Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()
             }) } )
-        }
-
-
-        fun pruebas(){
-            getingFriends(user,friendsRecyclerView,friendsAdapterRecyclerView).doOnSubscribe()
         }
 
         private fun saveContactsPhoneIntoFirebase(user: UserDto?) : Completable {
@@ -129,7 +120,7 @@
         }
 
         override fun positionListener(view: RecyclerView, position: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+         print("Cristhian$position")
         }
 
         override fun onFriensdRead(
