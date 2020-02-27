@@ -97,7 +97,7 @@ class HomeRepository  @Inject constructor(listenerDomain: HomeListenerDomain) : 
             print(contactList)
             contacts.close()
 
-        listenerHomeDomain.onFriendsRead(contactList.distinctBy { Pair(it.number, it.number) },root,friendsAdapterRecyclerView)
+            listenerHomeDomain.onFriendsRead(contactList.distinctBy { Pair(it.number, it.number) },friendsAdapterRecyclerView)
 
             return  contactList.distinctBy { Pair(it.number, it.number) }
         }

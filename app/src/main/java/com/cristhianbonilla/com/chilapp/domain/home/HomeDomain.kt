@@ -17,6 +17,7 @@ class HomeDomain  @Inject constructor(listenerActivity: ListenerHomeFragment) : 
     var listenerHomeFragment: ListenerHomeFragment
 
     var homeRepository : HomeRepository
+    lateinit var contactos: List<ContactDto>
 
     init {
         App.instance.getComponent().inject(this)
@@ -33,10 +34,9 @@ class HomeDomain  @Inject constructor(listenerActivity: ListenerHomeFragment) : 
 
     override fun onFriendsRead(
         contacts: List<ContactDto>,
-        root: RecyclerView?,
         friendsAdapterRecyclerView: FriendsAdapterRecyclerView
     ) {
-        listenerHomeFragment.onFriensdRead(contacts,root,friendsAdapterRecyclerView)
+        listenerHomeFragment.onFriensdRead(contacts,friendsAdapterRecyclerView)
     }
 
     override fun getFriends(context: Context, root: RecyclerView?,friendsAdapterRecyclerView: FriendsAdapterRecyclerView) {

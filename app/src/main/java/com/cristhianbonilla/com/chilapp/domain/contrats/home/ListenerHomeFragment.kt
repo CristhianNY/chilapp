@@ -9,7 +9,6 @@ import com.cristhianbonilla.com.chilapp.ui.fragments.home.FriendsAdapterRecycler
 interface ListenerHomeFragment{
     fun onFriensdRead(
         contacts: List<ContactDto>,
-        root: RecyclerView?,
         friendsAdapterRecyclerView: FriendsAdapterRecyclerView
     )
 }

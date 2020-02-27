@@ -1,15 +1,12 @@
     package com.cristhianbonilla.com.chilapp.ui.fragments.home
 
     import android.Manifest
+    import android.content.Context
     import android.os.Bundle
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
-    import android.view.animation.OvershootInterpolator
-    import android.widget.TextView
     import android.widget.Toast
-    import androidx.lifecycle.Observer
-    import androidx.lifecycle.ViewModelProviders
     import androidx.recyclerview.widget.LinearLayoutManager
     import androidx.recyclerview.widget.RecyclerView
     import com.cristhianbonilla.com.chilapp.App
@@ -18,13 +15,10 @@
     import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
     import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
     import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
-    import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
     import io.reactivex.Completable
     import io.reactivex.Observable
-    import io.reactivex.Single
     import io.reactivex.android.schedulers.AndroidSchedulers
     import io.reactivex.schedulers.Schedulers
-    import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
     import java.lang.Exception
 
     class HomeFragment : BaseFragment() , RecyclerFriendListener , ListenerHomeFragment {
@@ -49,6 +43,7 @@
 
                 Toast.makeText(context,"Hola si tiene ",Toast.LENGTH_SHORT).show()
                 registersSaveContactsToFirebase(friendsRecyclerView,FriendsAdapterRecyclerView(this,friendsRecyclerView))
+                getFriends(friendsRecyclerView,FriendsAdapterRecyclerView(this,friendsRecyclerView))
             }else{
                 Toast.makeText(context,"No tiene  ",Toast.LENGTH_SHORT).show()
             }
@@ -56,48 +51,45 @@
             return root
         }
 
-          private fun getingFriends( user: UserDto?,
-                                   root: RecyclerView?,
-                                   friendsAdapterRecyclerView: FriendsAdapterRecyclerView) : Completable{
-
-            return Completable.create { emitter ->
-
-                try {
-                    activity?.let {
-                        if (user != null) {
-                            ACTIVITY.homeDomain.getFriends(App.instance.applicationContext,root,friendsAdapterRecyclerView)
-                            //  ACTIVITY.dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking,user)
-                        }
-                    }
-                    if(emitter != null && !emitter.isDisposed){
-                        emitter?.onComplete()
-                    }
-                }catch (e: Exception){
-                    if (emitter != null && !emitter.isDisposed) {
-                        emitter?.onError(e)
-                    }
-                }
-            }
-
+        private fun getFriends(friendsRecyclerView: RecyclerView, friendsAdapterRecyclerView: FriendsAdapterRecyclerView){
+            Observable.fromCallable {   ACTIVITY.homeDomain.getFriends(App.instance.applicationContext,friendsRecyclerView,friendsAdapterRecyclerView) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ orderItem ->
+                    print(orderItem)
+                }, { e ->
+                    print("nada")
+                }, {
+                    showFriends(App.instance.applicationContext,friendsRecyclerView,friendsAdapterRecyclerView)
+                    print("completado")
+                })
         }
-
         private fun registersSaveContactsToFirebase(friendsRecyclerView: RecyclerView, friendsAdapterRecyclerView: FriendsAdapterRecyclerView){
 
            val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-
-          /**  Observable.fromCallable { activity?.let { saveContactsPhoneIntoFirebase(user).subscribeOn(Schedulers.io())
-                .mergeWith(getingFriends(user,friendsRecyclerView,friendsAdapterRecyclerView))
-                .observeOn(AndroidSchedulers.mainThread()).subscribe({},{throwable ->
-                Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()})
-            }}**/
-
-            Observable.just(activity?.let { getingFriends(user,friendsRecyclerView,friendsAdapterRecyclerView).
-                subscribeOn(Schedulers.io()).mergeWith(saveContactsPhoneIntoFirebase(user)).observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, { throwable ->
-                Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()
-            }) } )
+           Observable.just(activity?.let { saveContactsPhoneIntoFirebase(user).subscribeOn(
+                Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({}, { throwable ->
+                Toast.makeText(context, "Error Al traer Datos: ${throwable.message}", Toast.LENGTH_LONG).show()
+            }) })
         }
 
+
+        private fun showFriends(
+            applicationContext: Context,
+            friendsRecyclerView: RecyclerView,
+            friendsAdapterRecyclerView: FriendsAdapterRecyclerView
+        ) {
+            var linearLayoutManager = LinearLayoutManager(activity)
+            var adapter = friendsAdapterRecyclerView
+            linearLayoutManager.reverseLayout = true
+
+
+            friendsRecyclerView?.layoutManager = linearLayoutManager
+            friendsRecyclerView?.adapter = adapter
+
+            friendsAdapterRecyclerView.notifyDataSetChanged()
+
+        }
         private fun saveContactsPhoneIntoFirebase(user: UserDto?) : Completable {
 
             return Completable.create { emitter ->
@@ -125,22 +117,10 @@
 
         override fun onFriensdRead(
             contacts: List<ContactDto>,
-            root: RecyclerView?,
             friendsAdapterRecyclerView: FriendsAdapterRecyclerView
         ) {
-
-            var linearLayoutManager = LinearLayoutManager(activity)
-            var adapter = friendsAdapterRecyclerView
-
-            root?.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
-
-            root?.layoutManager = linearLayoutManager
-            root?.adapter = adapter
-
-            val recyclerViewState = root?.layoutManager?.onSaveInstanceState()
             friendsAdapterRecyclerView.submitList(contacts)
 
-            root?.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
 
     }
