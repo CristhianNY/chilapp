@@ -65,7 +65,6 @@
                 })
         }
         private fun registersSaveContactsToFirebase(friendsRecyclerView: RecyclerView, friendsAdapterRecyclerView: FriendsAdapterRecyclerView){
-
            val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
            Observable.just(activity?.let { saveContactsPhoneIntoFirebase(user).subscribeOn(
                 Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({}, { throwable ->
@@ -81,9 +80,6 @@
         ) {
             var linearLayoutManager = LinearLayoutManager(activity)
             var adapter = friendsAdapterRecyclerView
-            linearLayoutManager.reverseLayout = true
-
-
             friendsRecyclerView?.layoutManager = linearLayoutManager
             friendsRecyclerView?.adapter = adapter
 
@@ -106,7 +102,7 @@
                 }
             }
         }
-
+        
         override fun itemCliekc(view: View, position: Int, contact: ContactDto) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
