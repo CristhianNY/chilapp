@@ -19,11 +19,13 @@
     import io.reactivex.Observable
     import io.reactivex.android.schedulers.AndroidSchedulers
     import io.reactivex.schedulers.Schedulers
+    import kotlinx.android.synthetic.main.fragment_home.*
     import java.lang.Exception
 
     class HomeFragment : BaseFragment() , RecyclerFriendListener , ListenerHomeFragment {
 
         lateinit var friendsRecyclerView: RecyclerView
+        lateinit var layoutProgress:View
 
         private var permissions = arrayOf(
             Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -39,9 +41,11 @@
 
             friendsRecyclerView =   root?.findViewById(R.id.friendsRecyclerview) as RecyclerView
 
+            layoutProgress = root?.findViewById(R.id.llProgressBar) as View
+
             if(this.activity?.let { ACTIVITY.checkPermissions(it,permissions) }!!){
 
-                Toast.makeText(context,"Hola si tiene ",Toast.LENGTH_SHORT).show()
+                layoutProgress.visibility = View.VISIBLE
                 registersSaveContactsToFirebase(friendsRecyclerView,FriendsAdapterRecyclerView(this,friendsRecyclerView))
                 getFriends(friendsRecyclerView,FriendsAdapterRecyclerView(this,friendsRecyclerView))
             }else{
@@ -78,6 +82,7 @@
             friendsRecyclerView: RecyclerView,
             friendsAdapterRecyclerView: FriendsAdapterRecyclerView
         ) {
+            layoutProgress.visibility = View.GONE
             var linearLayoutManager = LinearLayoutManager(activity)
             var adapter = friendsAdapterRecyclerView
             friendsRecyclerView?.layoutManager = linearLayoutManager
@@ -102,7 +107,7 @@
                 }
             }
         }
-        
+
         override fun itemCliekc(view: View, position: Int, contact: ContactDto) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }

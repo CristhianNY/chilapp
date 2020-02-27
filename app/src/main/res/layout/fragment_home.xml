@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/llProgressBar"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendsRecyclerview"
         android:layout_width="match_parent"

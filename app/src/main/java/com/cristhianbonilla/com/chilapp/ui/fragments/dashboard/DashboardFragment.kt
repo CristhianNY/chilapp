@@ -103,7 +103,6 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
                 activity?.let {
                     if (user != null) {
                         dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking,user)
-                      //  ACTIVITY.dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking,user)
                     }
                 }
                 if(emitter != null && !emitter.isDisposed){
