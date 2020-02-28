@@ -19,7 +19,6 @@
     import io.reactivex.Observable
     import io.reactivex.android.schedulers.AndroidSchedulers
     import io.reactivex.schedulers.Schedulers
-    import kotlinx.android.synthetic.main.fragment_home.*
     import java.lang.Exception
 
     class HomeFragment : BaseFragment() , RecyclerFriendListener , ListenerHomeFragment {
@@ -68,6 +67,7 @@
                     print("completado")
                 })
         }
+
         private fun registersSaveContactsToFirebase(friendsRecyclerView: RecyclerView, friendsAdapterRecyclerView: FriendsAdapterRecyclerView){
            val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
            Observable.just(activity?.let { saveContactsPhoneIntoFirebase(user).subscribeOn(
@@ -75,7 +75,6 @@
                 Toast.makeText(context, "Error Al traer Datos: ${throwable.message}", Toast.LENGTH_LONG).show()
             }) })
         }
-
 
         private fun showFriends(
             applicationContext: Context,
@@ -123,5 +122,4 @@
             friendsAdapterRecyclerView.submitList(contacts)
 
         }
-
     }
