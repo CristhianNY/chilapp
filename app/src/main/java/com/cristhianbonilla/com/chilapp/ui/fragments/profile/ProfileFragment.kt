@@ -1,4 +1,4 @@
-package com.cristhianbonilla.com.chilapp.ui.fragments.notifications
+package com.cristhianbonilla.com.chilapp.ui.fragments.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cristhianbonilla.com.chilapp.R
 
-class NotificationsFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
     private lateinit var notificationsViewModel: NotificationsViewModel
 
