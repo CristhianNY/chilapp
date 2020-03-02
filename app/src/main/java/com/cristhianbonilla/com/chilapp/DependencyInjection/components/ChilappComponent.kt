@@ -14,6 +14,7 @@ import com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.DashboardFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.home.HomeFragment
+import com.cristhianbonilla.com.chilapp.ui.fragments.profile.ProfileFragment
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
@@ -28,6 +29,7 @@ interface ChilappComponent{
     fun inject(registerActivity: RegisterActivity)
     fun inject(splashActivity: SplashActivity)
     fun inject(dashboardFragment: DashboardFragment)
+    fun inject(profileFragment: ProfileFragment)
     fun inject(homeFragment: HomeFragment)
     fun inject(commentsDialogFragment: CommentsDialogFragment)
     fun inject(dashBoardDomain: DashBoardDomain)
