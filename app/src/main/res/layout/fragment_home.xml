@@ -9,7 +9,18 @@
         android:id="@+id/llProgressBar"
         android:visibility="gone"
         layout="@layout/progress_bar"/>
-
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_friends_edittext"
+        android:layout_marginTop="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="enter query"
+        android:singleLine="true">
+        <requestFocus/>
+    </EditText>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendsRecyclerview"
         android:layout_width="match_parent"

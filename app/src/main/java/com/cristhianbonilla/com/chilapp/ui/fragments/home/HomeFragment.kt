@@ -1,11 +1,13 @@
     package com.cristhianbonilla.com.chilapp.ui.fragments.home
-
     import android.Manifest
     import android.content.Context
     import android.os.Bundle
+    import android.text.Editable
+    import android.text.TextWatcher
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
+    import android.widget.EditText
     import android.widget.Toast
     import androidx.recyclerview.widget.LinearLayoutManager
     import androidx.recyclerview.widget.RecyclerView
@@ -21,10 +23,20 @@
     import io.reactivex.schedulers.Schedulers
     import java.lang.Exception
 
-    class HomeFragment : BaseFragment() , RecyclerFriendListener , ListenerHomeFragment {
+    class HomeFragment() : BaseFragment() , RecyclerFriendListener , ListenerHomeFragment {
 
+        override var contactList: List<ContactDto> = emptyList()
+        var lista:List<ContactDto>? = null
         lateinit var friendsRecyclerView: RecyclerView
         lateinit var layoutProgress:View
+        lateinit var searchFriendView:EditText
+        lateinit var friendsListSort: ArrayList<ContactDto>
+
+        lateinit var friendsAdapterRecyclerView: FriendsAdapterRecyclerView
+
+        companion object {
+            lateinit var contactsSort: MutableList<ContactDto>
+        }
 
         private var permissions = arrayOf(
             Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -35,21 +47,46 @@
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View? {
-
             val root = inflater.inflate(R.layout.fragment_home, container, false)
 
             friendsRecyclerView =   root?.findViewById(R.id.friendsRecyclerview) as RecyclerView
 
+            searchFriendView = root?.findViewById(R.id.search_friends_edittext)
+
             layoutProgress = root?.findViewById(R.id.llProgressBar) as View
 
-            if(this.activity?.let { ACTIVITY.checkPermissions(it,permissions) }!!){
+            friendsListSort = ArrayList()
 
+            friendsAdapterRecyclerView = FriendsAdapterRecyclerView(this,friendsRecyclerView)
+
+            if(this.activity?.let { ACTIVITY.checkPermissions(it,permissions) }!!){
                 layoutProgress.visibility = View.VISIBLE
-                registersSaveContactsToFirebase(friendsRecyclerView,FriendsAdapterRecyclerView(this,friendsRecyclerView))
+                registersSaveContactsToFirebase(friendsRecyclerView,friendsAdapterRecyclerView)
                 getFriends(friendsRecyclerView,FriendsAdapterRecyclerView(this,friendsRecyclerView))
             }else{
                 Toast.makeText(context,"No tiene  ",Toast.LENGTH_SHORT).show()
             }
+
+            searchFriendView.addTextChangedListener(object : TextWatcher{
+                override fun afterTextChanged(s: Editable?) {
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                    friendsAdapterRecyclerView.filter.filter(s)
+                    friendsAdapterRecyclerView.notifyDataSetChanged()
+                }
+
+            })
 
             return root
         }
@@ -115,11 +152,13 @@
          print("Cristhian$position")
         }
 
+
         override fun onFriensdRead(
-            contacts: List<ContactDto>,
+            contacts: MutableList<ContactDto>,
             friendsAdapterRecyclerView: FriendsAdapterRecyclerView
         ) {
-            friendsAdapterRecyclerView.submitList(contacts)
+            contactsSort = contacts
+            friendsAdapterRecyclerView.submitList(contactsSort)
 
         }
     }

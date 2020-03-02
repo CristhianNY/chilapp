@@ -60,7 +60,6 @@
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.Second"
                 android:layout_alignParentEnd="true" />
-
             <include
                 android:id="@+id/countersContainer"
                 layout="@layout/counter_panel"
@@ -72,7 +71,6 @@
                 android:layout_marginEnd="6dp"
                 android:layout_marginRight="@dimen/intrinsic_padding"
                 android:layout_toStartOf="@+id/authorImageView" />
-
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

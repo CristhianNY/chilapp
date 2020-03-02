@@ -33,7 +33,7 @@ class HomeDomain  @Inject constructor(listenerActivity: ListenerHomeFragment) : 
     }
 
     override fun onFriendsRead(
-        contacts: List<ContactDto>,
+        contacts: MutableList<ContactDto>,
         friendsAdapterRecyclerView: FriendsAdapterRecyclerView
     ) {
         listenerHomeFragment.onFriensdRead(contacts,friendsAdapterRecyclerView)

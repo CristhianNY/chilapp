@@ -6,9 +6,11 @@ import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 import com.cristhianbonilla.com.chilapp.ui.fragments.home.FriendsAdapterRecyclerView
 
-interface ListenerHomeFragment{
+ interface ListenerHomeFragment{
+    var contactList:List<ContactDto>
+
     fun onFriensdRead(
-        contacts: List<ContactDto>,
+        contacts: MutableList<ContactDto>,
         friendsAdapterRecyclerView: FriendsAdapterRecyclerView
     )
 }
