@@ -9,6 +9,7 @@
     import android.view.ViewGroup
     import android.widget.EditText
     import android.widget.Toast
+    import androidx.appcompat.app.AppCompatActivity
     import androidx.recyclerview.widget.LinearLayoutManager
     import androidx.recyclerview.widget.RecyclerView
     import com.cristhianbonilla.com.chilapp.App
@@ -48,7 +49,7 @@
             savedInstanceState: Bundle?
         ): View? {
             val root = inflater.inflate(R.layout.fragment_home, container, false)
-
+            (activity as AppCompatActivity?)!!.supportActionBar!!.show()
             friendsRecyclerView =   root?.findViewById(R.id.friendsRecyclerview) as RecyclerView
 
             searchFriendView = root?.findViewById(R.id.search_friends_edittext)

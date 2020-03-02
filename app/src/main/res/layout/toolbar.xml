@@ -5,7 +5,7 @@
     android:id="@+id/toolbar_support"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/colorPrimary"
+    android:background="@color/fui_bgTwitter"
     app:popupTheme="@android:style/Theme.Material"
     android:translationZ="4dp"
   />
