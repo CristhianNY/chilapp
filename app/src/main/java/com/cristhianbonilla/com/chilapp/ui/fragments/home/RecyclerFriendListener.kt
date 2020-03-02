@@ -13,6 +13,10 @@ interface RecyclerFriendListener{
         contact: ContactDto
     )
 
+    fun inviteFriends(view: View,
+                      position: Int,
+                      contact: ContactDto)
+
     fun positionListener(
         view: RecyclerView,
         position: Int

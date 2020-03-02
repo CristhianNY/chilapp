@@ -32,8 +32,7 @@ class CommentPostViewHolder constructor(
            // commentCardView.animation = AnimationUtils.loadAnimation(App.instance.applicationContext, R.anim.fade_transation_animation)
             lastPosition = position
         }
-
-
+        
         ownerAnonymous.setText("Un Amigo de whatsapp")
         secretPostMessage.setText(commentPost.comment)
 

@@ -41,8 +41,6 @@ class SecretPostRvAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-
             recyclerpostListener.positionListener(recyclerView,position)
 
         when(holder){

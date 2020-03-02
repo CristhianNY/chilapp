@@ -145,7 +145,10 @@
         }
 
         override fun itemCliekc(view: View, position: Int, contact: ContactDto) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            Toast.makeText(context,"Evneto click del elemento completo ",Toast.LENGTH_SHORT).show()  }
+
+        override fun inviteFriends(view: View, position: Int, contact: ContactDto) {
+            activity?.let { ACTIVITY.homeDomain.shareAppWithFriends(it) }
         }
 
         override fun positionListener(view: RecyclerView, position: Int) {
@@ -159,6 +162,5 @@
         ) {
             contactsSort = contacts
             friendsAdapterRecyclerView.submitList(contactsSort)
-
-        }
+          }
     }

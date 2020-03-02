@@ -1,8 +1,10 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.home
 
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.createBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
 import kotlinx.android.synthetic.main.counter_panel.view.*
@@ -15,6 +17,7 @@ class FriendContactViewHolder constructor(
 
     val friendName : TextView = itemview.friend_name
     val profileImage : ImageView = itemview.rounded_iv_profile
+    val btnInviteFriends : Button = itemview.btn_invite_friends
 
     fun bind(
         contact: ContactDto,
@@ -29,6 +32,10 @@ class FriendContactViewHolder constructor(
             listener.itemCliekc(itemView,position, contact )
 
         })
+
+        btnInviteFriends.setOnClickListener {
+            listener.inviteFriends(itemView,position,contact)
+        }
     }
 
 }

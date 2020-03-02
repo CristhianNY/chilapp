@@ -25,9 +25,7 @@ class SecretPostViewHolder constructor(
         secretPostMessage.setText(secretPost.message)
 
         commentImageButton.setOnClickListener(View.OnClickListener {
-
             listener.itemCliekc(itemView,position, secretPost )
-
         })
     }
 

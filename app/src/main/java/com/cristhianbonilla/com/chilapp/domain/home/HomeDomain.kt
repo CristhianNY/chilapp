@@ -1,6 +1,8 @@
 package com.cristhianbonilla.com.chilapp.domain.home
 
 import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.domain.contrats.home.HomeListenerDomain
@@ -41,6 +43,15 @@ class HomeDomain  @Inject constructor(listenerActivity: ListenerHomeFragment) : 
 
     override fun getFriends(context: Context, root: RecyclerView?,friendsAdapterRecyclerView: FriendsAdapterRecyclerView) {
         homeRepository.getFriendsByUser(context,root,friendsAdapterRecyclerView)
+    }
+
+     fun shareAppWithFriends(context: Context){
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        val shareBody = "Te invito a usar esta app para que te enteres de secretos "
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here")
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+        context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
     }
 
 
