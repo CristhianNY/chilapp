@@ -61,7 +61,7 @@ class FriendsAdapterRecyclerView(
                 val charSearch:String = charString.toString()
                 if(!charSearch.isEmpty()){
                     val resultContactsList = ArrayList<ContactDto>()
-                    for(row:ContactDto in contantcItem){
+                    for(row:ContactDto in myContacts){
                         if(row.name!!.toLowerCase().contains(charSearch.toLowerCase())){
                             resultContactsList.add(row)
                         }
