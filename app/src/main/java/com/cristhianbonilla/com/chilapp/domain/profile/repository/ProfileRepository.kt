@@ -2,6 +2,7 @@ package com.cristhianbonilla.com.chilapp.domain.profile.repository
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
@@ -24,14 +25,14 @@ class ProfileRepository  @Inject constructor(listenerDomain:ProfileListenerDomai
         listenerDomainmio = listenerDomain
     }
 
-    override fun getUserInformation(context: Context, userDto: UserDto?) {
+    override fun getUserInformation(context: Context, userDto: UserDto?,root:View) {
         getFirebaseInstance().child("User/${userDto?.userId}").addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 var user = dataSnapshot.getValue(UserDto::class.java)
 
-                listenerDomainmio.userInformatinRead(user)
+                listenerDomainmio.userInformatinRead(user,root)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

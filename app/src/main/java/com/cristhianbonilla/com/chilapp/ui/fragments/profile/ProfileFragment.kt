@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.contrats.profile.ProfileFragmentListerner
@@ -26,38 +25,50 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
     @Inject
     lateinit var profileDomain:  ProfileDomain
 
+    lateinit var usernameTv: TextView
+    lateinit var emailTv: TextView
+    lateinit var telTv: TextView
+    lateinit var birth: TextView
+    lateinit var tvUsernameDescription: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
+        val root = inflater.inflate(R.layout.fragment_profile, container, false)
+        initViews(root)
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
         App.instance.getComponent().inject(this)
 
-        getUserInformation()
+        getUserInformation(root)
         return root
     }
 
-    private fun getUserInformation(){
+    private fun initViews(root: View){
+
+     //   usernameTv = root?.findViewById(R.id.tv_username)
+
+    }
+    private fun getUserInformation(root: View){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
-        Observable.just(activity?.let { getRemoteUserInformation(user).subscribeOn(
+        Observable.just(activity?.let { getRemoteUserInformation(user,root).subscribeOn(
             Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({}, { throwable ->
             Toast.makeText(context, "Error Al traer Datos: ${throwable.message}", Toast.LENGTH_LONG).show()
         }) } )
 
     }
 
-    private  fun getRemoteUserInformation(user: UserDto?): Completable{
+    private  fun getRemoteUserInformation(user: UserDto?,root: View): Completable{
         return Completable.create { emitter ->
 
             try {
                 activity?.let {
                     if (user != null) {
-                        profileDomain.getUserInformation(activity!!, user)
+                        profileDomain.getUserInformation(activity!!, user,root)
                     }
                 }
                 if(emitter != null && !emitter.isDisposed){
@@ -70,7 +81,22 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
             }
         }
     }
-    override fun onUserInformatinRead(userDto: UserDto?) {
-        Toast.makeText(App.instance.applicationContext,"${userDto?.name}", Toast.LENGTH_LONG).show()
+    override fun onUserInformatinRead(
+        userDto: UserDto?,
+        root: View
+    ) {
+        usernameTv = root.findViewById(R.id.tv_username)
+        emailTv = root.findViewById(R.id.tv_email)
+        telTv = root.findViewById(R.id.phone_tv)
+        birth = root.findViewById(R.id.birth_tv)
+        tvUsernameDescription = root.findViewById(R.id.tv_username_description)
+
+        usernameTv.text= userDto?.name
+        emailTv.text = userDto?.email
+        telTv.text = userDto?.phone
+        birth.text = userDto?.birthDate
+        tvUsernameDescription.text = userDto?.name
+
+
     }
 }

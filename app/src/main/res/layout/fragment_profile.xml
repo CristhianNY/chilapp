@@ -22,7 +22,7 @@
             android:elevation="10dp"
             android:src="@drawable/anonimo" />
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgUser"
@@ -32,19 +32,6 @@
             android:text="Joey Tribbiani"
             android:textColor="@color/white"
             android:textSize="32sp" />
-
-
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_name"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
-            android:text="new york, usa"
-            android:textAllCaps="true"
-            android:textColor="@color/address"
-            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="40dp"
@@ -169,10 +156,11 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="joey@sharenofood.com"
+                    tools:text="joey@sharenofood.com"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -193,15 +181,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phone"
+                    android:text="Telefono"
                     android:textColor="@color/headings"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/phone_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="+1-202-555-0157"
+                    tools:text="+1-202-555-0157"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -222,11 +211,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Twitter"
+                    android:text="Username"
                     android:textColor="@color/headings"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tv_username_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
@@ -251,15 +241,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Facebook"
+                    android:text="Fecha de nacimiento"
                     android:textColor="@color/headings"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/birth_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="facebook.com/joeytrib"
+                    tools:text="facebook.com/joeytrib"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -270,10 +261,6 @@
                     android:background="@color/grey" />
 
             </LinearLayout>
-
-
         </LinearLayout>
-
     </RelativeLayout>
-
 </RelativeLayout>
