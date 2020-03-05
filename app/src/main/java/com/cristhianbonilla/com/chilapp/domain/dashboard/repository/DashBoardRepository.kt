@@ -4,17 +4,25 @@ import android.content.ContentValues
 import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
+import com.cristhianbonilla.com.chilapp.domain.base.Result
+import com.cristhianbonilla.com.chilapp.domain.base.awaitTaskResult
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
+import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.ContactDto
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
@@ -41,7 +49,8 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
             SecretPost(
                 message,
                 user!!.userId,
-                it
+                it,
+                0
             )
         }
 
@@ -82,6 +91,47 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
         })
     }
 
+    override fun likeSecretPost(secretPost: SecretPost, context: Context, user: UserDto? , sumLikes:Int) {
+        val contacts = getContacts(context)
+        val remote: FirebaseFirestore = FirebaseFirestore.getInstance()
+        remote.collection("secretPostLikedByUser").document("${user?.phone}").set(secretPost)
+
+        getFirebaseInstance().child("secretPostLikedByUser")
+            .child("${secretPost.id}").setValue(secretPost)
+
+        updateLikes(context, user, secretPost, sumLikes, contacts)
+    }
+
+    private fun updateLikes(
+        context: Context,
+        user: UserDto?,
+        secretPost: SecretPost,
+        sumLikes: Int,
+        contacts: List<ContactDto>
+    ) {
+        getFirebaseInstance().child("secretPost")
+            .child(user!!.phone + "/${secretPost.id}" + "/likes").setValue(sumLikes)
+        for (contact in contacts) {
+
+            if (contact.number != user?.phone) {
+                getFirebaseInstance().child("secretPost")
+                    .child(contact.number + "/${secretPost.id}" + "/likes").setValue(sumLikes)
+            }
+        }
+    }
+
+    override fun makeDislikeSecretPost(
+        secretPost: SecretPost,
+        context: Context,
+        user: UserDto?,
+        sumLikes: Int
+    ) {
+        getFirebaseInstance().child("secretPostLikedByUser").child(user!!.phone+"/${secretPost.id}").removeValue()
+        val contacts = getContacts(context)
+        updateLikes(context,user,secretPost,sumLikes, contacts)
+    }
+
+
     private fun getContacts (context: Context): List<ContactDto> {
 
         val contactList : MutableList<ContactDto> = ArrayList()
@@ -108,8 +158,6 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
         }
         print(contactList)
         contacts.close()
-
-
         return  contactList.distinctBy { Pair(it.number, it.number) }
     }
 
@@ -125,5 +173,33 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
         if(phoneNumber == null) return null
 
         return phoneNumber
+    }
+
+    override suspend fun getPostLikedByMe(secretPost: SecretPost, userDto: UserDto?):Result<Exception,List<SecretPost>> {
+        val remote: FirebaseFirestore = FirebaseFirestore.getInstance()
+        return try {
+            val task = awaitTaskResult(
+
+                remote.collection("secretPostLikedByUser") .whereEqualTo("owner", userDto?.userId)
+                    .get()
+
+            )
+
+            resultToList(task)
+        } catch (exception: Exception) {
+            Result.build { throw exception }
+        }
+    }
+
+    private fun resultToList(result: QuerySnapshot?): Result<Exception, List<SecretPost>> {
+        val secrePostList = mutableListOf<SecretPost>()
+
+        result?.forEach { documentSnapshot ->
+            secrePostList.add(documentSnapshot.toObject(SecretPost::class.java))
+        }
+
+        return Result.build {
+            secrePostList
+        }
     }
 }

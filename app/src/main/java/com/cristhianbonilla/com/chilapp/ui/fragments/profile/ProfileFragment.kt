@@ -97,6 +97,5 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
         birth.text = userDto?.birthDate
         tvUsernameDescription.text = userDto?.name
 
-
     }
 }

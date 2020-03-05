@@ -15,6 +15,7 @@ class SecretPostViewHolder constructor(
     val ownerAnonymous :TextView = itemview.owner_anonymous
     val secretPostMessage :TextView = itemview.secret_post_message
     val commentImageButton : ImageView = itemview.commentsCountImageView
+    val likesImageView : ImageView = itemview.likesImageView
 
     fun bind(
         secretPost: SecretPost,
@@ -27,6 +28,11 @@ class SecretPostViewHolder constructor(
         commentImageButton.setOnClickListener(View.OnClickListener {
             listener.itemCliekc(itemView,position, secretPost )
         })
+
+        likesImageView.setOnClickListener {
+            listener.btnLike(itemView,position,secretPost)
+
+        }
     }
 
 }
