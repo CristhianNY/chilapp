@@ -38,9 +38,6 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
        dashBoardRepository.saveSecretPost(contex,  message, user)
     }
 
-    suspend fun saveSecretPostToFirebase(contex : Context, message: String, user: UserDto){
-        dashBoardRepository.saveSecretPostToFirebaseStore(contex,  message, user)
-    }
 
         suspend fun makeLike(secretPost: SecretPost,contex: Context,user: UserDto){
 
@@ -94,17 +91,6 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
                 // ...
             }
         })
-    }
-    suspend fun getSecretPostLikesFromFirestore(user: UserDto) : List<SecretPost>{
-
-        var secretPost :List<SecretPost> = ArrayList()
-        var  secretPostResult =   dashBoardRepository.getSecretPost(user)
-
-        when(secretPostResult){
-            is Result.Value -> secretPost = secretPostResult.value
-        }
-
-        return secretPost
     }
 
 }
