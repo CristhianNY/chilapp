@@ -9,19 +9,16 @@ import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
 
 interface DashBoardRepositoryInterface{
     fun saveSecretPost(context: Context, message: String , userDto: UserDto?)
-    fun readSecrePost(
-        userDto: UserDto?,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    )
     fun likeSecretPost(secretPost: SecretPost,context: Context,userDto: UserDto?, sumLikes:Int)
-
     fun makeDislikeSecretPost(secretPost: SecretPost,context: Context,userDto: UserDto?,sumLikes:Int)
-
-
+    suspend fun getSecretPost(  userDto: UserDto?):Result<Exception,List<SecretPost>>
+    suspend fun getSecretPostRealTimeDataBase(userDto: UserDto?) : DatabaseReference
     suspend fun getPostLikedByMe(secretPost: SecretPost,userDto: UserDto?):Result<Exception,List<SecretPost>>
+    suspend fun saveSecretPostToFirebaseStore(context: Context, message: String , userDto: UserDto?)
 
 }

@@ -1,6 +1,7 @@
 package com.cristhianbonilla.com.chilapp.DependencyInjection.components
 
 import com.cristhianbonilla.com.chilapp.DependencyInjection.module.ChilappModule
+import com.cristhianbonilla.com.chilapp.DependencyInjection.module.ViewModelModule
 import com.cristhianbonilla.com.chilapp.domain.comments.CommentsDomain
 import com.cristhianbonilla.com.chilapp.domain.comments.repository.CommentsRepository
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
@@ -21,7 +22,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class,AndroidInjectionModule::class,ChilappModule::class])
+@Component(modules = [AndroidSupportInjectionModule::class,AndroidInjectionModule::class,ChilappModule::class, ViewModelModule::class])
 interface ChilappComponent{
 
     fun inject(mainActivity: MainActivity)

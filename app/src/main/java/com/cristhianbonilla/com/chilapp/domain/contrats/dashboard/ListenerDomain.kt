@@ -10,19 +10,5 @@ import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 
 interface ListenerDomain{
-
-    fun onReadSecretPost(
-        secretpostList: ArrayList<SecretPost>,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    )
-
-
     fun saveSecretPost(contex: Context, message: String, user: UserDto)
-
-    fun getSecretsPost(
-        user: UserDto?,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    )
 }

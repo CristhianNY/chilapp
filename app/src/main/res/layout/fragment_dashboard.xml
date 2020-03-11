@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <include
+        android:id="@+id/loaderDashboard"
+        android:visibility="gone"
+        layout="@layout/progress_bar"/>
+
     <TextView
         android:id="@+id/text_dashboard"
         android:layout_width="match_parent"

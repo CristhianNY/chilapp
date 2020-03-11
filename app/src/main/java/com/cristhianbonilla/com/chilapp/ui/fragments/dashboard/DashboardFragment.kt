@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,14 +42,19 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var secretPostRecyclerView: RecyclerView
-
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
-
     lateinit var btnSendSecretPost : Button
     lateinit var editWhatAreYouThinking : EditText
+    lateinit var loaderDashboard:View
 
     @Inject
     lateinit var dashBoardDomain:  DashBoardDomain
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+
+    lateinit var vm:DashBoardDomain
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.instance.getComponent().inject(this)
@@ -63,6 +69,10 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         dashboardViewModel =
             ViewModelProviders.of(this).get(DashboardViewModel::class.java)
+
+        vm = ViewModelProviders.of(this, viewModelFactory)[DashBoardDomain::class.java]
+
+
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
         val textView: TextView = root.findViewById(R.id.text_dashboard)
         dashboardViewModel.text.observe(this, Observer {
@@ -72,120 +82,60 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         initViews(root)
         secretPostRecyclerView = root?.findViewById(R.id.secret_post_recyclerView) as RecyclerView
 
-        callSecretPost(secretPostRecyclerView , SecretPostRvAdapter(this,secretPostRecyclerView))
+        secretPostRvAdapter = SecretPostRvAdapter(this,secretPostRecyclerView)
+      //  callSecretPost(secretPostRecyclerView , SecretPostRvAdapter(this,secretPostRecyclerView))
+        CoroutineScope(IO).launch {
+            loaderDashboard.visibility = View.VISIBLE
+          //  getSecretPostFromFirebaseStore()
+            val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+
+            user?.let { vm.getSecretPostFromFirebaseRealTIme(it) }
+        }
+
+        vm.postList.observe(this, Observer {showSecretPostInRecyclerView(it) })
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
 
-          saveSecretPost(editWhatAreYouThinking.text.toString())
-
+            CoroutineScope(IO).launch {
+                saveSecretPostToFirebaseStore(editWhatAreYouThinking.text.toString())
+                editWhatAreYouThinking.text.clear()
+            }
         })
         return root
-
     }
 
     private fun initViews(root: View?){
-
         btnSendSecretPost = root?.findViewById(R.id.btn_send_post) as Button
         editWhatAreYouThinking = root?.findViewById(R.id.edit_what_are_you_thinkgin) as EditText
-
+        loaderDashboard = root?.findViewById(R.id.loaderDashboard) as View
     }
 
-    private fun saveSecretPost(messageWhatareYouThinking: String) {
-
+    private suspend fun getSecretPostFromFirebaseStore(){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+       // val listPost =  user?.let { dashBoardDomain.getSecretPostLikesFromFirestore(it) }**/
 
-        Observable.just(activity?.let { saveSecretPost(user,messageWhatareYouThinking).subscribeOn(
-            Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({  }, { throwable ->
-            Toast.makeText(context, "Update error: ${throwable.message}", Toast.LENGTH_LONG).show()
-        }) } )
-
-        editWhatAreYouThinking.text.clear()
+        user?.let { vm.getSecretPostFromFirebaseRealTIme(it) }
+        
     }
 
+    private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
 
-    private fun saveSecretPost(user: UserDto?, messageWhatareYouThinking: String) : Completable {
+            loaderDashboard.visibility = View.GONE
+            var linearLayoutManager = LinearLayoutManager(activity)
+            var adapter = secretPostRvAdapter
 
-        return Completable.create { emitter ->
+            linearLayoutManager.reverseLayout = true
+            secretPostRecyclerView?.layoutManager = linearLayoutManager
+            secretPostRecyclerView?.adapter = adapter
 
-            try {
-                activity?.let {
-                    if (user != null) {
-                        dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking,user)
-                    }
-                }
-                if(emitter != null && !emitter.isDisposed){
-                    emitter?.onComplete()
-                }
-            }catch (e: Exception){
-                if (emitter != null && !emitter.isDisposed) {
-                    emitter?.onError(e)
-                }
-            }
-        }
+            val recyclerViewState = secretPostRecyclerView?.layoutManager?.onSaveInstanceState()
+            secretPostRvAdapter.submitList(secretpostArrayList)
+            secretPostRecyclerView?.layoutManager?.onRestoreInstanceState(recyclerViewState)
+
     }
-
-    private fun callSecretPost(
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    ) {
-
+    private suspend fun saveSecretPostToFirebaseStore(messageWhatareYouThinking: String){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-
-        Observable.just(activity?.let { getSecrePost(user, root , secretPostRvAdapter).subscribeOn(
-            Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe({ testing() }, { throwable ->
-            Toast.makeText(context, "Error Al traer Datos: ${throwable.message}", Toast.LENGTH_LONG).show()
-        }) } )
-    }
-
-    private fun getSecrePost(
-        user: UserDto?,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    ) : Completable {
-
-        return Completable.create { emitter ->
-
-            try {
-                activity?.let {
-                    if (user != null) {
-                        dashBoardDomain.getSecretsPost(user, root, secretPostRvAdapter)
-                    }
-                }
-                if(emitter != null && !emitter.isDisposed){
-                    emitter?.onComplete()
-                }
-            }catch (e: Exception){
-                if (emitter != null && !emitter.isDisposed) {
-                    emitter?.onError(e)
-                }
-            }
-        }
-    }
-
-
-    fun testing(){
-
-        print("hola")
-    }
-
-    override fun onSecretPostRead(
-        secretpostArrayList: ArrayList<SecretPost>,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    ) {
-        var linearLayoutManager = LinearLayoutManager(activity)
-        var adapter = secretPostRvAdapter
-
-        linearLayoutManager.reverseLayout = true
-        root?.layoutManager = linearLayoutManager
-        root?.adapter = adapter
-
-        val recyclerViewState = root?.layoutManager?.onSaveInstanceState()
-        secretPostRvAdapter.submitList(secretpostArrayList)
-
-        root?.layoutManager?.onRestoreInstanceState(recyclerViewState)
-
-
+        user?.let { dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking, it) }
     }
 
     override fun itemCliekc(
@@ -243,31 +193,6 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
                 activity?.let {
                     if (user != null) {
                      //  dashBoardDomain.likeSecretPost(secretPost,App.instance.applicationContext,user)
-                    }
-                }
-                if(emitter != null && !emitter.isDisposed){
-                    emitter?.onComplete()
-                }
-            }catch (e: Exception){
-                if (emitter != null && !emitter.isDisposed) {
-                    emitter?.onError(e)
-                }
-            }
-        }
-    }
-    private fun getSecretPostLiked(
-        secretPost: SecretPost,
-        user: UserDto?,
-        activity: FragmentActivity,
-        mainActivity: MainActivity,
-        dashBoardDomain: DashBoardDomain
-    ):Completable{
-        return Completable.create { emitter ->
-
-            try {
-                activity?.let {
-                    if (user != null) {
-                     //   this.dashBoardDomain.getSecretPostLiked(secretPost,user, activity,mainActivity,dashBoardDomain)
                     }
                 }
                 if(emitter != null && !emitter.isDisposed){

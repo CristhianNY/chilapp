@@ -8,10 +8,5 @@ import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 
 interface ListenerActivity{
-    fun onSecretPostRead(
-        secretpostArrayList: ArrayList<SecretPost>,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    )
 
 }

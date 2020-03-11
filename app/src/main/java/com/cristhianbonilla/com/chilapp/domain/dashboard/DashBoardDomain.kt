@@ -1,7 +1,10 @@
 package com.cristhianbonilla.com.chilapp.domain.dashboard
 
 import android.content.Context
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.domain.base.Result
@@ -12,13 +15,16 @@ import com.cristhianbonilla.com.chilapp.domain.dashboard.repository.DashBoardRep
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import javax.inject.Inject
 
-class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) : ListenerDomain{
+class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) : ViewModel(), ListenerDomain{
 
-  var listenerActiv: ListenerActivity
-
+    var listenerActiv: ListenerActivity
     var dashBoardRepository:DashBoardRepository
+    var postList: MutableLiveData<List<SecretPost>> = MutableLiveData()
 
     init {
         App.instance.getComponent().inject(this)
@@ -32,23 +38,8 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
        dashBoardRepository.saveSecretPost(contex,  message, user)
     }
 
-    override fun getSecretsPost(
-        user: UserDto?,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    ){
-
-        dashBoardRepository.readSecrePost(user, root , secretPostRvAdapter)
-
-    }
-
-    override fun onReadSecretPost(
-        secretpostList: ArrayList<SecretPost>,
-        root: RecyclerView?,
-        secretPostRvAdapter: SecretPostRvAdapter
-    ) {
-
-          listenerActiv.onSecretPostRead(secretpostList , root, secretPostRvAdapter)
+    suspend fun saveSecretPostToFirebase(contex : Context, message: String, user: UserDto){
+        dashBoardRepository.saveSecretPostToFirebaseStore(contex,  message, user)
     }
 
         suspend fun makeLike(secretPost: SecretPost,contex: Context,user: UserDto){
@@ -80,4 +71,40 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
         }
        return  return false
     }
+
+    suspend fun getSecretPostFromFirebaseRealTIme(user: UserDto){
+
+        val secretpostlist = ArrayList<SecretPost>()
+        dashBoardRepository.getSecretPostRealTimeDataBase(user).addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                secretpostlist.clear()
+                for (postSnapshot in dataSnapshot.children) {
+
+                    var sercretPost = postSnapshot.getValue(SecretPost::class.java)
+                    sercretPost?.let { secretpostlist.add(it) }
+
+                    postList.value  = secretpostlist
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("onCancelled", "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+    }
+    suspend fun getSecretPostLikesFromFirestore(user: UserDto) : List<SecretPost>{
+
+        var secretPost :List<SecretPost> = ArrayList()
+        var  secretPostResult =   dashBoardRepository.getSecretPost(user)
+
+        when(secretPostResult){
+            is Result.Value -> secretPost = secretPostResult.value
+        }
+
+        return secretPost
+    }
+
 }
