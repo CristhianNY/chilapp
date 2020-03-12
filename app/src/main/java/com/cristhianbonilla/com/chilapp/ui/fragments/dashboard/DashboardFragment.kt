@@ -83,6 +83,8 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         secretPostRecyclerView = root?.findViewById(R.id.secret_post_recyclerView) as RecyclerView
 
         secretPostRvAdapter = SecretPostRvAdapter(this,secretPostRecyclerView)
+
+        setUpRecyclerView()
       //  callSecretPost(secretPostRecyclerView , SecretPostRvAdapter(this,secretPostRecyclerView))
         CoroutineScope(IO).launch {
             loaderDashboard.visibility = View.VISIBLE
@@ -119,19 +121,18 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
+        loaderDashboard.visibility = View.GONE
+        secretPostRvAdapter.submitList(secretpostArrayList)
+        secretPostRvAdapter.notifyDataSetChanged()
+    }
 
-            loaderDashboard.visibility = View.GONE
-            var linearLayoutManager = LinearLayoutManager(activity)
-            var adapter = secretPostRvAdapter
-
-            linearLayoutManager.reverseLayout = true
-            secretPostRecyclerView?.layoutManager = linearLayoutManager
-            secretPostRecyclerView?.adapter = adapter
-
-            val recyclerViewState = secretPostRecyclerView?.layoutManager?.onSaveInstanceState()
-            secretPostRvAdapter.submitList(secretpostArrayList)
-            secretPostRecyclerView?.layoutManager?.onRestoreInstanceState(recyclerViewState)
-
+    private fun setUpRecyclerView(){
+        loaderDashboard.visibility = View.GONE
+        var linearLayoutManager = LinearLayoutManager(activity)
+        var adapter = secretPostRvAdapter
+        linearLayoutManager.reverseLayout = true
+        secretPostRecyclerView?.layoutManager = linearLayoutManager
+        secretPostRecyclerView?.adapter = adapter
     }
     private suspend fun saveSecretPostToFirebaseStore(messageWhatareYouThinking: String){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
