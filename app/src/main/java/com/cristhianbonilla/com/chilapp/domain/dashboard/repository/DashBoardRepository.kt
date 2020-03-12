@@ -88,11 +88,9 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
 
     override fun likeSecretPost(secretPost: SecretPost, context: Context, user: UserDto? , sumLikes:Int) {
         val contacts = getContacts(context)
-        val remote: FirebaseFirestore = FirebaseFirestore.getInstance()
-        remote.collection("secretPostLikedByUser").document("${user?.phone}").set(secretPost)
-
-        getFirebaseInstance().child("secretPostLikedByUser")
-            .child("${secretPost.id}").setValue(secretPost)
+       val Key: String? =   getFirebaseInstance().child("secretPostLikedByUser").child(user!!.phone).push().getKey()
+        secretPost.likes = sumLikes
+        getFirebaseInstance().child("secretPostLikedByUser").child(user!!.phone+"/$Key").setValue(secretPost)
 
         updateLikes(context, user, secretPost, sumLikes, contacts)
     }
@@ -104,32 +102,17 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
         sumLikes: Int,
         contacts: List<ContactDto>
     ) {
-        val remote: FirebaseFirestore = FirebaseFirestore.getInstance()
-        secretPost.id?.let {
-            remote.collection("secretPost").document("${user?.phone}").collection(
-                it
-            ).document("likes").update("like",23)
-        }
-
         getFirebaseInstance().child("secretPostLikedByUser")
         getFirebaseInstance().child("secretPost")
             .child(user!!.phone + "/${secretPost.id}" + "/likes").setValue(sumLikes)
 
-        remote.collection("secretPost").document("${user?.phone}").collection(
-            user.phone
-        ).document(secretPost.id.toString()).update("likes",sumLikes)
-
         for (contact in contacts) {
 
             if (contact.number != user?.phone) {
-                    remote.collection("secretPost").document("${contact?.number}").collection(
-                     contact.number
-                    ).document(secretPost.id.toString()).update("likes",sumLikes)
+                getFirebaseInstance().child("secretPost")
+                    .child(contact!!.number + "/${secretPost.id}" + "/likes").setValue(sumLikes)
             }
         }
-        remote.collection("secretPost").document("${user?.phone}").collection(
-            user.phone
-        ).document(secretPost.id.toString()).update("likes",sumLikes)
     }
 
     override fun makeDislikeSecretPost(
@@ -226,6 +209,11 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
     override suspend fun getSecretPostRealTimeDataBase(userDto: UserDto?): DatabaseReference {
        return getFirebaseInstance().child("secretPost/${userDto?.phone}")
     }
+
+    override suspend fun getSecretPostRealTimeDataBaseLikes(userDto: UserDto?): DatabaseReference {
+        return getFirebaseInstance().child("secretPostLikedByUser/${userDto?.phone}")
+    }
+
 }
 
     private fun resultToList(result: QuerySnapshot?): Result<Exception, List<SecretPost>> {

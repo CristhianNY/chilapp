@@ -33,6 +33,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -45,7 +46,10 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
     lateinit var btnSendSecretPost : Button
     lateinit var editWhatAreYouThinking : EditText
-    lateinit var loaderDashboard:View
+
+    var isLiked:Boolean = false
+    var postLikeds :ArrayList<SecretPost> = ArrayList()
+
 
     @Inject
     lateinit var dashBoardDomain:  DashBoardDomain
@@ -53,8 +57,10 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-
+companion object{
     lateinit var vm:DashBoardDomain
+}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.instance.getComponent().inject(this)
@@ -75,6 +81,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
 
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
         val textView: TextView = root.findViewById(R.id.text_dashboard)
+
         dashboardViewModel.text.observe(this, Observer {
             textView.text = it
         })
@@ -85,16 +92,21 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         secretPostRvAdapter = SecretPostRvAdapter(this,secretPostRecyclerView)
 
         setUpRecyclerView()
-      //  callSecretPost(secretPostRecyclerView , SecretPostRvAdapter(this,secretPostRecyclerView))
+
         CoroutineScope(IO).launch {
-            loaderDashboard.visibility = View.VISIBLE
-          //  getSecretPostFromFirebaseStore()
+
+            delay(3000)
+
             val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
             user?.let { vm.getSecretPostFromFirebaseRealTIme(it) }
+
+            user?.let { vm.getSecretPostLikes(it) }
         }
 
         vm.postList.observe(this, Observer {showSecretPostInRecyclerView(it) })
+
+        vm.postLiked.observe(this, Observer {getPostLiked(it) })
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
 
@@ -103,31 +115,29 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
                 editWhatAreYouThinking.text.clear()
             }
         })
+
         return root
     }
 
     private fun initViews(root: View?){
         btnSendSecretPost = root?.findViewById(R.id.btn_send_post) as Button
         editWhatAreYouThinking = root?.findViewById(R.id.edit_what_are_you_thinkgin) as EditText
-        loaderDashboard = root?.findViewById(R.id.loaderDashboard) as View
-    }
-
-    private suspend fun getSecretPostFromFirebaseStore(){
-        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-       // val listPost =  user?.let { dashBoardDomain.getSecretPostLikesFromFirestore(it) }**/
-
-        user?.let { vm.getSecretPostFromFirebaseRealTIme(it) }
-        
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
-        loaderDashboard.visibility = View.GONE
+
         secretPostRvAdapter.submitList(secretpostArrayList)
         secretPostRvAdapter.notifyDataSetChanged()
     }
 
+    private  fun getPostLiked(secretpostArrayList: List<SecretPost>){
+        if(secretpostArrayList.isNotEmpty()){
+            isLiked = true
+            postLikeds = secretpostArrayList as ArrayList<SecretPost>
+        }
+    }
+
     private fun setUpRecyclerView(){
-        loaderDashboard.visibility = View.GONE
         var linearLayoutManager = LinearLayoutManager(activity)
         var adapter = secretPostRvAdapter
         linearLayoutManager.reverseLayout = true
@@ -166,45 +176,23 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
         user: UserDto?,
         secretPost: SecretPost
     ) {
-       var isPostLiked:Boolean? = user?.let { dashBoardDomain.getSecretPostLiked(secretPost, it) }
 
-        if(!isPostLiked!!){
-            if (user != null) {
-                dashBoardDomain.makeLike(secretPost,App.instance.applicationContext,user)
+        user?.let { vm.getSecretPostLikes(it) }
+
+       CoroutineScope(IO).launch {
+
+            if (!postLikeds.contains(secretPost)) {
+                dashBoardDomain.makeLike(secretPost, App.instance.applicationContext, user!!)
+            } else {
+                postIsAlreadyLiked()
             }
-        }else{
-            postIsAlreadyLiked()
         }
     }
 
-    private suspend fun postIsAlreadyLiked(){
-        withContext(Main){
-            Toast.makeText(App.instance.applicationContext,"Ya Diste Like",Toast.LENGTH_LONG).show()
-        }
-    }
-    private fun makeLikeToSecretPost(
-        secretPost: SecretPost,
-        user: UserDto?,
-        activity: FragmentActivity,
-        dashBoardDomain: DashBoardDomain
-    ):Completable{
-        return Completable.create { emitter ->
-
-            try {
-                activity?.let {
-                    if (user != null) {
-                     //  dashBoardDomain.likeSecretPost(secretPost,App.instance.applicationContext,user)
-                    }
-                }
-                if(emitter != null && !emitter.isDisposed){
-                    emitter?.onComplete()
-                }
-            }catch (e: Exception){
-                if (emitter != null && !emitter.isDisposed) {
-                    emitter?.onError(e)
-                }
-            }
-        }
+      suspend fun postIsAlreadyLiked(){
+          withContext(Main){
+              Toast.makeText(App.instance.applicationContext,"Ya Diste Like",Toast.LENGTH_LONG).show()
+          }
     }
 
     override fun positionListener(view: RecyclerView, position: Int) {

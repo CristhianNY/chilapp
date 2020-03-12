@@ -18,6 +18,7 @@ interface DashBoardRepositoryInterface{
     fun makeDislikeSecretPost(secretPost: SecretPost,context: Context,userDto: UserDto?,sumLikes:Int)
     suspend fun getSecretPost(  userDto: UserDto?):Result<Exception,List<SecretPost>>
     suspend fun getSecretPostRealTimeDataBase(userDto: UserDto?) : DatabaseReference
+    suspend fun getSecretPostRealTimeDataBaseLikes(userDto: UserDto?) : DatabaseReference
     suspend fun getPostLikedByMe(secretPost: SecretPost,userDto: UserDto?):Result<Exception,List<SecretPost>>
     suspend fun saveSecretPostToFirebaseStore(context: Context, message: String , userDto: UserDto?)
 

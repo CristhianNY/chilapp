@@ -25,6 +25,7 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
     var listenerActiv: ListenerActivity
     var dashBoardRepository:DashBoardRepository
     var postList: MutableLiveData<List<SecretPost>> = MutableLiveData()
+    var postLiked: MutableLiveData<List<SecretPost>> = MutableLiveData()
 
     init {
         App.instance.getComponent().inject(this)
@@ -39,7 +40,7 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
     }
 
 
-        suspend fun makeLike(secretPost: SecretPost,contex: Context,user: UserDto){
+    suspend fun makeLike(secretPost: SecretPost,contex: Context,user: UserDto){
 
         var sumLikes =secretPost.likes +1
         dashBoardRepository.likeSecretPost(secretPost,contex,user , sumLikes)
@@ -51,22 +52,6 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
             var sumLikes =secretPost.likes -1
             dashBoardRepository.makeDislikeSecretPost(secretPost,contex,user,sumLikes)
         }
-    }
-    suspend fun getSecretPostLiked(secretPost: SecretPost,user: UserDto):Boolean {
-
-        val postLiked = dashBoardRepository.getPostLikedByMe(secretPost,user)
-        var lisOfPostLiked :List<SecretPost> = ArrayList()
-
-        when (postLiked) {
-            is Result.Value -> lisOfPostLiked = postLiked.value
-        }
-
-        for(i in lisOfPostLiked){
-            if(i.id.equals(secretPost.id)){
-                return true
-            }
-        }
-       return  return false
     }
 
     suspend fun getSecretPostFromFirebaseRealTIme(user: UserDto){
@@ -93,4 +78,27 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
         })
     }
 
+    suspend fun getSecretPostLikes(user: UserDto){
+
+        val secretpostlist = ArrayList<SecretPost>()
+        dashBoardRepository.getSecretPostRealTimeDataBaseLikes(user).addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                secretpostlist.clear()
+                for (postSnapshot in dataSnapshot.children) {
+
+                    var sercretPost = postSnapshot.getValue(SecretPost::class.java)
+                    sercretPost?.let { secretpostlist.add(it) }
+
+                    postLiked.value  = secretpostlist
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("onCancelled", "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+    }
 }
