@@ -1,13 +1,11 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
+import android.graphics.Color.blue
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -23,6 +21,8 @@ import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
+import kotlinx.android.synthetic.main.counter_panel.view.*
+import kotlinx.android.synthetic.main.item_secret_post.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -39,7 +39,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
     lateinit var btnSendSecretPost : Button
     lateinit var editWhatAreYouThinking : EditText
-
+    var boolean:Boolean = true
     var isLiked:Boolean = false
     var postLikeds :ArrayList<SecretPost> = ArrayList()
 
@@ -157,8 +157,17 @@ companion object{
 
     }
 
-    override fun btnLike(view: View, position: Int, secretPost: SecretPost) {
-          val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+    override fun btnLike(itemView: View, position: Int, secretPost: SecretPost) {
+        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+
+        val likesImageView : ImageView = itemView.likesImageView
+        if(boolean){
+            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.colorAccent))
+            boolean = false
+        }else{
+            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.grey))
+            boolean = true
+        }
 
         CoroutineScope(IO).launch {
             LikePost(user, secretPost)
@@ -182,17 +191,30 @@ companion object{
         }
     }
 
-      suspend fun postIsAlreadyLiked(
+       fun postIsAlreadyLiked(
           secretPost: SecretPost,
           user: UserDto?
       ) {
           dashBoardDomain.makeDislike(secretPost, App.instance.applicationContext, user!!)
-          withContext(Main){
-              Toast.makeText(App.instance.applicationContext,"Ya Diste Like",Toast.LENGTH_LONG).show()
-          }
     }
 
     override fun positionListener(view: RecyclerView, position: Int) {
 
+    }
+
+    override fun printElement(secretPost: SecretPost, position: Int, itemView:View) {
+        val ownerAnonymous :TextView = itemView.owner_anonymous
+        val secretPostMessage :TextView = itemView.secret_post_message
+        val likesImageView : ImageView = itemView.likesImageView
+
+        likesImageView.setColorFilter(context?.resources!!.getColor(R.color.colorAccent))
+
+        if(!postLikeds.contains(secretPost)){
+            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.grey))
+        }else{
+            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.colorAccent))
+        }
+        ownerAnonymous.text = "Todos los post son anonimos"
+        secretPostMessage.text = secretPost.message
     }
 }

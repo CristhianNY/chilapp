@@ -21,4 +21,6 @@ interface RecyclerpostListener{
         position: Int
     )
 
+    fun printElement(secretPost: SecretPost , position: Int, itemView:View)
+
 }
