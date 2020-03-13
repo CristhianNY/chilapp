@@ -102,10 +102,13 @@ companion object{
         vm.postLiked.observe(this, Observer {getPostLiked(it) })
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
+            var contentToSearch : String  = editWhatAreYouThinking.text.toString()
+            editWhatAreYouThinking.text.clear()
 
             CoroutineScope(IO).launch {
-                saveSecretPostToFirebaseStore(editWhatAreYouThinking.text.toString())
-                editWhatAreYouThinking.text.clear()
+
+                saveSecretPostToFirebaseStore(contentToSearch)
+
             }
         })
 
@@ -161,16 +164,27 @@ companion object{
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
         val likesImageView : ImageView = itemView.likesImageView
-        if(boolean){
-            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.colorAccent))
-            boolean = false
-        }else{
-            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.grey))
-            boolean = true
-        }
+
+        val disLike : ImageView = itemView.dislike
+
+        likesImageView.visibility = View.INVISIBLE
+
+        disLike.visibility = View.VISIBLE
 
         CoroutineScope(IO).launch {
             LikePost(user, secretPost)
+        }
+    }
+
+    override fun btnDisLike(view: View, position: Int, secretPost: SecretPost) {
+        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+
+        val likeImageView : ImageView = view.likesImageView
+        val disLikeImage : ImageView = view.dislike
+        likeImageView.visibility = View.VISIBLE
+        disLikeImage.visibility = View.INVISIBLE
+        CoroutineScope(IO).launch {
+        dashBoardDomain.makeDislike(secretPost, App.instance.applicationContext, user!!)
         }
     }
 
@@ -181,21 +195,19 @@ companion object{
 
         user?.let { vm.getSecretPostLikes(it) }
 
-       CoroutineScope(IO).launch {
-
             if (!postLikeds.contains(secretPost)) {
                 dashBoardDomain.makeLike(secretPost, App.instance.applicationContext, user!!)
             } else {
                 postIsAlreadyLiked(secretPost,user)
             }
-        }
+
     }
 
        fun postIsAlreadyLiked(
           secretPost: SecretPost,
           user: UserDto?
       ) {
-          dashBoardDomain.makeDislike(secretPost, App.instance.applicationContext, user!!)
+       //   dashBoardDomain.makeDislike(secretPost, App.instance.applicationContext, user!!)
     }
 
     override fun positionListener(view: RecyclerView, position: Int) {
@@ -206,15 +218,19 @@ companion object{
         val ownerAnonymous :TextView = itemView.owner_anonymous
         val secretPostMessage :TextView = itemView.secret_post_message
         val likesImageView : ImageView = itemView.likesImageView
+        val disLikesImageView : ImageView = itemView.dislike
+        val numOfLikes : TextView = itemView.num_of_likes
 
-        likesImageView.setColorFilter(context?.resources!!.getColor(R.color.colorAccent))
+        if(postLikeds.contains(secretPost)){
 
-        if(!postLikeds.contains(secretPost)){
-            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.grey))
+            likesImageView.visibility = View.INVISIBLE
+            disLikesImageView.visibility = View.VISIBLE
         }else{
-            likesImageView.setColorFilter(context?.resources!!.getColor(R.color.colorAccent))
+            likesImageView.visibility = View.VISIBLE
+            disLikesImageView.visibility = View.INVISIBLE
         }
         ownerAnonymous.text = "Todos los post son anonimos"
         secretPostMessage.text = secretPost.message
+        numOfLikes.text  = secretPost.likes.toString()
     }
 }

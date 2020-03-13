@@ -16,6 +16,10 @@ interface RecyclerpostListener{
                  position: Int,
                  secretPost: SecretPost)
 
+    fun btnDisLike( view: View,
+                 position: Int,
+                 secretPost: SecretPost)
+
     fun positionListener(
         view: RecyclerView,
         position: Int

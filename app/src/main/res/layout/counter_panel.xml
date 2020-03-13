@@ -3,34 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical">
 
-    <LinearLayout
-        android:id="@+id/watchersContainer"
-        android:layout_width="@dimen/post_counters_item_width"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/intrinsic_padding"
-        android:paddingBottom="@dimen/intrinsic_padding"
-        android:layout_marginRight="10dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/watcherImageView"
-            app:srcCompat="@drawable/ic_whatchers"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-
-        <TextView
-            android:id="@+id/watcherCounterTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/small_intrinsic_padding"
-            android:textAppearance="@style/TextAppearance.Second.Light" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/likesContainer"
         android:layout_width="@dimen/post_counters_item_width"
         android:layout_height="wrap_content"
@@ -42,43 +18,60 @@
 
         <ImageView
             android:id="@+id/likesImageView"
-            app:srcCompat="@drawable/ic_like"
+            app:srcCompat="@drawable/ic_no_like"
             android:layout_width="30dp"
-            android:layout_height="30dp"  />
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:id="@+id/dislike"
+            app:srcCompat="@drawable/ic_heart_red"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
 
         <TextView
-            android:id="@+id/likeCounterTextView"
+            android:id="@+id/num_of_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/small_intrinsic_padding"
-            android:textAppearance="@style/TextAppearance.Second.Light" />
+            tools:text="10"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@+id/likesImageView"
+            android:layout_centerHorizontal="true"
+            />
 
-    </LinearLayout>
 
-    <LinearLayout
+    </RelativeLayout>
+    <RelativeLayout
         android:id="@+id/commentsCounterContainer"
         android:layout_width="@dimen/post_counters_item_width"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/intrinsic_padding"
         android:paddingBottom="@dimen/intrinsic_padding"
-        android:gravity="center_vertical"
         android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/commentsCountImageView"
             app:srcCompat="@drawable/ic_comments"
             android:layout_width="30dp"
-            android:layout_height="30dp"  />
-
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"/>
         <TextView
-            android:id="@+id/commentsCountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/small_intrinsic_padding"
-            android:textAppearance="@style/TextAppearance.Second.Light" />
-
-    </LinearLayout>
+            android:text="10"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@+id/commentsCountImageView"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/dateContainer"

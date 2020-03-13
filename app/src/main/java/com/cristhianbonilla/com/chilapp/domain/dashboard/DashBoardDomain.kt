@@ -40,7 +40,7 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
     }
 
 
-    suspend fun makeLike(secretPost: SecretPost,contex: Context,user: UserDto){
+     fun makeLike(secretPost: SecretPost,contex: Context,user: UserDto){
 
         var sumLikes =secretPost.likes +1
         dashBoardRepository.likeSecretPost(secretPost,contex,user , sumLikes)
@@ -86,7 +86,6 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 secretpostlist.clear()
                 for (postSnapshot in dataSnapshot.children) {
-
                     var sercretPost = postSnapshot.getValue(SecretPost::class.java)
                     sercretPost?.let { secretpostlist.add(it) }
 
