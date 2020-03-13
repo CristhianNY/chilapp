@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -18,18 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.domain.base.Result
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
-import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -184,12 +177,16 @@ companion object{
             if (!postLikeds.contains(secretPost)) {
                 dashBoardDomain.makeLike(secretPost, App.instance.applicationContext, user!!)
             } else {
-                postIsAlreadyLiked()
+                postIsAlreadyLiked(secretPost,user)
             }
         }
     }
 
-      suspend fun postIsAlreadyLiked(){
+      suspend fun postIsAlreadyLiked(
+          secretPost: SecretPost,
+          user: UserDto?
+      ) {
+          dashBoardDomain.makeDislike(secretPost, App.instance.applicationContext, user!!)
           withContext(Main){
               Toast.makeText(App.instance.applicationContext,"Ya Diste Like",Toast.LENGTH_LONG).show()
           }

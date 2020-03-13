@@ -88,9 +88,9 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
 
     override fun likeSecretPost(secretPost: SecretPost, context: Context, user: UserDto? , sumLikes:Int) {
         val contacts = getContacts(context)
-       val Key: String? =   getFirebaseInstance().child("secretPostLikedByUser").child(user!!.phone).push().getKey()
+
         secretPost.likes = sumLikes
-        getFirebaseInstance().child("secretPostLikedByUser").child(user!!.phone+"/$Key").setValue(secretPost)
+        getFirebaseInstance().child("secretPostLikedByUser").child(user!!.phone+"/${secretPost.id}").setValue(secretPost)
 
         updateLikes(context, user, secretPost, sumLikes, contacts)
     }
