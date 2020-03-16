@@ -65,19 +65,12 @@ companion object{
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
         vm = ViewModelProviders.of(this, viewModelFactory)[DashBoardDomain::class.java]
 
 
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-
-        dashboardViewModel.text.observe(this, Observer {
-            textView.text = it
-        })
 
         initViews(root)
         secretPostRecyclerView = root?.findViewById(R.id.secret_post_recyclerView) as RecyclerView
@@ -229,7 +222,7 @@ companion object{
             likesImageView.visibility = View.VISIBLE
             disLikesImageView.visibility = View.INVISIBLE
         }
-        ownerAnonymous.text = "Todos los post son anonimos"
+        ownerAnonymous.text = ""
         secretPostMessage.text = secretPost.message
         numOfLikes.text  = secretPost.likes.toString()
     }

@@ -79,7 +79,7 @@ class FriendsAdapterRecyclerView(
 
             override fun publishResults(chartString: CharSequence?, results: FilterResults?) {
                 contantcItem = results?.values as MutableList<ContactDto>
-               recyclerView.adapter!!.notifyDataSetChanged()
+                recyclerView.adapter?.notifyDataSetChanged()
             }
 
         }
