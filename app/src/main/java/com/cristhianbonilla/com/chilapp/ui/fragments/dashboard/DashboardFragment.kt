@@ -1,6 +1,7 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
 import android.graphics.Color.blue
+import android.icu.lang.UCharacter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     lateinit var editWhatAreYouThinking : EditText
     var boolean:Boolean = true
     var isLiked:Boolean = false
+    var counterToScroll:Int = 0
     var postLikeds :ArrayList<SecretPost> = ArrayList()
 
 
@@ -115,8 +117,14 @@ companion object{
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
 
+        counterToScroll++
+        if(this.counterToScroll<=1){
+            secretPostRecyclerView?.scrollToPosition(secretpostArrayList.size- 1)
+        }
         secretPostRvAdapter.submitList(secretpostArrayList)
+
         secretPostRvAdapter.notifyDataSetChanged()
+
     }
 
     private  fun getPostLiked(secretpostArrayList: List<SecretPost>){
@@ -130,6 +138,7 @@ companion object{
         var linearLayoutManager = LinearLayoutManager(activity)
         var adapter = secretPostRvAdapter
         linearLayoutManager.reverseLayout = true
+        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         secretPostRecyclerView?.layoutManager = linearLayoutManager
         secretPostRecyclerView?.adapter = adapter
     }
@@ -214,9 +223,12 @@ companion object{
         val disLikesImageView : ImageView = itemView.dislike
         val numOfLikes : TextView = itemView.num_of_likes
 
-        if(postLikeds.contains(secretPost)){
+       var isLiked =  postLikeds.any {
+            it.id == secretPost.id
+        }
 
-            likesImageView.visibility = View.INVISIBLE
+        if(isLiked){
+             likesImageView.visibility = View.INVISIBLE
             disLikesImageView.visibility = View.VISIBLE
         }else{
             likesImageView.visibility = View.VISIBLE
