@@ -57,7 +57,7 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
     suspend fun getSecretPostFromFirebaseRealTIme(user: UserDto){
 
         val secretpostlist = ArrayList<SecretPost>()
-        dashBoardRepository.getSecretPostRealTimeDataBase(user).addValueEventListener(object :
+        dashBoardRepository.getSecretPostRealTimeDataBase(user).limitToLast(100).addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 secretpostlist.clear()

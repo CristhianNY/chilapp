@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.vvalidator.util.hide
+import com.afollestad.vvalidator.util.show
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
@@ -117,10 +119,11 @@ companion object{
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
 
-        counterToScroll++
-        if(this.counterToScroll<=1){
+
+        if(this.counterToScroll == secretpostArrayList.size-1){
             secretPostRecyclerView?.scrollToPosition(secretpostArrayList.size- 1)
         }
+        counterToScroll++
         secretPostRvAdapter.submitList(secretpostArrayList)
 
         secretPostRvAdapter.notifyDataSetChanged()
@@ -166,6 +169,9 @@ companion object{
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
         val likesImageView : ImageView = itemView.likesImageView
+        val progresLikes : ProgressBar = itemView.progresLikes
+
+        progresLikes.show()
 
         val disLike : ImageView = itemView.dislike
 
@@ -183,6 +189,9 @@ companion object{
 
         val likeImageView : ImageView = view.likesImageView
         val disLikeImage : ImageView = view.dislike
+        val progresLikes : ProgressBar = view.progresLikes
+
+        progresLikes.show()
         likeImageView.visibility = View.VISIBLE
         disLikeImage.visibility = View.INVISIBLE
         CoroutineScope(IO).launch {
@@ -222,6 +231,9 @@ companion object{
         val likesImageView : ImageView = itemView.likesImageView
         val disLikesImageView : ImageView = itemView.dislike
         val numOfLikes : TextView = itemView.num_of_likes
+        val progresLikes : ProgressBar = itemView.progresLikes
+
+        progresLikes.hide()
 
        var isLiked =  postLikeds.any {
             it.id == secretPost.id

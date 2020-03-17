@@ -10,41 +10,52 @@
         android:id="@+id/likesContainer"
         android:layout_width="@dimen/post_counters_item_width"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/intrinsic_padding"
-        android:paddingBottom="@dimen/intrinsic_padding"
         android:layout_marginRight="10dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/intrinsic_padding"
+        android:paddingBottom="@dimen/intrinsic_padding">
 
         <ImageView
             android:id="@+id/likesImageView"
-            app:srcCompat="@drawable/ic_no_like"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            app:srcCompat="@drawable/ic_no_like" />
 
         <ImageView
             android:id="@+id/dislike"
-            app:srcCompat="@drawable/ic_heart_red"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_centerInParent="true"
             android:visibility="gone"
-            android:layout_centerInParent="true"/>
+            app:srcCompat="@drawable/ic_heart_red" />
+
 
         <TextView
             android:id="@+id/num_of_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="10"
-            android:layout_marginTop="10dp"
-            android:textSize="15sp"
-            android:textColor="@color/colorAccent"
             android:layout_below="@+id/likesImageView"
             android:layout_centerHorizontal="true"
-            />
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            tools:text="10" />
+
+        <ProgressBar
+            android:id="@+id/progresLikes"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="invisible"
+            android:layout_marginLeft="4dp"
+            android:layout_alignStart="@+id/likesImageView"
+            android:layout_marginTop="40dp"
+           />
 
 
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/commentsCounterContainer"
         android:layout_width="@dimen/post_counters_item_width"
