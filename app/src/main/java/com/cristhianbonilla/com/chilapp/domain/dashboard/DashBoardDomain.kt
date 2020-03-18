@@ -54,6 +54,18 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
         }
     }
 
+    fun saveAnimationPreference(isAnimationShowed: Boolean, contex: Context){
+        dashBoardRepository.saveAnimationPreference(contex,isAnimationShowed)
+    }
+
+    fun getAnimationPreference(contex: Context) :Boolean{
+        return dashBoardRepository.getAnimationPreference(contex)
+    }
+
+   fun deleteAnimationPreference(contex: Context){
+        return dashBoardRepository.deleteAnimationPreference(contex)
+    }
+
     suspend fun getSecretPostFromFirebaseRealTIme(user: UserDto){
 
         val secretpostlist = ArrayList<SecretPost>()

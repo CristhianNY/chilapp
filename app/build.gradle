@@ -96,4 +96,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-common-ktx:16.1.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:18.2.0'
     implementation 'com.google.firebase:firebase-database-ktx:19.2.1'
+    implementation 'com.airbnb.android:lottie:3.0.7'
 }

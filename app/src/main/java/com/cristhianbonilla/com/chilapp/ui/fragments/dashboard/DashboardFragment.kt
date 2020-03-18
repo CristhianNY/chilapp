@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.vvalidator.util.hide
 import com.afollestad.vvalidator.util.show
+import com.airbnb.lottie.LottieAnimationView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
@@ -45,6 +46,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     lateinit var btnSendSecretPost : Button
     lateinit var changColorImage : ImageView
     lateinit var editWhatAreYouThinking : EditText
+    private lateinit var animationSwipe: LottieAnimationView
     var colorPost:String ="#616161"
     var boolean:Boolean = true
     var isLiked:Boolean = false
@@ -133,6 +135,11 @@ companion object{
                     .show()
             }
         }
+
+        animationSwipe.setOnClickListener {
+            animationSwipe.visibility = View.INVISIBLE
+        }
+
         return root
     }
 
@@ -140,6 +147,7 @@ companion object{
         btnSendSecretPost = root?.findViewById(R.id.btn_send_post) as Button
         changColorImage = root?.findViewById(R.id.changColor) as ImageView
         editWhatAreYouThinking = root?.findViewById(R.id.edit_what_are_you_thinkgin) as EditText
+        animationSwipe = root?.findViewById(R.id.lottie_animation_swipe) as LottieAnimationView
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
@@ -261,6 +269,20 @@ companion object{
 
         progresLikes.hide()
 
+        context?.let { if (dashBoardDomain.getAnimationPreference(it)){
+
+            animationSwipe.visibility = View.INVISIBLE
+
+        }else{
+            animationSwipe.visibility = View.VISIBLE
+        }
+
+        }
+
+        context?.let { dashBoardDomain.saveAnimationPreference(true, it) }
+
+
+
         card.setBackgroundColor(Color.parseColor(secretPost.color))
 
 
@@ -278,5 +300,11 @@ companion object{
         ownerAnonymous.text = ""
         secretPostMessage.text = secretPost.message
         numOfLikes.text  = secretPost.likes.toString()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        context?.let { dashBoardDomain.deleteAnimationPreference(it) }
     }
 }

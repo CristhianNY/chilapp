@@ -143,6 +143,7 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
         return phoneNumber
     }
 
+
     override suspend fun getPostLikedByMe(secretPost: SecretPost, userDto: UserDto?):Result<Exception,List<SecretPost>> {
         val remote: FirebaseFirestore = FirebaseFirestore.getInstance()
         return try {
@@ -158,6 +159,31 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
             Result.build { throw exception }
         }
     }
+
+    override  fun saveAnimationPreference(
+        context: Context,
+        isFirstTimeShowingAnimation: Boolean
+    ) {
+        val settings =
+            context.getSharedPreferences("isAnimationShowingFirstTime", Context.MODE_PRIVATE)
+        val editor = settings.edit()
+        editor.putBoolean("isAnimationShowed",isFirstTimeShowingAnimation)
+        editor.apply()
+    }
+
+    override  fun getAnimationPreference(
+        context: Context
+    ): Boolean {
+        val settings = context.getSharedPreferences("isAnimationShowingFirstTime", Context.MODE_PRIVATE)
+        return settings.getBoolean("isAnimationShowed",false)
+    }
+
+    override fun deleteAnimationPreference(context: Context) {
+        val settings =
+            context.getSharedPreferences("isAnimationShowingFirstTime", Context.MODE_PRIVATE)
+        settings.edit().clear().commit()
+    }
+
 
     override suspend fun getSecretPost(
         userDto: UserDto?

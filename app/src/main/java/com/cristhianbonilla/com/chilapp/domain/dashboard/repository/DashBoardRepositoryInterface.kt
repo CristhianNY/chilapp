@@ -20,5 +20,7 @@ interface DashBoardRepositoryInterface{
     suspend fun getSecretPostRealTimeDataBase(userDto: UserDto?) : DatabaseReference
     suspend fun getSecretPostRealTimeDataBaseLikes(userDto: UserDto?) : DatabaseReference
     suspend fun getPostLikedByMe(secretPost: SecretPost,userDto: UserDto?):Result<Exception,List<SecretPost>>
-
+    fun saveAnimationPreference(context: Context, isFirstTimeShowingAnimation:Boolean)
+    fun getAnimationPreference(context: Context):Boolean
+    fun deleteAnimationPreference (context: Context)
 }
