@@ -46,6 +46,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     lateinit var btnSendSecretPost : Button
     lateinit var changColorImage : ImageView
     lateinit var editWhatAreYouThinking : EditText
+    lateinit var progresSecretPost: ProgressBar
     private lateinit var animationSwipe: LottieAnimationView
     var colorPost:String ="#616161"
     var boolean:Boolean = true
@@ -148,6 +149,7 @@ companion object{
         changColorImage = root?.findViewById(R.id.changColor) as ImageView
         editWhatAreYouThinking = root?.findViewById(R.id.edit_what_are_you_thinkgin) as EditText
         animationSwipe = root?.findViewById(R.id.lottie_animation_swipe) as LottieAnimationView
+        progresSecretPost = root?.findViewById(R.id.progresSecretPost) as ProgressBar
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
@@ -269,6 +271,8 @@ companion object{
 
         progresLikes.hide()
 
+        progresSecretPost.hide()
+
         context?.let { if (dashBoardDomain.getAnimationPreference(it)){
 
             animationSwipe.visibility = View.INVISIBLE
@@ -302,9 +306,8 @@ companion object{
         numOfLikes.text  = secretPost.likes.toString()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
         context?.let { dashBoardDomain.deleteAnimationPreference(it) }
     }
 }
