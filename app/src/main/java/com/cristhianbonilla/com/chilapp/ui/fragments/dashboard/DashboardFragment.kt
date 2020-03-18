@@ -1,13 +1,13 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
-import android.graphics.Color.blue
-import android.icu.lang.UCharacter
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,15 +24,17 @@ import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
+import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import kotlinx.android.synthetic.main.counter_panel.view.*
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.item_secret_post.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
@@ -41,7 +43,9 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     private lateinit var secretPostRecyclerView: RecyclerView
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
     lateinit var btnSendSecretPost : Button
+    lateinit var changColorImage : ImageView
     lateinit var editWhatAreYouThinking : EditText
+    var colorPost:String ="#616161"
     var boolean:Boolean = true
     var isLiked:Boolean = false
     var counterToScroll:Int = 0
@@ -81,6 +85,7 @@ companion object{
 
         secretPostRvAdapter = SecretPostRvAdapter(this,secretPostRecyclerView)
 
+
         setUpRecyclerView()
 
         CoroutineScope(IO).launch {
@@ -99,21 +104,41 @@ companion object{
         vm.postLiked.observe(this, Observer {getPostLiked(it) })
 
         btnSendSecretPost.setOnClickListener(View.OnClickListener {
-            var contentToSearch : String  = editWhatAreYouThinking.text.toString()
-            editWhatAreYouThinking.text.clear()
+            if(editWhatAreYouThinking.text.toString().isNullOrEmpty()){
 
-            CoroutineScope(IO).launch {
+                Toast.makeText(context,"Porfavor ingresa un secreto", Toast.LENGTH_LONG).show()
+            }else{
 
-                saveSecretPostToFirebaseStore(contentToSearch)
+                var contentToSearch : String  = editWhatAreYouThinking.text.toString()
+                editWhatAreYouThinking.text.clear()
 
+                CoroutineScope(IO).launch {
+
+                    saveSecretPostToFirebaseStore(contentToSearch)
+
+                }
             }
+
         })
 
+        changColorImage.setOnClickListener {
+            context?.let { it1 ->
+                MaterialColorPickerDialog
+                    .Builder(it1)        			// Pass Activity Instance
+                    .setTitle("Color")               // Change Dialog Title
+                    .setColorListener { color, colorHex ->
+                        colorPost = colorHex
+                        editWhatAreYouThinking.setBackgroundColor(Color.parseColor(colorHex))
+                    }
+                    .show()
+            }
+        }
         return root
     }
 
     private fun initViews(root: View?){
         btnSendSecretPost = root?.findViewById(R.id.btn_send_post) as Button
+        changColorImage = root?.findViewById(R.id.changColor) as ImageView
         editWhatAreYouThinking = root?.findViewById(R.id.edit_what_are_you_thinkgin) as EditText
     }
 
@@ -147,7 +172,7 @@ companion object{
     }
     private suspend fun saveSecretPostToFirebaseStore(messageWhatareYouThinking: String){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-        user?.let { dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking, it) }
+        user?.let { dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking, it, colorPost) }
     }
 
     override fun itemCliekc(
@@ -161,7 +186,7 @@ companion object{
         var args: Bundle = Bundle()
         args?.putString("idSecretPost", secretPost.id)
         dialog?.setArguments(args)
-        dialog?.show(fragmentManager, "Comments")
+        fragmentManager?.let { dialog?.show(it, "Comments") }
 
     }
 
@@ -232,8 +257,12 @@ companion object{
         val disLikesImageView : ImageView = itemView.dislike
         val numOfLikes : TextView = itemView.num_of_likes
         val progresLikes : ProgressBar = itemView.progresLikes
+        val card : CardView = itemView.card_view
 
         progresLikes.hide()
+
+        card.setBackgroundColor(Color.parseColor(secretPost.color))
+
 
        var isLiked =  postLikeds.any {
             it.id == secretPost.id

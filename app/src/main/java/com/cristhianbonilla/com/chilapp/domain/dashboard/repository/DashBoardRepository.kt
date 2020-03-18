@@ -37,15 +37,15 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
 
     lateinit var phoneNumberUtil: PhoneNumberUtil
 
-    override fun saveSecretPost(context: Context, message :String, user: UserDto?) {
-
+    override fun saveSecretPost(context: Context, message :String, user: UserDto?,color:String) {
         val Key: String? =   getFirebaseInstance().child("secretPost").child(user!!.phone).push().getKey()
         var secretPost = Key?.let {
             SecretPost(
                 message,
                 user!!.userId,
                 it,
-                0
+                0,
+                color
             )
         }
 
@@ -58,32 +58,6 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
             }
 
         }
-    }
-
-    override suspend fun saveSecretPostToFirebaseStore(context: Context, message :String, user: UserDto?) {
-        val remote: FirebaseFirestore = FirebaseFirestore.getInstance()
-
-        val Key: String? =   getFirebaseInstance().child("secretPost").child(user!!.phone).push().getKey()
-
-        var secretPost = Key?.let {
-            SecretPost(
-                message,
-                user!!.userId,
-                it,
-                0
-            )
-        }
-
-        val contacts = getContacts(context)
-
-        for (contact in contacts ){
-            if(contact.number!= user?.phone){
-             //   secretPost?.let { remote.collection("secretPost").document(contact.number).collection(contact.number).add(it) }
-            }
-        }
-
-        secretPost?.let { remote.collection("secretPost").document(user.phone).collection(user.phone).add(it) }
-
     }
 
     override fun likeSecretPost(secretPost: SecretPost, context: Context, user: UserDto? , sumLikes:Int) {

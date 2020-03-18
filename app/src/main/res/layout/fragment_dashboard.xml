@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/app_bar_layout"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:contentScrim="@color/colorAccent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
+    android:orientation="vertical">
 
             <RelativeLayout android:id="@+id/rellay1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/grad"
-                android:paddingBottom="20dp"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                android:paddingBottom="20dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imgUser"
@@ -64,26 +51,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:textColor="@color/white"
                     android:layout_marginRight="10dp"
                     android:layout_below="@id/tv_username"
                     android:hint="@string/hint_what_are_you_thinking"
                     android:layout_marginTop="30dp"
                     android:background="@drawable/border_edit_text"
                     android:padding="30dp"/>
-                <Button
-                    android:id="@+id/btn_send_post"
-                    android:layout_width="39dp"
-                    android:layout_height="39dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_alignEnd="@id/edit_what_are_you_thinkgin"
                     android:layout_below="@id/edit_what_are_you_thinkgin"
-                    android:background="@drawable/send" />
-            </RelativeLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="end">
+                    <ImageView
+                        android:id="@+id/changColor"
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:layout_below="@id/edit_what_are_you_thinkgin"
+                        android:src="@drawable/coloricon">
 
-    </com.google.android.material.appbar.AppBarLayout>
+                    </ImageView>
+
+                    <Button
+                        android:id="@+id/btn_send_post"
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:background="@drawable/send" />
+                </LinearLayout>
+
+            </RelativeLayout>
     <include
             android:id="@+id/loaderDashboard"
             android:visibility="gone"
@@ -92,7 +92,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/secret_post_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="381dp"
+        android:layout_marginBottom="60dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:stackFromEnd="true"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        app:stackFromEnd="true" />
+</LinearLayout>
+</ScrollView>

@@ -2,19 +2,14 @@ package com.cristhianbonilla.com.chilapp.domain.dashboard
 
 import android.content.Context
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
 import com.cristhianbonilla.com.chilapp.App
-import com.cristhianbonilla.com.chilapp.domain.base.Result
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.domain.dashboard.repository.DashBoardRepository
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
-import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
-import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.SecretPostRvAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -34,9 +29,14 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
         dashBoardRepository = DashBoardRepository(this)
     }
 
-    override fun saveSecretPost(contex : Context, message: String, user: UserDto) {
+    override fun saveSecretPost(
+        contex: Context,
+        message: String,
+        user: UserDto,
+        colorPost: String
+    ) {
 
-       dashBoardRepository.saveSecretPost(contex,  message, user)
+       dashBoardRepository.saveSecretPost(contex,  message, user,colorPost)
     }
 
 

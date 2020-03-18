@@ -65,7 +65,7 @@ class CommentsDialogFragment : BaseDialogFragment() , ListenerCommentsActivity, 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dialog.window?.attributes!!.windowAnimations = R.style.DialogAnimation
+        dialog?.window?.attributes!!.windowAnimations = R.style.DialogAnimation
     }
 
     private fun initViews(root: View?){
