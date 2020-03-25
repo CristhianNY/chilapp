@@ -119,6 +119,11 @@ class ResizeEditText : TextInputEditText {
         reAdjust();
     }
 
+    fun setEnableSizeCache(enable: Boolean) {
+        enableSizeCache = enable
+        textCachedSizes.clear()
+        adjustTextSize()
+    }
 
     override fun setTextSize(unit: Int, size: Float) {
         val c = context
