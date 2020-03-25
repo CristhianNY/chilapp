@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@color/light_blue_50">
 
-    <EditText
-        android:id="@+id/secret_box"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:real="http://schemas.android.com/apk/res-auto"
+android:id="@+id/rlRoot"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<FrameLayout
+    android:id="@+id/container"
+    android:layout_width="500dp"
+    android:layout_height="333dp"
+    android:layout_centerInParent="true"
+    android:background="#ffff0000" >
+    <com.cristhianbonilla.com.chilapp.ui.customviews.ResizeEditText
+        android:id="@+id/rET"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_marginBottom="8dp"
-        android:background="@null"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:inputType="textCapSentences|textMultiLine"
-        android:windowSoftInputMode="adjustResize"
-        android:maxLength="2000"
-        android:maxLines="4"
-        android:hint="@string/add_secret"
-        app:autoSizeTextType="uniform"
-        android:textSize="80dp"
-        tools:text="asdfasd" />
-</LinearLayout>
+        android:background="#FF00FF"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:hint="HINT"
+        android:isScrollContainer="false"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:maxLength="240"
+        android:textColor="#000000"
+        android:textSize="90sp" />
+</FrameLayout>
+
+</RelativeLayout>
