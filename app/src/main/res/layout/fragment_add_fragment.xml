@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/light_blue_50">
+
+    <EditText
+        android:id="@+id/secret_box"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginBottom="8dp"
+        android:background="@null"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:inputType="textCapSentences|textMultiLine"
+        android:windowSoftInputMode="adjustResize"
+        android:maxLength="2000"
+        android:maxLines="4"
+        android:hint="@string/add_secret"
+        app:autoSizeTextType="uniform"
+        android:textSize="80dp"
+        tools:text="asdfasd" />
+</LinearLayout>

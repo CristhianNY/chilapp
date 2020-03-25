@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.vvalidator.util.hide
 import com.afollestad.vvalidator.util.show
@@ -23,9 +25,11 @@ import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivi
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.ui.fragments.addSecret.AddSecretDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.counter_panel.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.item_secret_post.view.*
@@ -39,15 +43,10 @@ import kotlin.collections.ArrayList
 
 
 class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
-
-    private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var secretPostRecyclerView: RecyclerView
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
-    lateinit var btnSendSecretPost : Button
-    lateinit var changColorImage : ImageView
-    lateinit var editWhatAreYouThinking : EditText
+    private lateinit var addNewSecretBtn: FloatingActionButton
     lateinit var progresSecretPost: ProgressBar
-    private lateinit var animationSwipe: LottieAnimationView
     var colorPost:String ="#616161"
     var boolean:Boolean = true
     var isLiked:Boolean = false
@@ -106,54 +105,27 @@ companion object{
 
         vm.postLiked.observe(this, Observer {getPostLiked(it) })
 
-        btnSendSecretPost.setOnClickListener(View.OnClickListener {
-            if(editWhatAreYouThinking.text.toString().isNullOrEmpty()){
+        val snapHelper = PagerSnapHelper() // Or PagerSnapHelper
+        snapHelper.attachToRecyclerView(secretPostRecyclerView)
 
-                Toast.makeText(context,"Porfavor ingresa un secreto", Toast.LENGTH_LONG).show()
-            }else{
+        addNewSecretBtn.setOnClickListener{
+            val dialog: DialogFragment? = AddSecretDialogFragment()
 
-                var contentToSearch : String  = editWhatAreYouThinking.text.toString()
-                editWhatAreYouThinking.text.clear()
-
-                CoroutineScope(IO).launch {
-
-                    saveSecretPostToFirebaseStore(contentToSearch)
-
-                }
-            }
-
-        })
-
-        changColorImage.setOnClickListener {
-            context?.let { it1 ->
-                MaterialColorPickerDialog
-                    .Builder(it1)        			// Pass Activity Instance
-                    .setTitle("Color")               // Change Dialog Title
-                    .setColorListener { color, colorHex ->
-                        colorPost = colorHex
-                        editWhatAreYouThinking.setBackgroundColor(Color.parseColor(colorHex))
-                    }
-                    .show()
-            }
+            dialog?.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme)
+            var args: Bundle = Bundle()
+            args?.putString("idSecretPost", "algo")
+            dialog?.setArguments(args)
+            fragmentManager?.let { dialog?.show(it, "addNewSecret") }
         }
-
-        animationSwipe.setOnClickListener {
-            animationSwipe.visibility = View.INVISIBLE
-        }
-
         return root
     }
 
     private fun initViews(root: View?){
-        btnSendSecretPost = root?.findViewById(R.id.btn_send_post) as Button
-        changColorImage = root?.findViewById(R.id.changColor) as ImageView
-        editWhatAreYouThinking = root?.findViewById(R.id.edit_what_are_you_thinkgin) as EditText
-        animationSwipe = root?.findViewById(R.id.lottie_animation_swipe) as LottieAnimationView
         progresSecretPost = root?.findViewById(R.id.progresSecretPost) as ProgressBar
+        addNewSecretBtn = root?.findViewById(R.id.add_new_secret_btn) as FloatingActionButton
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
-
 
         if(this.counterToScroll == secretpostArrayList.size-1){
             secretPostRecyclerView?.scrollToPosition(secretpostArrayList.size- 1)
@@ -176,7 +148,7 @@ companion object{
         var linearLayoutManager = LinearLayoutManager(activity)
         var adapter = secretPostRvAdapter
         linearLayoutManager.reverseLayout = true
-        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         secretPostRecyclerView?.layoutManager = linearLayoutManager
         secretPostRecyclerView?.adapter = adapter
     }
@@ -268,24 +240,15 @@ companion object{
         val numOfLikes : TextView = itemView.num_of_likes
         val progresLikes : ProgressBar = itemView.progresLikes
         val card : CardView = itemView.card_view
+        val numOfComments : TextView = itemView.num_of_comments
 
         progresLikes.hide()
 
         progresSecretPost.hide()
 
-        context?.let { if (dashBoardDomain.getAnimationPreference(it)){
-
-            animationSwipe.visibility = View.INVISIBLE
-
-        }else{
-            animationSwipe.visibility = View.VISIBLE
-        }
-
-        }
+        numOfComments.text = secretPost.comments.toString()
 
         context?.let { dashBoardDomain.saveAnimationPreference(true, it) }
-
-
 
         card.setBackgroundColor(Color.parseColor(secretPost.color))
 

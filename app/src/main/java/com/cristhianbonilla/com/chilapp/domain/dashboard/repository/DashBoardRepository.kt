@@ -45,7 +45,8 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
                 user!!.userId,
                 it,
                 0,
-                color
+                color,
+                0
             )
         }
 

@@ -28,7 +28,7 @@ class SplashActivity : BaseActivity(){
                 super.run()
 
                 try {
-                    Thread.sleep(5000)
+                    Thread.sleep(8000)
                     validateUserLogin()
 
                 }catch (e:Exception){

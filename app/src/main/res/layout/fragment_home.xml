@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="enter query"
+        android:hint="Busacar Amigo"
         android:singleLine="true">
         <requestFocus/>
     </EditText>

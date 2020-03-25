@@ -54,6 +54,7 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
         }
     }
 
+
     fun saveAnimationPreference(isAnimationShowed: Boolean, contex: Context){
         dashBoardRepository.saveAnimationPreference(contex,isAnimationShowed)
     }
@@ -67,7 +68,6 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
     }
 
     suspend fun getSecretPostFromFirebaseRealTIme(user: UserDto){
-
         val secretpostlist = ArrayList<SecretPost>()
         dashBoardRepository.getSecretPostRealTimeDataBase(user).limitToLast(100).addValueEventListener(object :
             ValueEventListener {
