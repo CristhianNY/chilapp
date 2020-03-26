@@ -20,6 +20,9 @@ import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseDialogFragment
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -33,7 +36,7 @@ class AddSecretDialogFragment : BaseDialogFragment() {
     lateinit var addNewSecreEditText:ResizeEditText
     lateinit var colorImageIcon: ImageView
     lateinit var btnSendSecret: ImageView
-    var colorHexadecimal:String = "#6f00ff "
+    var colorHexadecimal:String = "#6f00ff"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +68,7 @@ class AddSecretDialogFragment : BaseDialogFragment() {
                      ).setTitle("Seleccionar Color")
                      .setColorListener { color, colorHex ->
                          // Handle Color Selection
+                         colorHexadecimal = colorHex
                          addNewSecreEditText.setBackgroundColor(color)
                      }
                      .show()
@@ -72,7 +76,13 @@ class AddSecretDialogFragment : BaseDialogFragment() {
         }
 
         btnSendSecret.setOnClickListener{
-            
+
+            CoroutineScope(IO).launch {
+
+                var contentToSearch = addNewSecreEditText.text
+                saveSecretPostToFirebaseStore(contentToSearch.toString())
+            }
+
             this.dismiss()
         }
 
@@ -91,6 +101,13 @@ class AddSecretDialogFragment : BaseDialogFragment() {
         addNewSecreEditText.isVerticalScrollBarEnabled = true
         addNewSecreEditText. movementMethod = ScrollingMovementMethod()
     }
+
+
+    private  fun saveSecretPostToFirebaseStore(messageWhatareYouThinking: String){
+        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+        user?.let { dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking, it, colorHexadecimal) }
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
