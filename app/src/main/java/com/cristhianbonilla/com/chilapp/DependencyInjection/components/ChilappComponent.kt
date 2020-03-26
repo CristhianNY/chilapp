@@ -12,6 +12,7 @@ import com.cristhianbonilla.com.chilapp.ui.activities.MainActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.Splash.SplashActivity
 import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
 import com.cristhianbonilla.com.chilapp.ui.activities.register.RegisterActivity
+import com.cristhianbonilla.com.chilapp.ui.fragments.addSecret.AddSecretDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.dashboard.DashboardFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.home.HomeFragment
@@ -39,4 +40,5 @@ interface ChilappComponent{
     fun inject(commentsDomain: CommentsDomain)
     fun inject(dashBoardRepository: DashBoardRepository)
     fun inject(commentsRepository: CommentsRepository)
+    fun inject(addSecretDialogFragment: AddSecretDialogFragment)
 }

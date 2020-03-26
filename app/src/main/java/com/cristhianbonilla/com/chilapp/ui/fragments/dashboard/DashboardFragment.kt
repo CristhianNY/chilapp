@@ -21,6 +21,7 @@ import com.afollestad.vvalidator.util.show
 import com.airbnb.lottie.LottieAnimationView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
+import com.cristhianbonilla.com.chilapp.domain.comments.CommentsDomain
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
@@ -59,6 +60,8 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+
 
 companion object{
     lateinit var vm:DashBoardDomain
