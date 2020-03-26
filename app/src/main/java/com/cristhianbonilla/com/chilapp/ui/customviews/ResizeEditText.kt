@@ -10,10 +10,14 @@ import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
+import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.util.Log
 import android.util.SparseIntArray
 import android.util.TypedValue
+import android.view.View
+import android.widget.Scroller
+import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputEditText
 import kotlin.properties.Delegates
 
@@ -31,8 +35,8 @@ class ResizeEditText : TextInputEditText {
     private var spacingAdd = 0.0f
     private var enableSizeCache = true
     private var initiallized = false
+    private var miniSizeText:Int = 70
     private val textCachedSizes = SparseIntArray()
-
     constructor(context : Context?) : super(context)
     constructor(context : Context, attrs: AttributeSet?) : super(context, attrs) {
         initAttrs(context, attrs)
@@ -45,10 +49,13 @@ class ResizeEditText : TextInputEditText {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initAttrs(context : Context, attrs: AttributeSet?) {
 
-        minTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12F,resources.displayMetrics)
+        minTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6F,resources.displayMetrics)
         maxTextSize = textSize
+
+        focusable = View.FOCUSABLE
 
        if( maxline == 0){
            maxline = NO_LINE_LIMIT
@@ -67,7 +74,7 @@ class ResizeEditText : TextInputEditText {
                       textRectF.right = paint.measureText(text)
                   }else {
 
-                      val layout: StaticLayout = StaticLayout(
+                      val layout = StaticLayout(
                           text,
                           textPaint,
                           widthLimit,
@@ -81,19 +88,29 @@ class ResizeEditText : TextInputEditText {
 
                       if (maxline != NO_LINE_LIMIT
                           && layout.lineCount > maxLines
-                      )
+                      ){
                           return 1
+                      }
+
                       textRectF.bottom = layout.height.toFloat()
                       var maxWidth = -1
-                      for (i in 0 downTo  lineCount)
-                          if (maxWidth < layout.getLineWidth(i))
+
+                      for (i in 0 downTo  lineCount){
+                          if (maxWidth < layout.getLineWidth(i)){
                               maxWidth = layout.getLineWidth(i).toInt()
-                              textRectF.right = maxWidth.toFloat()
+                          }
+                      }
+                      textRectF.right = maxWidth.toFloat()
+
                   }
-                  textRectF.offsetTo(0F, 0F);
-                      if(availablespace.contains(textRectF))
-                          return -1
-                  return 1
+                  textRectF.offsetTo(0F, 0F)
+                  return if(availablespace.contains(textRectF)){
+                      -1
+                  }else{
+                      1
+                  }
+
+
               }
           }
            initiallized = true
@@ -149,6 +166,7 @@ class ResizeEditText : TextInputEditText {
         reAdjust()
     }
 
+
     private  fun reAdjust() {
         adjustTextSize()
     }
@@ -162,6 +180,7 @@ class ResizeEditText : TextInputEditText {
         if (widthLimit <= 0) return
         availableSpaceRect.right = widthLimit.toFloat()
         availableSpaceRect.bottom = heightLimit.toFloat()
+
         super.setTextSize(
             TypedValue.COMPLEX_UNIT_PX,
             efficientTextSizeSearch(
@@ -171,16 +190,22 @@ class ResizeEditText : TextInputEditText {
         )
     }
 
-
     private fun efficientTextSizeSearch(
         start: Int, end: Int,
         sizeTester: SizeTester, availableSpace: RectF
     ): Int {
-        if (!enableSizeCache) return customBinarySearch(start, end, sizeTester, availableSpace)
+      //  if (!enableSizeCache) return customBinarySearch(start, end, sizeTester, availableSpace)
         val text = text.toString()
         val key = text?.length ?: 0
         var size: Int = textCachedSizes.get(key)
-        if (size != 0) return size
+
+        if(key >=219){
+            return miniSizeText
+        }
+        if (size != 0) {
+            return size
+        }
+
         size = customBinarySearch(start, end, sizeTester, availableSpace)
         textCachedSizes.put(key, size)
         return size
