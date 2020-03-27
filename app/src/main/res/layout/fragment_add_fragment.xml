@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:real="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainSecrePostContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#332f2c">
-
-
+    android:background="#332f2c"
+    android:gravity="center"
+    android:orientation="vertical">
     <com.cristhianbonilla.com.chilapp.ui.customviews.ResizeEditText
         android:id="@+id/addNewSecretEditText"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:background="#bfcbf6"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -22,45 +23,35 @@
         android:maxLength="250"
         android:padding="20dp"
         android:textColor="@color/white"
-        android:textSize="70sp"
-        real:layout_constraintBottom_toBottomOf="parent"
-        real:layout_constraintEnd_toEndOf="parent"
-        real:layout_constraintHorizontal_bias="0.0"
-        real:layout_constraintStart_toStartOf="parent"
-        real:layout_constraintTop_toTopOf="parent"
-        real:layout_constraintVertical_bias="0.25" />
-
-    <ImageView
-        android:id="@+id/send_secret"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:contentDescription="@string/submit"
-        android:src="@drawable/check"
-        real:layout_constraintBottom_toBottomOf="parent"
-        real:layout_constraintEnd_toEndOf="parent"
-        real:layout_constraintStart_toStartOf="@+id/guideline"
-        real:layout_constraintTop_toBottomOf="@+id/addNewSecretEditText" />
-
-    <ImageView
-        android:id="@+id/changeColor"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignLeft="@id/send_secret"
-        android:contentDescription="@string/submit"
-        android:src="@drawable/coloricon"
-        real:layout_constraintBottom_toBottomOf="parent"
-        real:layout_constraintEnd_toStartOf="@+id/guideline"
-        real:layout_constraintHorizontal_bias="0.945"
-        real:layout_constraintStart_toStartOf="parent"
-        real:layout_constraintTop_toBottomOf="@+id/addNewSecretEditText" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:layout_weight="1"
+        android:textSize="70sp" />
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        real:layout_constraintGuide_begin="271dp" />
+        android:orientation="horizontal"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="right">
+        <ImageView
+            android:id="@+id/changeColor"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:contentDescription="@string/submit"
+            android:src="@drawable/coloricon"
+            real:layout_constraintBottom_toBottomOf="parent"
+            real:layout_constraintEnd_toStartOf="@+id/guideline"
+            real:layout_constraintHorizontal_bias="0.945"
+            real:layout_constraintStart_toStartOf="parent"
+            real:layout_constraintTop_toBottomOf="@+id/addNewSecretEditText" />
+
+        <ImageView
+            android:id="@+id/send_secret"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:contentDescription="@string/submit"
+            android:src="@drawable/check"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

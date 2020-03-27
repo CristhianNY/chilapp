@@ -38,9 +38,11 @@ class ResizeEditText : TextInputEditText {
     private var miniSizeText:Int = 70
     private val textCachedSizes = SparseIntArray()
     constructor(context : Context?) : super(context)
+    @RequiresApi(Build.VERSION_CODES.O)
     constructor(context : Context, attrs: AttributeSet?) : super(context, attrs) {
         initAttrs(context, attrs)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     constructor(context : Context, attrs : AttributeSet?, defStyleAttr : Int) : super(context, attrs, defStyleAttr) {
         initAttrs(context, attrs)
     }
@@ -54,8 +56,6 @@ class ResizeEditText : TextInputEditText {
 
         minTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 6F,resources.displayMetrics)
         maxTextSize = textSize
-
-        focusable = View.FOCUSABLE
 
        if( maxline == 0){
            maxline = NO_LINE_LIMIT
@@ -194,7 +194,7 @@ class ResizeEditText : TextInputEditText {
         start: Int, end: Int,
         sizeTester: SizeTester, availableSpace: RectF
     ): Int {
-      //  if (!enableSizeCache) return customBinarySearch(start, end, sizeTester, availableSpace)
+        if (!enableSizeCache) return customBinarySearch(start, end, sizeTester, availableSpace)
         val text = text.toString()
         val key = text?.length ?: 0
         var size: Int = textCachedSizes.get(key)
@@ -202,6 +202,7 @@ class ResizeEditText : TextInputEditText {
         if(key >=219){
             return miniSizeText
         }
+
         if (size != 0) {
             return size
         }
@@ -221,9 +222,9 @@ class ResizeEditText : TextInputEditText {
             val midValCmp = sizeTester.onTestSize(mid, availableSpace)
             if (midValCmp < 0) {
                 lastBest = lo
-                lo = mid + 1
+                lo = mid + 2
             } else if (midValCmp > 0) {
-                hi = mid - 1
+                hi = mid - 2
                 lastBest = hi
             } else return mid
         }
