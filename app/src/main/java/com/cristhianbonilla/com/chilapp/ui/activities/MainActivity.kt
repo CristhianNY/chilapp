@@ -96,15 +96,17 @@ class MainActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun logOut(){
+     fun logOut(){
 
         loginDomain.deleteeUserPreference(this)
         AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener {
                 val intent = Intent(this, LoginActivty::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
                 startActivity(intent)
+                finish()
             }
     }
     fun checkPermissions(context: Context,permissionsArray:Array<String>):Boolean{

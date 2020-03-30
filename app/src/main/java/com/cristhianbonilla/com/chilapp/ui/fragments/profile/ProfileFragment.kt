@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,7 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
     lateinit var telTv: TextView
     lateinit var birth: TextView
     lateinit var tvUsernameDescription: TextView
+    lateinit var logAoutImageView : ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,13 +46,15 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
         App.instance.getComponent().inject(this)
 
         getUserInformation(root)
+
+        logAoutImageView.setOnClickListener{
+            ACTIVITY.logOut()
+        }
         return root
     }
 
     private fun initViews(root: View){
-
-     //   usernameTv = root?.findViewById(R.id.tv_username)
-
+        logAoutImageView = root?.findViewById(R.id.log_out)
     }
     private fun getUserInformation(root: View){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
