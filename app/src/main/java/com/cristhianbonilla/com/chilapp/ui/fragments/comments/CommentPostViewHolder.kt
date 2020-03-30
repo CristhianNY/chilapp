@@ -10,7 +10,6 @@ import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.contrats.comments.RecyclerCommentsPostListener
 import com.cristhianbonilla.com.chilapp.domain.dtos.CommentPostDto
 import kotlinx.android.synthetic.main.item_comments.view.*
-import kotlinx.android.synthetic.main.item_secret_post.view.owner_anonymous
 
 
 class CommentPostViewHolder constructor(
@@ -32,8 +31,6 @@ class CommentPostViewHolder constructor(
            // commentCardView.animation = AnimationUtils.loadAnimation(App.instance.applicationContext, R.anim.fade_transation_animation)
             lastPosition = position
         }
-        
-        ownerAnonymous.setText("Un Amigo de whatsapp")
         secretPostMessage.setText(commentPost.comment)
 
         ownerAnonymous.setOnClickListener(View.OnClickListener {

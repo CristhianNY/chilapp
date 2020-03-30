@@ -50,8 +50,11 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
             )
         }
 
+      // solo para limpiar la app  getFirebaseInstance().child("secretPost").removeValue()
         val contacts = getContacts(context)
         getFirebaseInstance().child("secretPost").child(user!!.phone+"/$Key").setValue(secretPost)
+        getFirebaseInstance().child("all").child("$Key").setValue(secretPost)
+
         for (contact in contacts ){
 
             if(contact.number!= user?.phone){
@@ -209,6 +212,10 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
 
     override suspend fun getSecretPostRealTimeDataBase(userDto: UserDto?): DatabaseReference {
        return getFirebaseInstance().child("secretPost/${userDto?.phone}")
+    }
+
+    override suspend fun getALlSecretPostRealTimeDataBase(): DatabaseReference {
+        return getFirebaseInstance().child("all")
     }
 
     override suspend fun getSecretPostRealTimeDataBaseLikes(userDto: UserDto?): DatabaseReference {

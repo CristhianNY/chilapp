@@ -1,27 +1,24 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.vvalidator.util.hide
 import com.afollestad.vvalidator.util.show
-import com.airbnb.lottie.LottieAnimationView
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.domain.comments.CommentsDomain
 import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivity
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
@@ -29,16 +26,13 @@ import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.ui.fragments.addSecret.AddSecretDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
-import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.counter_panel.view.*
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.item_secret_post.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -47,6 +41,9 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     private lateinit var secretPostRecyclerView: RecyclerView
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
     private lateinit var addNewSecretBtn: FloatingActionButton
+    private lateinit var forYouSecrets: TextView
+    private lateinit var worldSecretTextview: TextView
+
     lateinit var progresSecretPost: ProgressBar
     var colorPost:String ="#616161"
     var boolean:Boolean = true
@@ -120,12 +117,45 @@ companion object{
             dialog?.setArguments(args)
             fragmentManager?.let { dialog?.show(it, "addNewSecret") }
         }
+
+        forYouSecrets.setOnClickListener{
+
+            forYouSecrets.setTypeface(null, Typeface.BOLD)
+            worldSecretTextview.setTypeface(null, Typeface.NORMAL)
+
+            CoroutineScope(IO).launch {
+                val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
+
+                user?.let { vm.getSecretPostFromFirebaseRealTIme(it) }
+
+                user?.let { vm.getSecretPostLikes(it) }
+            }
+        }
+
+        worldSecretTextview.setOnClickListener{
+            forYouSecrets.setTypeface(null, Typeface.NORMAL)
+            worldSecretTextview.setTypeface(null, Typeface.BOLD)
+            CoroutineScope(IO).launch{
+                vm.getAllSecrets()
+            }
+
+        }
+
+
         return root
+    }
+
+   override fun onResume() {
+        super.onResume()
+        vm.postList.value?.count()?.let { secretPostRecyclerView.scrollToPosition(it-1) }
     }
 
     private fun initViews(root: View?){
         progresSecretPost = root?.findViewById(R.id.progresSecretPost) as ProgressBar
         addNewSecretBtn = root?.findViewById(R.id.add_new_secret_btn) as FloatingActionButton
+        forYouSecrets = root?.findViewById(R.id.for_you_secrets) as TextView
+        worldSecretTextview = root?.findViewById(R.id.everyone_secret) as TextView
+
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
@@ -155,10 +185,7 @@ companion object{
         secretPostRecyclerView?.layoutManager = linearLayoutManager
         secretPostRecyclerView?.adapter = adapter
     }
-    private suspend fun saveSecretPostToFirebaseStore(messageWhatareYouThinking: String){
-        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-        user?.let { dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking, it, colorPost) }
-    }
+
 
     override fun itemCliekc(
         view: View,
@@ -236,25 +263,23 @@ companion object{
     }
 
     override fun printElement(secretPost: SecretPost, position: Int, itemView:View) {
-        val ownerAnonymous :TextView = itemView.owner_anonymous
         val secretPostMessage :TextView = itemView.secret_post_message
         val likesImageView : ImageView = itemView.likesImageView
         val disLikesImageView : ImageView = itemView.dislike
         val numOfLikes : TextView = itemView.num_of_likes
         val progresLikes : ProgressBar = itemView.progresLikes
-        val card : CardView = itemView.card_view
         val numOfComments : TextView = itemView.num_of_comments
+        val container: LinearLayout = itemView.postCointainer
 
         progresLikes.hide()
 
         progresSecretPost.hide()
 
+        container.setBackgroundColor(Color.parseColor(secretPost.color))
+
         numOfComments.text = secretPost.comments.toString()
 
         context?.let { dashBoardDomain.saveAnimationPreference(true, it) }
-
-        card.setBackgroundColor(Color.parseColor(secretPost.color))
-
 
        var isLiked =  postLikeds.any {
             it.id == secretPost.id
@@ -267,7 +292,7 @@ companion object{
             likesImageView.visibility = View.VISIBLE
             disLikesImageView.visibility = View.INVISIBLE
         }
-        ownerAnonymous.text = ""
+
         secretPostMessage.text = secretPost.message
         numOfLikes.text  = secretPost.likes.toString()
     }

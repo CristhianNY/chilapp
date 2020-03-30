@@ -90,6 +90,29 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
         })
     }
 
+    suspend fun getAllSecrets(){
+        val secretpostlist = ArrayList<SecretPost>()
+        dashBoardRepository.getALlSecretPostRealTimeDataBase().limitToLast(100).addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                secretpostlist.clear()
+                for (postSnapshot in dataSnapshot.children) {
+
+                    var sercretPost = postSnapshot.getValue(SecretPost::class.java)
+                    sercretPost?.let { secretpostlist.add(it) }
+
+                    postList.value  = secretpostlist
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("onCancelled", "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+    }
+
     suspend fun getSecretPostLikes(user: UserDto){
 
         val secretpostlist = ArrayList<SecretPost>()

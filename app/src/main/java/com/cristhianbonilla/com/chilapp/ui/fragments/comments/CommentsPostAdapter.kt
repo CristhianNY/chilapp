@@ -54,7 +54,6 @@ class CommentsPostAdapter(
             lastPosition = position
         }
 
-
         when(holder){
             is CommentPostViewHolder ->{
                 holder.bind(commentItems.get(position), recyclerpostListener, position)

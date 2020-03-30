@@ -10,10 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Scroller
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
@@ -37,7 +34,7 @@ class AddSecretDialogFragment : BaseDialogFragment() {
     lateinit var addNewSecreEditText:EditText
     lateinit var colorImageIcon: ImageView
     lateinit var btnSendSecret: ImageView
-    var colorHexadecimal:String = "#6f00ff"
+    var color:String = "#bfcbf6"
     lateinit var contaninerContraintLayout:LinearLayout
 
     override fun onCreateView(
@@ -49,40 +46,35 @@ class AddSecretDialogFragment : BaseDialogFragment() {
 
         initViews(view)
 
+        var colores = arrayListOf(
+            "#f6e58d", "#ffbe76", "#ff7979", "#badc58", "#dff9fb",
+            "#7ed6df", "#e056fd", "#686de0", "#30336b", "#95afc0","#c60055",
+            "#003c8f","#3f1dcb", "#005ecb","#9a0007" ,"#7f0000","#00701a","#005005",
+            "#bc5100" ,"#c41c00" ,"#4b2c20", "#1b0000","#34515e")
+
+
+
          colorImageIcon.setOnClickListener{
-
-             activity?.let { it1 ->
-                 MaterialColorPickerDialog
-                     .Builder(it1)       			// Pass Activity Instance
-                     .setColors(							// Pass Predefined Hex Color
-                         arrayListOf(
-                             "#f6e58d", "#ffbe76", "#ff7979", "#badc58", "#dff9fb",
-                             "#7ed6df", "#e056fd", "#686de0", "#30336b", "#95afc0","#c60055",
-                             "#003c8f","#3f1dcb", "#005ecb","#9a0007" ,"#7f0000","#00701a","#005005",
-                             "#bc5100" ,"#c41c00" ,"#4b2c20", "#1b0000","#34515e"
-                         )
-                     ).setTitle("Seleccionar Color")
-                     .setColorListener { color, colorHex ->
-                         // Handle Color Selection
-                         colorHexadecimal = colorHex
-                         addNewSecreEditText.setBackgroundColor(color)
-                         contaninerContraintLayout.setBackgroundColor(color)
-                     }
-                     .show()
-             }
-
+             color = colores.random()
+             contaninerContraintLayout.setBackgroundColor(Color.parseColor(color))
+             addNewSecreEditText.setBackgroundColor(Color.parseColor(color))
         }
 
 
         btnSendSecret.setOnClickListener{
 
-            CoroutineScope(IO).launch {
+            if(addNewSecreEditText.text.isNullOrEmpty()){
+                Toast.makeText(context,"Por favor ingresa un Secreto", Toast.LENGTH_LONG).show()
+            }else{
+                CoroutineScope(IO).launch {
 
-                var contentToSearch = addNewSecreEditText.text
-                saveSecretPostToFirebaseStore(contentToSearch.toString())
+                    var contentToSearch = addNewSecreEditText.text
+                    saveSecretPostToFirebaseStore(contentToSearch.toString())
+                }
+                this.dismiss()
             }
 
-            this.dismiss()
+
         }
 
         hideSoftKeyboard(view)
@@ -105,7 +97,7 @@ class AddSecretDialogFragment : BaseDialogFragment() {
 
     private  fun saveSecretPostToFirebaseStore(messageWhatareYouThinking: String){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-        user?.let { dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking, it, colorHexadecimal) }
+        user?.let { dashBoardDomain.saveSecretPost(ACTIVITY,messageWhatareYouThinking, it, color ) }
     }
 
 

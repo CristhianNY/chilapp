@@ -70,6 +70,8 @@
     <dimen name="follow_button_width">100dp</dimen>
     <dimen name="follow_button_height">32dp</dimen>
 
+    <dimen name="maxSizeTextView">70dp</dimen>
+    <dimen name="minSizeTextView">70dp</dimen>
 
     <dimen name="tab_indicator_height">4dp</dimen>
 
