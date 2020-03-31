@@ -34,7 +34,8 @@ class AddSecretDialogFragment : BaseDialogFragment() {
     lateinit var addNewSecreEditText:EditText
     lateinit var colorImageIcon: ImageView
     lateinit var btnSendSecret: ImageView
-    var color:String = "#bfcbf6"
+    var color:String = "#002171"
+
     lateinit var contaninerContraintLayout:LinearLayout
 
     override fun onCreateView(
