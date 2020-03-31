@@ -120,7 +120,7 @@ companion object{
 
         forYouSecrets.setOnClickListener{
 
-            forYouSecrets.setTypeface(null, Typeface.BOLD)
+            forYouSecrets.setTypeface(null, Typeface.BOLD_ITALIC)
             worldSecretTextview.setTypeface(null, Typeface.NORMAL)
 
             CoroutineScope(IO).launch {
@@ -134,7 +134,7 @@ companion object{
 
         worldSecretTextview.setOnClickListener{
             forYouSecrets.setTypeface(null, Typeface.NORMAL)
-            worldSecretTextview.setTypeface(null, Typeface.BOLD)
+            worldSecretTextview.setTypeface(null,Typeface.BOLD_ITALIC)
             CoroutineScope(IO).launch{
                 vm.getAllSecrets()
             }
