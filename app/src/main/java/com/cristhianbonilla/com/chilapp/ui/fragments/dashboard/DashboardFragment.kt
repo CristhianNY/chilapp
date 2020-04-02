@@ -274,11 +274,8 @@ companion object{
         picasso.load("https://www.artistasamerica.com/wp-content/uploads/2019/08/mariachi3.jpg")
             .into(bandPost, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
-
-                    Toast.makeText(context,"cargo",Toast.LENGTH_LONG).show()
                 }
                 override fun onError(e: Exception?) {
-                    Toast.makeText(context,e.toString(),Toast.LENGTH_LONG).show()
                 }
             })
         numOfLikes.text  = secretPost.likes.toString()

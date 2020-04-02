@@ -86,18 +86,42 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/whatsapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingRight="@dimen/intrinsic_padding"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/whatappImagen"
+            app:srcCompat="@drawable/whatsapp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/whatsappText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/whatsapp"
+            android:paddingLeft="@dimen/small_intrinsic_padding"
+            android:textAppearance="@style/TextAppearance.Second.Light" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/dateContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/intrinsic_padding"
-        android:paddingBottom="@dimen/intrinsic_padding"
+        android:paddingTop="10dp"
         android:paddingRight="@dimen/intrinsic_padding"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/dateImageView"
-            app:srcCompat="@drawable/ic_time"
+            android:id="@+id/camImageView"
+            app:srcCompat="@android:drawable/presence_video_online"
             android:layout_width="30dp"
             android:layout_height="30dp" />
 
@@ -105,6 +129,7 @@
             android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/virtual_music"
             android:paddingLeft="@dimen/small_intrinsic_padding"
             android:textAppearance="@style/TextAppearance.Second.Light" />
 

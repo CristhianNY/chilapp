@@ -35,5 +35,7 @@
     <string name="friends">Amigos</string>
     <string name="world">Para ti</string>
     <string name="insert_comment">Agregar Comentario</string>
+    <string name="virtual_music">Serenata</string>
+    <string name="whatsapp">WhatsApp</string>
 
 </resources>

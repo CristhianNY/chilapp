@@ -47,23 +47,13 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
                 0,
                 color,
                 0,
-                "","youtube",
-                "telefono"
+                "https://www.artistasamerica.com/wp-content/uploads/2019/08/mariachi3.jpg",
+                "https://www.youtube.com/watch?v=Q71sLoiyA4w&t=17s",
+                "+573046452757"
             )
         }
 
-      // solo para limpiar la app  getFirebaseInstance().child("secretPost").removeValue()
-        val contacts = getContacts(context)
-        getFirebaseInstance().child("secretPost").child(user!!.phone+"/$Key").setValue(secretPost)
         getFirebaseInstance().child("all").child("$Key").setValue(secretPost)
-
-        for (contact in contacts ){
-
-            if(contact.number!= user?.phone){
-                getFirebaseInstance().child("secretPost").child(contact.number+"/$Key").setValue(secretPost)
-            }
-
-        }
     }
 
     override fun likeSecretPost(secretPost: SecretPost, context: Context, user: UserDto? , sumLikes:Int) {
