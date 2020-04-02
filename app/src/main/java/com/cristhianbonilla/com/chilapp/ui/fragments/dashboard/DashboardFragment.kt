@@ -1,6 +1,9 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -248,11 +251,32 @@ companion object{
         val numOfLikes : TextView = itemView.num_of_likes
         val progresLikes : ProgressBar = itemView.progresLikes
         val numOfComments : TextView = itemView.num_of_comments
+        val whatsappIcon : ImageView = itemView.whatappImagen
 
         progresLikes.hide()
 
         progresSecretPost.hide()
 
+        whatsappIcon.setOnClickListener{
+            val pm: PackageManager = context!!.packageManager
+            try {
+                val waIntent = Intent(Intent.ACTION_SEND)
+                waIntent.type = "text/plain"
+                val text = "This is  a Test" // Replace with your own message.
+                val info: PackageInfo =
+                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
+                //Check if package exists or not. If not then code
+                //in catch block will be called
+                waIntent.setPackage("com.whatsapp")
+                waIntent.putExtra(Intent.EXTRA_TEXT, text)
+                startActivity(Intent.createChooser(waIntent, "Share with"))
+            } catch (e: PackageManager.NameNotFoundException) {
+                Toast.makeText(context, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                    .show()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
      //   container.setBackgroundColor(Color.parseColor(secretPost.color))
 
         numOfComments.text = secretPost.comments.toString()
