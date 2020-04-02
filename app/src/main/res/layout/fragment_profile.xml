@@ -147,6 +147,18 @@
                     android:layout_marginTop="15dp"
                     android:background="@color/grey" />
             </LinearLayout>
+
         </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/video_meeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:src="@android:drawable/presence_video_online"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"
+            android:layout_marginRight="30dp"
+            android:contentDescription="@string/submit" />
     </RelativeLayout>
 </RelativeLayout>

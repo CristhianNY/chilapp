@@ -1,5 +1,6 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,10 @@ import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.contrats.profile.ProfileFragmentListerner
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.domain.profile.ProfileDomain
+import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
+import com.cristhianbonilla.com.chilapp.ui.activities.meeting.ZoomMeetingActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,6 +36,7 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
     lateinit var birth: TextView
     lateinit var tvUsernameDescription: TextView
     lateinit var logAoutImageView : ImageView
+    lateinit var videoMeeting : FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,11 +55,19 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
         logAoutImageView.setOnClickListener{
             ACTIVITY.logOut()
         }
+
+        videoMeeting.setOnClickListener{
+            val intent = Intent(context, ZoomMeetingActivity::class.java)
+            startActivity(intent)
+        }
         return root
+
+
     }
 
     private fun initViews(root: View){
         logAoutImageView = root?.findViewById(R.id.log_out)
+        videoMeeting = root?.findViewById(R.id.video_meeting)
     }
     private fun getUserInformation(root: View){
         val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }

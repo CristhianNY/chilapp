@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':commonlib', ':mobilertc'
 rootProject.name='Chilapp'
