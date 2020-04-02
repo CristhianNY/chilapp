@@ -46,7 +46,9 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
                 it,
                 0,
                 color,
-                0
+                0,
+                "","youtube",
+                "telefono"
             )
         }
 

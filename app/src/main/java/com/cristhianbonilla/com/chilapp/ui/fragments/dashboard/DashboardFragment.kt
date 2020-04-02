@@ -1,12 +1,14 @@
 package com.cristhianbonilla.com.chilapp.ui.fragments.dashboard
 
-import android.graphics.Color
-import android.graphics.Typeface
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -35,7 +37,6 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
@@ -116,7 +117,12 @@ companion object{
             dialog?.setArguments(args)
             fragmentManager?.let { dialog?.show(it, "addNewSecret") }
         }
+        val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
+        @SuppressLint("RestrictedApi")
+        if(!user?.phone.equals("+573157119388")){
+            addNewSecretBtn.visibility = View.GONE
+        }
 
         return root
     }
