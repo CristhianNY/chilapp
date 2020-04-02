@@ -27,6 +27,7 @@ import com.cristhianbonilla.com.chilapp.ui.fragments.addSecret.AddSecretDialogFr
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.counter_panel.view.*
 import kotlinx.android.synthetic.main.item_secret_post.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -41,8 +42,6 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     private lateinit var secretPostRecyclerView: RecyclerView
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
     private lateinit var addNewSecretBtn: FloatingActionButton
-    private lateinit var forYouSecrets: TextView
-    private lateinit var worldSecretTextview: TextView
 
     lateinit var progresSecretPost: ProgressBar
     var colorPost:String ="#616161"
@@ -96,7 +95,7 @@ companion object{
 
             val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
 
-            user?.let { vm.getSecretPostFromFirebaseRealTIme(it) }
+            user?.let { vm.getAllSecrets() }
 
             user?.let { vm.getSecretPostLikes(it) }
         }
@@ -118,29 +117,6 @@ companion object{
             fragmentManager?.let { dialog?.show(it, "addNewSecret") }
         }
 
-        forYouSecrets.setOnClickListener{
-
-            forYouSecrets.setTypeface(null, Typeface.BOLD_ITALIC)
-            worldSecretTextview.setTypeface(null, Typeface.NORMAL)
-
-            CoroutineScope(IO).launch {
-                val user =  context?.let { ACTIVITY.loginDomain.getUserPreference("userId",it) }
-
-                user?.let { vm.getSecretPostFromFirebaseRealTIme(it) }
-
-                user?.let { vm.getSecretPostLikes(it) }
-            }
-        }
-
-        worldSecretTextview.setOnClickListener{
-            forYouSecrets.setTypeface(null, Typeface.NORMAL)
-            worldSecretTextview.setTypeface(null,Typeface.BOLD_ITALIC)
-            CoroutineScope(IO).launch{
-                vm.getAllSecrets()
-            }
-
-        }
-
 
         return root
     }
@@ -153,9 +129,6 @@ companion object{
     private fun initViews(root: View?){
         progresSecretPost = root?.findViewById(R.id.progresSecretPost) as ProgressBar
         addNewSecretBtn = root?.findViewById(R.id.add_new_secret_btn) as FloatingActionButton
-        forYouSecrets = root?.findViewById(R.id.for_you_secrets) as TextView
-        worldSecretTextview = root?.findViewById(R.id.everyone_secret) as TextView
-
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
@@ -263,19 +236,18 @@ companion object{
     }
 
     override fun printElement(secretPost: SecretPost, position: Int, itemView:View) {
-        val secretPostMessage :TextView = itemView.secret_post_message
+        val bandPost :ImageView = itemView.image_band
         val likesImageView : ImageView = itemView.likesImageView
         val disLikesImageView : ImageView = itemView.dislike
         val numOfLikes : TextView = itemView.num_of_likes
         val progresLikes : ProgressBar = itemView.progresLikes
         val numOfComments : TextView = itemView.num_of_comments
-        val container: LinearLayout = itemView.postCointainer
 
         progresLikes.hide()
 
         progresSecretPost.hide()
 
-        container.setBackgroundColor(Color.parseColor(secretPost.color))
+     //   container.setBackgroundColor(Color.parseColor(secretPost.color))
 
         numOfComments.text = secretPost.comments.toString()
 
@@ -292,8 +264,17 @@ companion object{
             likesImageView.visibility = View.VISIBLE
             disLikesImageView.visibility = View.INVISIBLE
         }
+        val picasso = Picasso.get()
+        picasso.load("https://www.artistasamerica.com/wp-content/uploads/2019/08/mariachi3.jpg")
+            .into(bandPost, object: com.squareup.picasso.Callback {
+                override fun onSuccess() {
 
-        secretPostMessage.text = secretPost.message
+                    Toast.makeText(context,"cargo",Toast.LENGTH_LONG).show()
+                }
+                override fun onError(e: Exception?) {
+                    Toast.makeText(context,e.toString(),Toast.LENGTH_LONG).show()
+                }
+            })
         numOfLikes.text  = secretPost.likes.toString()
     }
 

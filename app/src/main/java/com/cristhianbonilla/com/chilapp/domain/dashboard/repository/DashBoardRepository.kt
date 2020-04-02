@@ -81,16 +81,9 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
         contacts: List<ContactDto>
     ) {
         getFirebaseInstance().child("secretPostLikedByUser")
-        getFirebaseInstance().child("secretPost")
-            .child(user!!.phone + "/${secretPost.id}" + "/likes").setValue(sumLikes)
+        getFirebaseInstance().child("all")
+            .child("/${secretPost.id}" + "/likes").setValue(sumLikes)
 
-        for (contact in contacts) {
-
-            if (contact.number != user?.phone) {
-                getFirebaseInstance().child("secretPost")
-                    .child(contact!!.number + "/${secretPost.id}" + "/likes").setValue(sumLikes)
-            }
-        }
     }
 
     override fun makeDislikeSecretPost(
