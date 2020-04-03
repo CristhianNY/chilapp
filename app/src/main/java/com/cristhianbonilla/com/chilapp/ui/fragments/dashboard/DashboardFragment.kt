@@ -8,10 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -28,6 +25,7 @@ import com.cristhianbonilla.com.chilapp.domain.contrats.dashboard.ListenerActivi
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.SecretPost
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
+import com.cristhianbonilla.com.chilapp.ui.activities.meeting.ZoomMeetingActivity
 import com.cristhianbonilla.com.chilapp.ui.fragments.addSecret.AddSecretDialogFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.base.BaseFragment
 import com.cristhianbonilla.com.chilapp.ui.fragments.comments.CommentsDialogFragment
@@ -252,11 +250,16 @@ companion object{
         val progresLikes : ProgressBar = itemView.progresLikes
         val numOfComments : TextView = itemView.num_of_comments
         val whatsappIcon : ImageView = itemView.whatappImagen
+        val videoCall : LinearLayout = itemView.camContainer
 
         progresLikes.hide()
 
         progresSecretPost.hide()
 
+        videoCall.setOnClickListener{
+            val intent = Intent(context, ZoomMeetingActivity::class.java)
+            startActivity(intent)
+        }
         whatsappIcon.setOnClickListener{
             val pm: PackageManager = context!!.packageManager
             try {

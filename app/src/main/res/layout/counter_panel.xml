@@ -111,7 +111,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/dateContainer"
+        android:id="@+id/camContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
