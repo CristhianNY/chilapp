@@ -69,36 +69,6 @@
         android:background="@drawable/et_custom"
         android:textSize="15sp" />
 
-    <EditText
-        android:id="@+id/edit_age"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="@string/age"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:padding="15dp"
-        android:inputType="date"
-        android:background="@drawable/et_custom"
-        android:clickable="true"
-        android:focusableInTouchMode="false"
-        android:textSize="15sp" />
-
-    <TextView
-        android:layout_marginTop="10dp"
-        android:id="@+id/ageMessage"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:padding="15dp"
-        android:text="@string/age_not_permitted"
-        android:clickable="true"
-        android:visibility="invisible"
-        android:textColor="@color/colorAccent"
-        android:focusableInTouchMode="false"
-        android:textSize="15sp" />
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"

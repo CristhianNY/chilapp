@@ -49,7 +49,8 @@ class DashBoardRepository @Inject constructor(listenerDomain: ListenerDomain) : 
                 0,
                 "https://www.artistasamerica.com/wp-content/uploads/2019/08/mariachi3.jpg",
                 "https://www.youtube.com/watch?v=Q71sLoiyA4w&t=17s",
-                "+573046452757"
+                "+573046452757",
+                "Mariachis"
             )
         }
 

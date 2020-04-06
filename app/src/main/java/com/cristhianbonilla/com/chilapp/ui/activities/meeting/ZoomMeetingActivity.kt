@@ -1,13 +1,20 @@
 package com.cristhianbonilla.com.chilapp.ui.activities.meeting
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.constants.Constants
+import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import us.zoom.sdk.*
+import javax.inject.Inject
 
 
 class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeListener,
@@ -19,10 +26,15 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     lateinit var meetingCode:EditText
     lateinit var mZoomSDK:ZoomSDK
 
+
+    @Inject
+    lateinit var loginDomain : LoginDomain
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zoom_meeting)
 
+        (application as App).getComponent().inject(this)
 
         btnJoinMeeting = findViewById<Button>(R.id.joinMeeting)
         meetingCode = findViewById<EditText>(R.id.meeting_code)
@@ -56,10 +68,38 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
             joinMeetingClick()
         }
 
+        val user = loginDomain.getUserPreference("userId",this)
         startMeeting.setOnClickListener{
+
+        if(user.type == "admin"){
+
             StartSerenata()
+        }else{
+            val pm: PackageManager = this!!.packageManager
+            try {
+                val waIntent = Intent(Intent.ACTION_SEND)
+                waIntent.type = "text/plain"
+                val text = "Hola Soy ${user.name} Soy un artista y Quiero Activar Serenatas virtuales " // Replace with your own message.
+                val info: PackageInfo =
+                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
+                //Check if package exists or not. If not then code
+                //in catch block will be called
+                waIntent.setPackage("com.whatsapp")
+                waIntent.putExtra(Intent.EXTRA_TEXT, text)
+                startActivity(Intent.createChooser(waIntent, "Share with"))
+            } catch (e: PackageManager.NameNotFoundException) {
+                 AlertDialog.Builder(this)
+                    .setTitle("Necesitas Activar").setMessage("Por favor escribe al whatsapp +57 315 711 9388 y solicita activación ")
+                    .setIcon(android.R.drawable.presence_video_online).show()
+
+                Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                    .show()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
         }
 
+        }
 
     }
 

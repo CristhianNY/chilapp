@@ -8,8 +8,9 @@ data class  SecretPost(var message:String,
                        var comments:Int,
                        var imgaeUrl:String,
                        var videoUrl:String,
-                        var telefono:String){
+                       var telefono:String,
+                       var category:String){
 
-    constructor() : this("","","",0,"",0,"","","")
+    constructor() : this("","","",0,"",0,"","","","")
 }
 

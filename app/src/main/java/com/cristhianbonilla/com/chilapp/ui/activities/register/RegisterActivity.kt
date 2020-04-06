@@ -23,14 +23,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var editUsername : EditText
     lateinit var editLastName : EditText
     lateinit var editEmail : EditText
-    lateinit var editAge : EditText
 
-    val c = Calendar.getInstance()
-    val year = c.get(Calendar.YEAR)
-    val month = c.get(Calendar.MONTH)
-    val day = c.get(Calendar.DAY_OF_MONTH)
-
-    lateinit var bitdDate:String
 
     lateinit var validateUserPreferen : UserPreferenceValidator
 
@@ -45,10 +38,6 @@ class RegisterActivity : AppCompatActivity() {
 
         initViews()
 
-        editAge.setOnClickListener(View.OnClickListener {
-
-            showdatePicker()
-        })
 
         validateUserPreferen =
             UserPreferenceValidator()
@@ -73,32 +62,12 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-
     private fun initViews(){
 
         editUsername = findViewById(R.id.edit_username)
         editLastName = findViewById(R.id.edit_last_name)
         editEmail = findViewById(R.id.edit_email)
-        editAge = findViewById(R.id.edit_age)
 
-    }
-
-    private fun showdatePicker() {
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            editAge.setText(loginDomain.getAge(year,monthOfYear,dayOfMonth))
-           // editAge.setText("$dayOfMonth /$monthOfYear/
-            // editAge.setText("$dayOfMonth /$monthOfYear/$year")
-            bitdDate = "$dayOfMonth/$monthOfYear/$year"
-
-            if(loginDomain.getAge(year,monthOfYear,dayOfMonth)?.toInt()!! <14){
-                ageMessage.visibility = View.VISIBLE
-            }else{
-                ageMessage.visibility = View.INVISIBLE
-            }
-
-        }, year, month, day)
-
-        dpd.show()
     }
 
     private fun formValidation() {
@@ -120,11 +89,6 @@ class RegisterActivity : AppCompatActivity() {
                 isNotEmpty().description("Por favor ingresa un correo electronico valido")
             }
 
-            input(R.id.edit_age) {
-                isNotEmpty().description("Por favor ingresa una fecha para determinar tu edad")
-                isNumber().atLeast(14).description("Debes ser mayor de 14 años o mas para poder registrarte")
-
-            }
 
             submitWith(R.id.btnRegister) { result ->
                 // this block is only called if form is valid.
@@ -141,9 +105,8 @@ class RegisterActivity : AppCompatActivity() {
             editUsername.text.toString(),
             editLastName.text.toString(),
             editEmail.text.toString(),
-            bitdDate,
             user?.phoneNumber.toString(),
-            user?.uid.toString()
+            user?.uid.toString(),"client"
         )
 
         loginDomain.saveUser(userD,this)

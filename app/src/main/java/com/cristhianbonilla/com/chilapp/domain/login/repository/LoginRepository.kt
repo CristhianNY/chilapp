@@ -28,7 +28,7 @@ class LoginRepository :
         editor.putString("lastName", user.lastName)
         editor.putString("userPhone", user.phone)
         editor.putString("userID", user.userId)
-        editor.putString("usetBirthDate", user.birthDate)
+        editor.putString("type", user.type)
         editor.apply()
 
 
@@ -62,9 +62,9 @@ class LoginRepository :
             settings.getString("userName", null)!!,
             settings.getString("lastName", null)!!,
             settings.getString("userEmail", null)!!,
-            settings.getString("usetBirthDate", null)!!,
             settings.getString("userPhone", null)!!,
-            settings.getString("userID", null)!!
+            settings.getString("userID", null)!!,
+            settings.getString("type", null)!!
         )
         return user
     }

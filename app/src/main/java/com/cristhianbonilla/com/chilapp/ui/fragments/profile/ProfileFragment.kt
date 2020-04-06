@@ -33,7 +33,6 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
     lateinit var usernameTv: TextView
     lateinit var emailTv: TextView
     lateinit var telTv: TextView
-    lateinit var birth: TextView
     lateinit var tvUsernameDescription: TextView
     lateinit var logAoutImageView : ImageView
     lateinit var videoMeeting : FloatingActionButton
@@ -105,13 +104,11 @@ class ProfileFragment : BaseFragment() , ProfileFragmentListerner {
         usernameTv = root.findViewById(R.id.tv_username)
         emailTv = root.findViewById(R.id.tv_email)
         telTv = root.findViewById(R.id.phone_tv)
-        birth = root.findViewById(R.id.birth_tv)
         tvUsernameDescription = root.findViewById(R.id.tv_username_description)
 
         usernameTv.text= userDto?.name
         emailTv.text = userDto?.email
         telTv.text = userDto?.phone
-        birth.text = userDto?.birthDate
         tvUsernameDescription.text = userDto?.name
 
     }
