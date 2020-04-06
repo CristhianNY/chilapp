@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -251,11 +252,20 @@ companion object{
         val numOfComments : TextView = itemView.num_of_comments
         val whatsappIcon : ImageView = itemView.whatappImagen
         val videoCall : LinearLayout = itemView.camContainer
+        val youtubeVideo : LinearLayout = itemView.youtube_video
 
         progresLikes.hide()
 
         progresSecretPost.hide()
 
+        youtubeVideo.setOnClickListener{
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(secretPost.videoUrl)
+                )
+            )
+        }
         videoCall.setOnClickListener{
             val intent = Intent(context, ZoomMeetingActivity::class.java)
             startActivity(intent)

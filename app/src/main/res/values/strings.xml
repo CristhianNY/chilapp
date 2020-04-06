@@ -37,5 +37,7 @@
     <string name="insert_comment">Agregar Comentario</string>
     <string name="virtual_music">Serenata</string>
     <string name="whatsapp">WhatsApp</string>
+    <string name="youtube">YouTube</string>
+    <string name="startMeeting">Empezar Serenata</string>
 
 </resources>

@@ -15,7 +15,9 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     ZoomSDKAuthenticationListener {
 
     lateinit var btnJoinMeeting:Button
+    lateinit var startMeeting:Button
     lateinit var meetingCode:EditText
+    lateinit var mZoomSDK:ZoomSDK
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +26,10 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
         btnJoinMeeting = findViewById<Button>(R.id.joinMeeting)
         meetingCode = findViewById<EditText>(R.id.meeting_code)
-        val zoomSDK = ZoomSDK.getInstance()
+        startMeeting = findViewById<Button>(R.id.startMetting)
+
+         mZoomSDK = ZoomSDK.getInstance()
+         mZoomSDK.loginWithZoom("cristhianbonillacolombia@gmail.com","Cristhian$123")
         val initParams = ZoomSDKInitParams()
         //initParams.jwtToken = SDK_JWTTOKEN;
         //initParams.jwtToken = SDK_JWTTOKEN;
@@ -34,10 +39,11 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         initParams.logSize = 50
         initParams.domain = "zoom.us"
         initParams.videoRawDataMemoryMode = ZoomSDKRawDataMemoryMode.ZoomSDKRawDataMemoryModeStack
-        zoomSDK.initialize(this,this,initParams)
+        mZoomSDK.initialize(this,this,initParams)
+
 
         if (savedInstanceState == null) {
-            zoomSDK.initialize(
+            mZoomSDK.initialize(
                 this,
                 Constants.SDK_KEY,
                 Constants.SDK_SECRET,
@@ -49,6 +55,49 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
             joinMeetingClick()
         }
+
+        startMeeting.setOnClickListener{
+            StartSerenata()
+        }
+
+
+    }
+
+
+    private fun StartSerenata() {
+        // Step 1: Get Zoom SDK instance.
+
+        // Step 1: Get Zoom SDK instance.
+
+
+        // Check if the zoom SDK is initialized
+        // Check if the zoom SDK is initialized
+        if (!mZoomSDK.isInitialized) {
+            Toast.makeText(this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG)
+                .show()
+            return
+        }
+        // Step 2: Get meeting service from zoom SDK instance.
+        // Step 2: Get meeting service from zoom SDK instance.
+        val meetingService = mZoomSDK.meetingService
+
+        val mInMeetingAudioController = ZoomSDK.getInstance().inMeetingService.inMeetingAudioController;
+
+        mInMeetingAudioController.connectAudioWithVoIP()
+
+        // Step 3: Configure meeting options.
+        // Step 3: Configure meeting options.
+        val opts = InstantMeetingOptions()
+
+        opts.no_disconnect_audio = true;
+        // Some available options
+
+        // Some available options
+
+        // Step 4: Call meeting service to start instant meeting
+
+        // Step 4: Call meeting service to start instant meeting
+        meetingService.startInstantMeeting(this, opts)
     }
 
     fun joinMeetingClick(){
@@ -71,6 +120,11 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
         // Step 2: Get Zoom SDK instance.
         val zoomSDK = ZoomSDK.getInstance()
+
+        val mInMeetingAudioController = ZoomSDK.getInstance().inMeetingService.inMeetingAudioController;
+
+        mInMeetingAudioController.connectAudioWithVoIP()
+
         // Check if the zoom SDK is initialized
         // Check if the zoom SDK is initialized
         if (!zoomSDK.isInitialized) {
@@ -78,6 +132,8 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
                 .show()
             return
         }
+
+
 
         // Step 3: Get meeting service from zoom SDK instance.
 
@@ -97,7 +153,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         //		opts.no_bottom_toolbar = true;
         //		opts.no_dial_in_via_phone = true;
         //		opts.no_dial_out_to_phone = true;
-        //		opts.no_disconnect_audio = true;
+        		opts.no_disconnect_audio = true;
         //		opts.no_share = true;
         //		opts.invite_options = InviteOptions.INVITE_VIA_EMAIL + InviteOptions.INVITE_VIA_SMS;
         //		opts.no_audio = true;
@@ -137,11 +193,25 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         meetingService.joinMeetingWithParams(this, params, opts)
     }
 
-    override fun onZoomSDKInitializeResult(p0: Int, p1: Int) {
+    override fun onZoomSDKInitializeResult(errorCode: Int, internalErrorCode: Int) {
+        if( errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
+            Toast.makeText(this, "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Initialize Zoom SDK successfully.", Toast.LENGTH_LONG).show();
 
+            if(mZoomSDK.tryAutoLoginZoom() == ZoomApiError.ZOOM_API_ERROR_SUCCESS) {
+                mZoomSDK.addAuthenticationListener(this);
+               // mBtnLogin.setVisibility(View.GONE);
+              //  mBtnWithoutLogin.setVisibility(View.GONE);
+                Toast.makeText(this,"entro" , Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this,"no Entro" , Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onZoomSDKLoginResult(p0: Long) {
+        Toast.makeText(this,p0.toString(),Toast.LENGTH_LONG).show()
      }
 
     override fun onZoomIdentityExpired() {

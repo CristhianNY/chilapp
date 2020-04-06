@@ -10,7 +10,6 @@
         android:id="@+id/likesContainer"
         android:layout_width="@dimen/post_counters_item_width"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingTop="@dimen/intrinsic_padding"
@@ -62,7 +61,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/intrinsic_padding"
         android:paddingBottom="@dimen/intrinsic_padding"
-        android:layout_marginRight="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -105,6 +103,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/whatsapp"
+            android:paddingLeft="@dimen/small_intrinsic_padding"
+            android:textAppearance="@style/TextAppearance.Second.Light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/youtube_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingRight="@dimen/intrinsic_padding"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/youtube_image_video"
+            app:srcCompat="@drawable/ic_youtube"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/youtube_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/youtube"
             android:paddingLeft="@dimen/small_intrinsic_padding"
             android:textAppearance="@style/TextAppearance.Second.Light" />
 
