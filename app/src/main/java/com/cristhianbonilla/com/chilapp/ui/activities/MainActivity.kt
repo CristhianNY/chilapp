@@ -1,7 +1,9 @@
 package com.cristhianbonilla.com.chilapp.ui.activities
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -10,21 +12,21 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
-import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
-import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
-import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.home.HomeDomain
 import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
+import com.cristhianbonilla.com.chilapp.ui.activities.base.BaseActivity
+import com.cristhianbonilla.com.chilapp.ui.activities.login.LoginActivty
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
+
 
 private const val PERMISSION_REQUEST = 10
 
@@ -97,17 +99,26 @@ class MainActivity : BaseActivity() {
     }
 
      fun logOut(){
+         AlertDialog.Builder(this).setTitle("Deseas cerrar Sesión?")
+       .setPositiveButton(
+           "Salir",
+             DialogInterface.OnClickListener { dialog, id ->
+                 loginDomain.deleteeUserPreference(this)
+                 AuthUI.getInstance()
+                     .signOut(this)
+                     .addOnCompleteListener {
+                         val intent = Intent(this, LoginActivty::class.java)
+                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-        loginDomain.deleteeUserPreference(this)
-        AuthUI.getInstance()
-            .signOut(this)
-            .addOnCompleteListener {
-                val intent = Intent(this, LoginActivty::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                         startActivity(intent)
+                         finish()
+                     }
+             }).setNegativeButton(
+             "No",
+             DialogInterface.OnClickListener { dialog, id ->
+                 dialog.dismiss()
+             }).show()
 
-                startActivity(intent)
-                finish()
-            }
     }
     fun checkPermissions(context: Context,permissionsArray:Array<String>):Boolean{
 
