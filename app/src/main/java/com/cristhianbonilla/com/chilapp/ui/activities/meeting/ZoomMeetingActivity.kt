@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -77,16 +78,11 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         }else{
             val pm: PackageManager = this!!.packageManager
             try {
-                val waIntent = Intent(Intent.ACTION_SEND)
-                waIntent.type = "text/plain"
-                val text = "Hola Soy ${user.name} Soy un artista y Quiero Activar Serenatas virtuales " // Replace with your own message.
-                val info: PackageInfo =
-                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
-                //Check if package exists or not. If not then code
-                //in catch block will be called
-                waIntent.setPackage("com.whatsapp")
-                waIntent.putExtra(Intent.EXTRA_TEXT, text)
-                startActivity(Intent.createChooser(waIntent, "Share with"))
+                val url = "https://api.whatsapp.com/send?phone=+573157119388"
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+                startActivity(Intent.createChooser(i, "Share with"))
             } catch (e: PackageManager.NameNotFoundException) {
                  AlertDialog.Builder(this)
                     .setTitle("Necesitas Activar").setMessage("Por favor escribe al whatsapp +57 315 711 9388 y solicita activación ")

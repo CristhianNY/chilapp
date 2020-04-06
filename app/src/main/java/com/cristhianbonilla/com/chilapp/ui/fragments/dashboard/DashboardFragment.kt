@@ -273,16 +273,11 @@ companion object{
         whatsappIcon.setOnClickListener{
             val pm: PackageManager = context!!.packageManager
             try {
-                val waIntent = Intent(Intent.ACTION_SEND)
-                waIntent.type = "text/plain"
-                val text = "This is  a Test" // Replace with your own message.
-                val info: PackageInfo =
-                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
-                //Check if package exists or not. If not then code
-                //in catch block will be called
-                waIntent.setPackage("com.whatsapp")
-                waIntent.putExtra(Intent.EXTRA_TEXT, text)
-                startActivity(Intent.createChooser(waIntent, "Share with"))
+                val url = "https://api.whatsapp.com/send?phone=${secretPost.telefono}"
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+                startActivity(Intent.createChooser(i, "Share with"))
             } catch (e: PackageManager.NameNotFoundException) {
                 Toast.makeText(context, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                     .show()
