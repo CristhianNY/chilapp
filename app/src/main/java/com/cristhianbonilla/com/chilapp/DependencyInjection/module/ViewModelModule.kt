@@ -3,6 +3,7 @@ package com.cristhianbonilla.com.chilapp.DependencyInjection.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
+import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -33,6 +34,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DashBoardDomain::class)
     internal abstract fun SearchViewModel(viewModel: DashBoardDomain): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginDomain::class)
+    internal abstract fun LoginDomainViewModel(viewModel: LoginDomain): ViewModel
 
 }
 

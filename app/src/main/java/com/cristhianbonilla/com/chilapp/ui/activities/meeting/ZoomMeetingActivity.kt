@@ -10,9 +10,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.constants.Constants
+import com.cristhianbonilla.com.chilapp.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
 import kotlinx.coroutines.CoroutineScope
@@ -30,20 +34,27 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     lateinit var startMeeting:Button
     lateinit var meetingCode:EditText
     lateinit var mZoomSDK:ZoomSDK
-
+    lateinit var user: UserDto
 
     @Inject
     lateinit var loginDomain : LoginDomain
 
     @Inject
-    lateinit var meetingViewModel: MeetingViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    companion object{
+        lateinit var vm:LoginDomain
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zoom_meeting)
 
         (application as App).getComponent().inject(this)
+
+        vm = ViewModelProviders.of(this, viewModelFactory)[LoginDomain::class.java]
+
+        vm.userLive.observe(this, Observer {user = it})
 
         btnJoinMeeting = findViewById<Button>(R.id.joinMeeting)
         meetingCode = findViewById<EditText>(R.id.meeting_code)
@@ -61,7 +72,11 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         initParams.domain = "zoom.us"
         initParams.videoRawDataMemoryMode = ZoomSDKRawDataMemoryMode.ZoomSDKRawDataMemoryModeStack
         mZoomSDK.initialize(this,this,initParams)
+        val userPreference = loginDomain.getUserPreference("userId",this)
+        CoroutineScope(Dispatchers.IO).launch {
 
+            vm.getUserFromFirebase(userPreference)
+        }
 
         if (savedInstanceState == null) {
             mZoomSDK.initialize(
@@ -77,24 +92,18 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
             joinMeetingClick()
         }
 
-
-        val user = loginDomain.getUserPreference("userId",this)
-        CoroutineScope(Dispatchers.IO).launch {
-            getUserFirebase(user)
-        }
         startMeeting.setOnClickListener{
 
         if(user.type == "admin"){
 
             StartSerenata()
+            Toast.makeText(this,"Empezando serenata por favor espere ", Toast.LENGTH_LONG).show()
 
         }else{
-            val pm: PackageManager = this!!.packageManager
             try {
-                val url = "https://api.whatsapp.com/send?phone=+573157119388"
+                val url = "https://api.whatsapp.com/send?phone=573157119388&text=Hola%20soy%20artista%20y%20quiero%20activar%20mi%20servicio%20de%20serenatas%20online%20"
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(url)
-                startActivity(i)
                 startActivity(Intent.createChooser(i, "Share with"))
             } catch (e: PackageManager.NameNotFoundException) {
                  AlertDialog.Builder(this)
