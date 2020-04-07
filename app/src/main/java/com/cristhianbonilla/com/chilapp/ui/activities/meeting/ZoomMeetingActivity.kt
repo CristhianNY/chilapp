@@ -13,7 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cristhianbonilla.com.chilapp.App
 import com.cristhianbonilla.com.chilapp.R
 import com.cristhianbonilla.com.chilapp.domain.constants.Constants
+import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.cristhianbonilla.com.chilapp.domain.login.LoginDomain
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import us.zoom.sdk.*
 import javax.inject.Inject
 
@@ -30,6 +34,10 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
     @Inject
     lateinit var loginDomain : LoginDomain
+
+    @Inject
+    lateinit var meetingViewModel: MeetingViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,12 +77,17 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
             joinMeetingClick()
         }
 
+
         val user = loginDomain.getUserPreference("userId",this)
+        CoroutineScope(Dispatchers.IO).launch {
+            getUserFirebase(user)
+        }
         startMeeting.setOnClickListener{
 
         if(user.type == "admin"){
 
             StartSerenata()
+
         }else{
             val pm: PackageManager = this!!.packageManager
             try {
@@ -96,6 +109,11 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         }
 
         }
+
+    }
+
+    private suspend fun getUserFirebase(user: UserDto) {
+
 
     }
 

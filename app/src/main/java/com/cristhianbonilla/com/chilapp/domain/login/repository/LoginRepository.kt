@@ -1,12 +1,13 @@
 package com.cristhianbonilla.com.chilapp.domain.login.repository
 
 import android.content.Context
+import com.cristhianbonilla.com.chilapp.domain.base.BaseRepository
 import com.cristhianbonilla.com.chilapp.domain.dtos.UserDto
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class LoginRepository :
-    LoginInterfaceRepository {
+    LoginInterfaceRepository, BaseRepository() {
 
     private var mDatabase: DatabaseReference? = null
 
@@ -47,6 +48,10 @@ class LoginRepository :
     override fun getUserNamePreference(key: String, context: Context): String? {
         val settings = context.getSharedPreferences("UserProfile", Context.MODE_PRIVATE)
         return settings.getString("userName",null)
+    }
+
+    override suspend fun getUserFromFirebase(user: UserDto): DatabaseReference {
+        return getFirebaseInstance().child("User/${user.userId}")
     }
 
     override fun deleteUserPreference(context: Context) {
