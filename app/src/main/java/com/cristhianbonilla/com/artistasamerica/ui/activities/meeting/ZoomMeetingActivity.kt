@@ -58,8 +58,13 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         meetingCode = findViewById<EditText>(R.id.meeting_code)
         startMeeting = findViewById<Button>(R.id.startMetting)
 
+        val userPreference = loginDomain.getUserPreference("userId",this)
+        CoroutineScope(Dispatchers.IO).launch {
+
+            vm.getUserFromFirebase(userPreference)
+        }
          mZoomSDK = ZoomSDK.getInstance()
-         mZoomSDK.loginWithZoom("cristhianbonillacolombia@gmail.com","Cristhian$123")
+
         val initParams = ZoomSDKInitParams()
         //initParams.jwtToken = SDK_JWTTOKEN;
         //initParams.jwtToken = SDK_JWTTOKEN;
@@ -70,11 +75,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         initParams.domain = "zoom.us"
         initParams.videoRawDataMemoryMode = ZoomSDKRawDataMemoryMode.ZoomSDKRawDataMemoryModeStack
         mZoomSDK.initialize(this,this,initParams)
-        val userPreference = loginDomain.getUserPreference("userId",this)
-        CoroutineScope(Dispatchers.IO).launch {
 
-            vm.getUserFromFirebase(userPreference)
-        }
 
         if (savedInstanceState == null) {
             mZoomSDK.initialize(
@@ -91,7 +92,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         }
 
         startMeeting.setOnClickListener{
-
+            mZoomSDK.loginWithZoom(user.email,"Cristhian$123")
         if(user.type == "admin"){
 
             StartSerenata()

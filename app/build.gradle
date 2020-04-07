@@ -17,7 +17,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.cristhianbonilla.com.chilapp"
+        applicationId "com.cristhianbonilla.com.artistasamerica"
         minSdkVersion 22
         targetSdkVersion 29
         versionCode 7

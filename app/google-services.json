@@ -8,12 +8,57 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:914557112634:android:9a5780fa794feb9d380003",
+        "android_client_info": {
+          "package_name": "com.cristhianbonilla.com.artistasamerica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914557112634-s358qpfft8ee1q9u6a8t5hqqree65rge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cristhianbonilla.com.artistasamerica",
+            "certificate_hash": "0a257f3831353c5764b93b0674adc05654f0a86d"
+          }
+        },
+        {
+          "client_id": "914557112634-mgbm4rn76vejq40mgekfecjto1q10p6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYnA4maomCDli9iQStYfouV4aB-7UZP9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914557112634-mgbm4rn76vejq40mgekfecjto1q10p6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:914557112634:android:7b816150119d2f0d380003",
         "android_client_info": {
           "package_name": "com.cristhianbonilla.com.chilapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "914557112634-drbmdes2rf310jbkiu13r8pr4heej7h4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cristhianbonilla.com.chilapp",
+            "certificate_hash": "0a257f3831353c5764b93b0674adc05654f0a86d"
+          }
+        },
         {
           "client_id": "914557112634-nf2vqear63qedvvkl0r8j6pjeq26a0ec.apps.googleusercontent.com",
           "client_type": 1,
