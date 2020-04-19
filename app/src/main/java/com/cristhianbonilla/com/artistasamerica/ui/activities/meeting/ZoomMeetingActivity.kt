@@ -30,6 +30,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
     lateinit var btnJoinMeeting:Button
     lateinit var startMeeting:Button
+    lateinit var agendarSerenata:Button
     lateinit var meetingCode:EditText
     lateinit var mZoomSDK:ZoomSDK
     lateinit var user: UserDto
@@ -57,6 +58,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         btnJoinMeeting = findViewById<Button>(R.id.joinMeeting)
         meetingCode = findViewById<EditText>(R.id.meeting_code)
         startMeeting = findViewById<Button>(R.id.startMetting)
+        agendarSerenata = findViewById<Button>(R.id.reservation_serenata)
 
         val userPreference = loginDomain.getUserPreference("userId",this)
         CoroutineScope(Dispatchers.IO).launch {
@@ -91,6 +93,13 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
             joinMeetingClick()
         }
 
+
+        agendarSerenata.setOnClickListener{
+
+            val intent = Intent(this, ScheduleMeetingSerenataActivity::class.java)
+            startActivity(intent)
+
+        }
         startMeeting.setOnClickListener{
             mZoomSDK.loginWithZoom(user.email,"Cristhian$123")
         if(user.type == "admin"){
