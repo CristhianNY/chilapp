@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.cristhianbonilla.com.artistasamerica.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,7 +108,7 @@ public class ScheduleMeetingSerenataActivity extends Activity implements PreMeet
         mBtnSchedule.setOnClickListener(this);
 
         mEdtTopic = (EditText) findViewById(R.id.edtTopic);
-        mEdtPassword = (EditText) findViewById(R.id.password);
+        mEdtPassword = (EditText) findViewById(R.id.contraseña_meeting);
         mChkEnableJBH = (CheckBox) findViewById(R.id.chkEnableJBH);
         mChkHostVideo = (CheckBox) findViewById(R.id.chkHostVideo);
         mChkAttendeeVideo = (CheckBox) findViewById(R.id.chkAttendeeVideo);
@@ -305,25 +306,40 @@ public class ScheduleMeetingSerenataActivity extends Activity implements PreMeet
             Toast.makeText(this, "Nombre para tu serenata ", Toast.LENGTH_LONG).show();
             return;
         }
+        Date fechaDeInicioParaSetear = null;
+        String fechaInicio =  fechaEditext.getText().toString() +"/"+ edittextMostrarHora.getText().toString();
+        try {
+            fechaDeInicioParaSetear=new SimpleDateFormat("dd/MM/yyyy/hh:mm").parse(fechaInicio);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (fechaDeInicioParaSetear == null) {
+            Toast.makeText(this, "Por favor ingresa una fecha", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (contraseña.length() == 0) {
             Toast.makeText(this, "Ingresa una contraseña", Toast.LENGTH_LONG).show();
             return;
         }
 
+
+
         if (mPreMeetingService == null) return;
 
         MeetingItem meetingItem = mPreMeetingService.createScheduleMeetingItem();
 
+        edittextMostrarHora.getText();
+        fechaEditext.getText();
+
         meetingItem.setMeetingTopic(topic);
-        meetingItem.setStartTime(getBeginTime().getTime());
-        meetingItem.setDurationInMinutes(getDurationInMinutes());
+        meetingItem.setStartTime(fechaDeInicioParaSetear.getTime());
+        meetingItem.setDurationInMinutes(40);
         meetingItem.setCanJoinBeforeHost(true);
         meetingItem.setPassword(contraseña);
         meetingItem.setHostVideoOff(false);
         meetingItem.setAttendeeVideoOff(false);
-
-      //  meetingItem.setAvailableDialinCountry(mCountry);
         meetingItem.setAudioType(MeetingItem.AudioType.AUDIO_TYPE_VOIP_AND_TELEPHONEY);
 
         meetingItem.setUsePmiAsMeetingID(false);
@@ -341,7 +357,7 @@ public class ScheduleMeetingSerenataActivity extends Activity implements PreMeet
                 Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(this, "User not login.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Usuario no registrado.", Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -360,9 +376,6 @@ public class ScheduleMeetingSerenataActivity extends Activity implements PreMeet
         return date;
     }
 
-    private int getDurationInMinutes() {
-        return (int) ((mDateTo.getTimeInMillis() - mDateFrom.getTimeInMillis()) / 60000);
-    }
 
     @Override
     public void onListMeeting(int result, List<Long> meetingList) {
