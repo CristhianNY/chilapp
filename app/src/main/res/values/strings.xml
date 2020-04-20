@@ -46,4 +46,8 @@
     <string name="formato_hora">hh:mm</string>
     <string name="book_event">Agendar Serenata</string>
 
+    <string name="title_activity_meeting_scheduled_success">MeetingScheduledSuccessActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

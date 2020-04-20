@@ -144,7 +144,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         // Check if the zoom SDK is initialized
         // Check if the zoom SDK is initialized
         if (!mZoomSDK.isInitialized) {
-            Toast.makeText(this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG)
+            Toast.makeText(this, "Estamos Presentando algunas fallas intentalo mas tarde", Toast.LENGTH_LONG)
                 .show()
             return
         }
@@ -268,15 +268,14 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         if( errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
             Toast.makeText(this, "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode, Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Initialize Zoom SDK successfully.", Toast.LENGTH_LONG).show();
+
 
             if(mZoomSDK.tryAutoLoginZoom() == ZoomApiError.ZOOM_API_ERROR_SUCCESS) {
                 mZoomSDK.addAuthenticationListener(this);
                // mBtnLogin.setVisibility(View.GONE);
               //  mBtnWithoutLogin.setVisibility(View.GONE);
-                Toast.makeText(this,"entro" , Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(this,"no Entro" , Toast.LENGTH_LONG).show()
+
             }
         }
     }

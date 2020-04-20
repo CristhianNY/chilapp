@@ -3,6 +3,7 @@ package com.cristhianbonilla.com.artistasamerica.ui.activities.meeting
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -57,6 +58,7 @@ class AgendaActivity : BaseActivity(), PreMeetingServiceListener,
 
     var mCountry: MobileRTCDialinCountry? = null
 
+    private lateinit var topic:String
     private val layoutCountry: View? = null
 
     val c = Calendar.getInstance()
@@ -68,6 +70,8 @@ class AgendaActivity : BaseActivity(), PreMeetingServiceListener,
     val hora = c[Calendar.HOUR_OF_DAY]
     val minuto = c[Calendar.MINUTE]
 
+
+    lateinit var fechaDelEvento:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -200,6 +204,14 @@ class AgendaActivity : BaseActivity(), PreMeetingServiceListener,
                 " Se agendo tu evento correctamente $meetingNumber",
                 Toast.LENGTH_LONG
             ).show()
+
+            val intent = Intent(this, SuccessMeetingActivity::class.java)
+            intent.putExtra("numero_serenata", meetingNumber)
+            intent.putExtra("contraseña_serenata", mEdtPassword?.text.toString())
+            intent.putExtra("nombre_serenata", topic);
+            intent.putExtra("fecha_del_evento", fechaDelEvento);
+            startActivity(intent)
+
             finish()
         } else {
             Toast.makeText(this, "Lo sentimos por ahora no puedes agendar tu evento =$result", Toast.LENGTH_LONG).show()
@@ -224,18 +236,18 @@ class AgendaActivity : BaseActivity(), PreMeetingServiceListener,
     }
 
     private fun onClickSchedule() {
-        val topic = mEdtTopic!!.text.toString().trim { it <= ' ' }
+        topic = mEdtTopic!!.text.toString().trim { it <= ' ' }
         val contraseña = mEdtPassword!!.text.toString().trim { it <= ' ' }
         if (topic.length == 0) {
             Toast.makeText(this, "Nombre para tu serenata ", Toast.LENGTH_LONG).show()
             return
         }
         var fechaDeInicioParaSetear: Date? = null
-        val fechaInicio =
+         fechaDelEvento =
             fechaEditext!!.text.toString() + "/" + edittextMostrarHora!!.text.toString()
         try {
             fechaDeInicioParaSetear =
-                SimpleDateFormat("dd/MM/yyyy/hh:mm").parse(fechaInicio)
+                SimpleDateFormat("dd/MM/yyyy/hh:mm").parse(fechaDelEvento)
         } catch (e: ParseException) {
             e.printStackTrace()
         }

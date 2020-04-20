@@ -18,7 +18,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.meeting.AgendaActivity"></activity>
+        <activity android:name=".ui.activities.meeting.SuccessMeetingActivity"></activity>
+        <activity
+            android:name=".ui.activities.meeting.MeetingScheduledSuccessActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_meeting_scheduled_success"
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".ui.activities.meeting.AgendaActivity" />
         <activity android:name=".ui.activities.meeting.ZoomMeetingActivity" />
         <activity
             android:name=".ui.activities.Splash.SplashActivity"
@@ -30,7 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.meeting.ScheduleMeetingSerenataActivity" />
         <activity android:name=".ui.activities.register.RegisterActivity" />
         <activity
             android:name=".ui.activities.login.LoginActivty"
