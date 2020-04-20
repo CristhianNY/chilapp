@@ -35,7 +35,6 @@ class DashBoardDomain @Inject constructor( listenerActivity:ListenerActivity ) :
         user: UserDto,
         colorPost: String
     ) {
-
        dashBoardRepository.saveSecretPost(contex,  message, user,colorPost)
     }
 

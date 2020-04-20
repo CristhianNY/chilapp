@@ -16,6 +16,8 @@ import com.cristhianbonilla.com.artistasamerica.domain.home.HomeDomain
 import com.cristhianbonilla.com.artistasamerica.domain.home.repository.HomeRepository
 import com.cristhianbonilla.com.artistasamerica.domain.login.LoginDomain
 import com.cristhianbonilla.com.artistasamerica.domain.login.repository.LoginRepository
+import com.cristhianbonilla.com.artistasamerica.domain.meetings.MeetingDomain
+import com.cristhianbonilla.com.artistasamerica.domain.meetings.repository.MeetingRepository
 import com.cristhianbonilla.com.artistasamerica.domain.profile.ProfileDomain
 import com.cristhianbonilla.com.artistasamerica.domain.profile.repository.ProfileRepository
 import com.cristhianbonilla.com.artistasamerica.ui.fragments.comments.CommentsDialogFragment
@@ -35,6 +37,12 @@ class ChilappModule{
         LoginDomain(
             loginRepository = LoginRepository()
         )
+
+
+    @Provides
+    @Singleton
+    fun provideMeetingDomain()=
+        MeetingDomain()
 
 
     @Provides

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cristhianbonilla.com.artistasamerica.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.artistasamerica.domain.login.LoginDomain
+import com.cristhianbonilla.com.artistasamerica.domain.meetings.MeetingDomain
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -39,6 +40,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginDomain::class)
     internal abstract fun LoginDomainViewModel(viewModel: LoginDomain): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MeetingDomain::class)
+    internal abstract fun MeetingViewModel(viewModel: MeetingDomain): ViewModel
 
 }
 

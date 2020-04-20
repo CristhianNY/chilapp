@@ -11,16 +11,17 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
-        android:name="com.cristhianbonilla.com.artistasamerica.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="Artistas America "
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.cristhianbonilla.com.artistasamerica.ui.activities.meeting.ZoomMeetingActivity"></activity>
+        <activity android:name=".ui.activities.meeting.AgendaActivity"></activity>
+        <activity android:name=".ui.activities.meeting.ZoomMeetingActivity" />
         <activity
-            android:name="com.cristhianbonilla.com.artistasamerica.ui.activities.Splash.SplashActivity"
+            android:name=".ui.activities.Splash.SplashActivity"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.ActionBar.Transparent">
             <intent-filter>
@@ -29,13 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cristhianbonilla.com.artistasamerica.ui.activities.meeting.ScheduleMeetingSerenataActivity" />
-        <activity android:name="com.cristhianbonilla.com.artistasamerica.ui.activities.register.RegisterActivity" />
+        <activity android:name=".ui.activities.meeting.ScheduleMeetingSerenataActivity" />
+        <activity android:name=".ui.activities.register.RegisterActivity" />
         <activity
-            android:name="com.cristhianbonilla.com.artistasamerica.ui.activities.login.LoginActivty"
+            android:name=".ui.activities.login.LoginActivty"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.cristhianbonilla.com.artistasamerica.ui.activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/HomeActivity" />

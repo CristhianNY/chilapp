@@ -8,9 +8,11 @@ import com.cristhianbonilla.com.artistasamerica.domain.dashboard.DashBoardDomain
 import com.cristhianbonilla.com.artistasamerica.domain.dashboard.repository.DashBoardRepository
 import com.cristhianbonilla.com.artistasamerica.domain.home.HomeDomain
 import com.cristhianbonilla.com.artistasamerica.domain.home.repository.HomeRepository
+import com.cristhianbonilla.com.artistasamerica.domain.meetings.MeetingDomain
 import com.cristhianbonilla.com.artistasamerica.ui.activities.MainActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.Splash.SplashActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.login.LoginActivty
+import com.cristhianbonilla.com.artistasamerica.ui.activities.meeting.ScheduleMeetingSerenataActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.meeting.ZoomMeetingActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.register.RegisterActivity
 import com.cristhianbonilla.com.artistasamerica.ui.fragments.addSecret.AddSecretDialogFragment
@@ -24,8 +26,8 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class,AndroidInjectionModule::class,ChilappModule::class, ViewModelModule::class])
-interface ChilappComponent{
+@Component(modules = [AndroidSupportInjectionModule::class, AndroidInjectionModule::class, ChilappModule::class, ViewModelModule::class])
+interface ChilappComponent {
 
     fun inject(mainActivity: MainActivity)
     fun inject(loginActivty: LoginActivty)
@@ -35,11 +37,13 @@ interface ChilappComponent{
     fun inject(profileFragment: ProfileFragment)
     fun inject(homeFragment: HomeFragment)
     fun inject(zoomMeetingActivity: ZoomMeetingActivity)
+    fun inject(scheduleMeetingSerenataActivity: ScheduleMeetingSerenataActivity)
     fun inject(commentsDialogFragment: CommentsDialogFragment)
     fun inject(dashBoardDomain: DashBoardDomain)
     fun inject(homeDomain: HomeDomain)
     fun inject(homeRepository: HomeRepository)
     fun inject(commentsDomain: CommentsDomain)
+    fun inject(meetingDomain: MeetingDomain)
     fun inject(dashBoardRepository: DashBoardRepository)
     fun inject(commentsRepository: CommentsRepository)
     fun inject(addSecretDialogFragment: AddSecretDialogFragment)

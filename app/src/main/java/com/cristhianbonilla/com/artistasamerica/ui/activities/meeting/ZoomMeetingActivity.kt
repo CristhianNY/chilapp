@@ -96,7 +96,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
         agendarSerenata.setOnClickListener{
 
-            val intent = Intent(this, ScheduleMeetingSerenataActivity::class.java)
+            val intent = Intent(this, AgendaActivity::class.java)
             startActivity(intent)
 
         }
