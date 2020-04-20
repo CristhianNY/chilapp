@@ -1,97 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".ui.activities.meeting.ZoomMeetingActivity">
+
+        <ImageView
+            android:id="@+id/logo_image"
+            android:layout_width="178dp"
+            android:layout_height="163dp"
+            app:srcCompat="@drawable/logo" />
+
+
+        <EditText
+            android:id="@+id/meeting_code"
+            android:layout_width="220dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="Id del evento"
+            android:inputType="number" />
+
+
+        <Button
+            android:id="@+id/joinMeeting"
+            android:layout_width="241dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/blue_50"
+            android:text="@string/unirte" />
+
+        <Button
+            android:id="@+id/reservation_serenata"
+            android:layout_width="241dp"
+            android:layout_height="38dp"
+            android:visibility="gone"
+            android:background="@color/blue_50"
+            android:layout_marginTop="30dp"
+            android:text="Agendar serenata" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="411dp"
+            android:layout_marginTop="30dp"
             android:layout_height="wrap_content"
-            tools:context=".ui.activities.meeting.ZoomMeetingActivity">
+            android:gravity="center" />
 
-
-                <EditText
-                    android:id="@+id/meeting_code"
-                    android:layout_width="220dp"
-                    android:layout_height="54dp"
-                    android:layout_marginStart="95dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="96dp"
-                    android:layout_marginBottom="24dp"
-                    android:ems="10"
-                    android:hint="Id del evento"
-                    android:inputType="number"
-                    app:layout_constraintBottom_toTopOf="@+id/startMetting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/logo_image"
-                    android:autofillHints="" />
-
-                <ImageView
-                    android:id="@+id/logo_image"
-                    android:layout_width="178dp"
-                    android:layout_height="163dp"
-                    android:layout_marginStart="117dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="116dp"
-                    android:layout_marginBottom="12dp"
-                    app:layout_constraintBottom_toTopOf="@+id/meeting_code"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/logo" />
-
-                <Button
-                    android:id="@+id/joinMeeting"
-                    android:layout_width="244dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="84dp"
-                    android:layout_marginEnd="83dp"
-                    android:background="@color/blue_50"
-                    android:text="Unirte"
-                    app:layout_constraintBottom_toTopOf="@+id/textView2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <Button
-                    android:id="@+id/startMetting"
-                    android:layout_width="241dp"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="83dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginEnd="87dp"
-                    android:layout_marginBottom="18dp"
-                    android:background="@color/blue_50"
-                    android:text="@string/startMeeting"
-                    app:layout_constraintBottom_toTopOf="@+id/reservation_serenata"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/meeting_code" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="411dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Por favor solicita tu codigo de serenata al artista"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/joinMeeting" />
-
-                <Button
-                    android:id="@+id/reservation_serenata"
-                    android:layout_width="245dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="83dp"
-                    android:layout_marginEnd="83dp"
-                    android:layout_marginBottom="15dp"
-                    android:text="Reservar Serenata online"
-                    app:layout_constraintBottom_toTopOf="@+id/joinMeeting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>

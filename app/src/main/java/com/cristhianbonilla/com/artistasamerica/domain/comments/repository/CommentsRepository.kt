@@ -71,7 +71,8 @@ class CommentsRepository  @Inject constructor(listenerDomain: ListenerCommentsDo
                 message,
                 user!!.userId,
                 "",
-                it
+                it,
+                user.name
             )
         }
 

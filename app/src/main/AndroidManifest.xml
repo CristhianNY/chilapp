@@ -19,13 +19,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activities.meeting.SuccessMeetingActivity"></activity>
-        <activity
-            android:name=".ui.activities.meeting.MeetingScheduledSuccessActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_meeting_scheduled_success"
-            android:theme="@style/FullscreenTheme" />
+
         <activity android:name=".ui.activities.meeting.AgendaActivity" />
-        <activity android:name=".ui.activities.meeting.ZoomMeetingActivity" />
+        <activity android:name=".ui.activities.meeting.ZoomMeetingActivity" >
+            <intent-filter android:label="filer_open_from_url">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="http"
+                    android:host="www.artistasamerica.com"
+                    android:pathPrefix="/artistasapp" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ui.activities.Splash.SplashActivity"
             android:fitsSystemWindows="true"

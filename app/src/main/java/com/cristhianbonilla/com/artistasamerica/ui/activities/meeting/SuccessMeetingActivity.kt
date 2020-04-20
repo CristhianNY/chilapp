@@ -42,7 +42,7 @@ class SuccessMeetingActivity : AppCompatActivity() {
         btnShare.setOnClickListener{
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "text/plain"
-            val shareBody = "Hola este es el codigo la serenata virtual y la contraseña: $numeroDeSerenata $contraseñaSerenata , Con estos datos en artistas america puedes ingresar a tu serenata virtual, la hora es $fechaSerenata, ahi nos vemos"
+            val shareBody = "Hola este es el codigo de la serenata virtual y la contraseña: $numeroDeSerenata $contraseñaSerenata , Con estos datos en artistas america puedes ingresar a tu serenata virtual, la hora es $fechaSerenata, ahi nos vemos , abre el siguiente link desde la app y pon el id del evento y la contraseña www.artistasamerica.com/artistasapp"
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Artistas América")
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
             startActivity(Intent.createChooser(sharingIntent, "Compartir a cliente"))

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -29,7 +30,6 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     ZoomSDKAuthenticationListener {
 
     lateinit var btnJoinMeeting:Button
-    lateinit var startMeeting:Button
     lateinit var agendarSerenata:Button
     lateinit var meetingCode:EditText
     lateinit var mZoomSDK:ZoomSDK
@@ -53,17 +53,22 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
         vm = ViewModelProviders.of(this, viewModelFactory)[LoginDomain::class.java]
 
-        vm.userLive.observe(this, Observer {user = it})
+        vm.userLive.observe(this, Observer {
+            if(it.type == "admin"){
+                agendarSerenata.visibility = View.VISIBLE
+            }
+        })
+
 
         btnJoinMeeting = findViewById<Button>(R.id.joinMeeting)
         meetingCode = findViewById<EditText>(R.id.meeting_code)
-        startMeeting = findViewById<Button>(R.id.startMetting)
         agendarSerenata = findViewById<Button>(R.id.reservation_serenata)
 
         val userPreference = loginDomain.getUserPreference("userId",this)
         CoroutineScope(Dispatchers.IO).launch {
 
             vm.getUserFromFirebase(userPreference)
+
         }
          mZoomSDK = ZoomSDK.getInstance()
 
@@ -100,75 +105,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
             startActivity(intent)
 
         }
-        startMeeting.setOnClickListener{
-            mZoomSDK.loginWithZoom(user.email,"Cristhian$123")
-        if(user.type == "admin"){
 
-            StartSerenata()
-            Toast.makeText(this,"Empezando serenata por favor espere ", Toast.LENGTH_LONG).show()
-
-        }else{
-            try {
-                val url = "https://api.whatsapp.com/send?phone=573157119388&text=Hola%20soy%20artista%20y%20quiero%20activar%20mi%20servicio%20de%20serenatas%20online%20"
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(url)
-                startActivity(Intent.createChooser(i, "Share with"))
-            } catch (e: PackageManager.NameNotFoundException) {
-                 AlertDialog.Builder(this)
-                    .setTitle("Necesitas Activar").setMessage("Por favor escribe al whatsapp +57 315 711 9388 y solicita activación ")
-                    .setIcon(android.R.drawable.presence_video_online).show()
-
-                Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
-                    .show()
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        }
-
-    }
-
-    private suspend fun getUserFirebase(user: UserDto) {
-
-
-    }
-
-
-    private fun StartSerenata() {
-        // Step 1: Get Zoom SDK instance.
-
-        // Step 1: Get Zoom SDK instance.
-
-
-        // Check if the zoom SDK is initialized
-        // Check if the zoom SDK is initialized
-        if (!mZoomSDK.isInitialized) {
-            Toast.makeText(this, "Estamos Presentando algunas fallas intentalo mas tarde", Toast.LENGTH_LONG)
-                .show()
-            return
-        }
-        // Step 2: Get meeting service from zoom SDK instance.
-        // Step 2: Get meeting service from zoom SDK instance.
-        val meetingService = mZoomSDK.meetingService
-
-        val mInMeetingAudioController = ZoomSDK.getInstance().inMeetingService.inMeetingAudioController;
-
-        mInMeetingAudioController.connectAudioWithVoIP()
-
-        // Step 3: Configure meeting options.
-        // Step 3: Configure meeting options.
-        val opts = InstantMeetingOptions()
-
-        opts.no_disconnect_audio = true;
-        // Some available options
-
-        // Some available options
-
-        // Step 4: Call meeting service to start instant meeting
-
-        // Step 4: Call meeting service to start instant meeting
-        meetingService.startInstantMeeting(this, opts)
     }
 
     fun joinMeetingClick(){
@@ -281,7 +218,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     }
 
     override fun onZoomSDKLoginResult(p0: Long) {
-        Toast.makeText(this,p0.toString(),Toast.LENGTH_LONG).show()
+  //      Toast.makeText(this,p0.toString(),Toast.LENGTH_LONG).show()
      }
 
     override fun onZoomIdentityExpired() {

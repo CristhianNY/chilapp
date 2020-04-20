@@ -28,8 +28,9 @@ class CommentPostViewHolder constructor(
            // commentCardView.animation = AnimationUtils.loadAnimation(App.instance.applicationContext, R.anim.fade_transation_animation)
             lastPosition = position
         }
-        secretPostMessage.setText(commentPost.comment)
+        secretPostMessage.text = commentPost.comment
 
+        ownerAnonymous.text = commentPost.name
         ownerAnonymous.setOnClickListener(View.OnClickListener {
 
             listener.itemCliekc(itemView,position, commentPost )
