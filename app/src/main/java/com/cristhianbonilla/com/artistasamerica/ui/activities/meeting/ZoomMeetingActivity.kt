@@ -56,6 +56,8 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         vm.userLive.observe(this, Observer {
             if(it.type == "admin"){
                 agendarSerenata.visibility = View.VISIBLE
+            }else{
+                agendarSerenata.visibility = View.GONE
             }
         })
 
