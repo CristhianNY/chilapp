@@ -4,60 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="1dp">
+    android:fillViewport="true">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_margin="30dp"
+        android:gravity="center"
+        android:orientation="vertical"
+
         tools:context=".ui.activities.meeting.SuccessMeetingActivity">
 
         <TextView
             android:id="@+id/felicitaciones"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
             android:layout_marginTop="20dp"
             android:text="Felicidades haz creado tu serenata virtual" />
 
         <TextView
             android:id="@+id/mdate"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            style="@style/TextAppearance.AppCompat.Body1"
             android:text="12/12/12/10:10" />
 
         <TextView
             android:id="@+id/mtitle"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            style="@style/TextAppearance.AppCompat.Body1"
             android:text="Serenata" />
 
-            <TextView
-                android:id="@+id/mcode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:text="codigo" />
+        <TextView
+            android:id="@+id/mcode"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="codigo" />
 
         <TextView
             android:id="@+id/mpassword"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            style="@style/TextAppearance.AppCompat.Body1"
             android:text="Contraseña" />
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/violinistaAnimation"
             android:layout_width="match_parent"
@@ -74,8 +71,8 @@
             android:id="@+id/btnShare"
             android:layout_width="265dp"
             android:layout_height="52dp"
+            android:layout_marginBottom="30dp"
             android:background="@color/blue_50"
-            android:layout_marginTop="72dp"
             android:text="Compartir" />
     </LinearLayout>
 </ScrollView>
