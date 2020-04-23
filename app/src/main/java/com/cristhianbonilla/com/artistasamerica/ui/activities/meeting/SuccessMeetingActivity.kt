@@ -6,8 +6,17 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.cristhianbonilla.com.artistasamerica.App
 import com.cristhianbonilla.com.artistasamerica.R
+import com.cristhianbonilla.com.artistasamerica.domain.login.LoginDomain
+import com.cristhianbonilla.com.artistasamerica.domain.meetings.MeetingDomain
 import kotlinx.android.synthetic.main.activity_success.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SuccessMeetingActivity : AppCompatActivity() {
 
@@ -17,9 +26,22 @@ class SuccessMeetingActivity : AppCompatActivity() {
     lateinit var fecha:TextView
     lateinit var btnShare:Button
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var loginDomain: LoginDomain
+
+    companion object{
+       lateinit var vm: MeetingDomain
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_success)
+        (application as App).getComponent().inject(this)
+        vm = ViewModelProviders.of(this, viewModelFactory)[MeetingDomain::class.java]
 
         val numeroDeSerenata = intent.getLongExtra("numero_serenata",12123)
         val contraseñaSerenata = intent.getStringExtra("contraseña_serenata")
@@ -38,8 +60,16 @@ class SuccessMeetingActivity : AppCompatActivity() {
         contraseña.text = "Contraseña $contraseñaSerenata"
         nombre.text = "Nombre del evento $nombreSerenata"
         fecha.text = "fechas $fechaSerenata"
+        val user = loginDomain.getUserPreference("userId",this)
+
+        CoroutineScope(IO).launch {
+            vm.saveMeeting(user.userId,user.name,user.phone,nombreSerenata,numeroDeSerenata.toString(),contraseñaSerenata,fechaSerenata,"60")
+        }
 
         btnShare.setOnClickListener{
+
+
+
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "text/plain"
             val shareBody = "Hola este es el codigo de la serenata virtual y la contraseña: $numeroDeSerenata $contraseñaSerenata , Con estos datos en artistas america puedes ingresar a tu serenata virtual, la hora es $fechaSerenata, ahi nos vemos , abre el siguiente link desde la app y pon el id del evento y la contraseña www.artistasamerica.com/artistasapp"

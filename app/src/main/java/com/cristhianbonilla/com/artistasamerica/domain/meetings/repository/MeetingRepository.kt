@@ -15,8 +15,9 @@ class MeetingRepository : MeetingRepositoryInterface, BaseRepository() {
 
     override fun saveMeeting(
         userId: String,
-        context: Context,
         title: String,
+        name: String,
+        phone: String,
         idEventos: String,
         password: String,
         date: String,
@@ -27,6 +28,8 @@ class MeetingRepository : MeetingRepositoryInterface, BaseRepository() {
             MeetingDto(
                 userId,
                 title,
+                name,
+                phone,
                 idEventos,
                 password,
                 date,

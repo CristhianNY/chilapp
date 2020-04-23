@@ -1,9 +1,6 @@
 package com.cristhianbonilla.com.artistasamerica.ui.activities.meeting
 
-import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -29,20 +26,20 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     MeetingServiceListener,
     ZoomSDKAuthenticationListener {
 
-    lateinit var btnJoinMeeting:Button
-    lateinit var agendarSerenata:Button
-    lateinit var meetingCode:EditText
-    lateinit var mZoomSDK:ZoomSDK
+    lateinit var btnJoinMeeting: Button
+    lateinit var agendarSerenata: Button
+    lateinit var meetingCode: EditText
+    lateinit var mZoomSDK: ZoomSDK
     lateinit var user: UserDto
 
     @Inject
-    lateinit var loginDomain : LoginDomain
+    lateinit var loginDomain: LoginDomain
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    companion object{
-        lateinit var vm:LoginDomain
+    companion object {
+        lateinit var vm: LoginDomain
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,9 +51,9 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         vm = ViewModelProviders.of(this, viewModelFactory)[LoginDomain::class.java]
 
         vm.userLive.observe(this, Observer {
-            if(it.type == "admin"){
+            if (it.type == "admin") {
                 agendarSerenata.visibility = View.VISIBLE
-            }else{
+            } else {
                 agendarSerenata.visibility = View.GONE
             }
         })
@@ -66,14 +63,15 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         meetingCode = findViewById<EditText>(R.id.meeting_code)
         agendarSerenata = findViewById<Button>(R.id.reservation_serenata)
 
-        val userPreference = loginDomain.getUserPreference("userId",this)
+        val userPreference = loginDomain.getUserPreference("userId", this)
         CoroutineScope(Dispatchers.IO).launch {
 
             vm.getUserFromFirebase(userPreference)
 
         }
-         mZoomSDK = ZoomSDK.getInstance()
 
+        mZoomSDK = ZoomSDK.getInstance()
+        mZoomSDK.loginWithZoom(userPreference.email, "Cristhian$123")
         val initParams = ZoomSDKInitParams()
         //initParams.jwtToken = SDK_JWTTOKEN;
         //initParams.jwtToken = SDK_JWTTOKEN;
@@ -83,7 +81,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         initParams.logSize = 50
         initParams.domain = "zoom.us"
         initParams.videoRawDataMemoryMode = ZoomSDKRawDataMemoryMode.ZoomSDKRawDataMemoryModeStack
-        mZoomSDK.initialize(this,this,initParams)
+        mZoomSDK.initialize(this, this, initParams)
 
 
         if (savedInstanceState == null) {
@@ -95,13 +93,13 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
                 this
             )
         }
-        btnJoinMeeting.setOnClickListener{
+        btnJoinMeeting.setOnClickListener {
 
             joinMeetingClick()
         }
 
 
-        agendarSerenata.setOnClickListener{
+        agendarSerenata.setOnClickListener {
 
             val intent = Intent(this, AgendaActivity::class.java)
             startActivity(intent)
@@ -110,7 +108,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
 
     }
 
-    fun joinMeetingClick(){
+    fun joinMeetingClick() {
         // Step 1: Get meeting number from input field.
 
         // Step 1: Get meeting number from input field.
@@ -131,7 +129,8 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         // Step 2: Get Zoom SDK instance.
         val zoomSDK = ZoomSDK.getInstance()
 
-        val mInMeetingAudioController = ZoomSDK.getInstance().inMeetingService.inMeetingAudioController;
+        val mInMeetingAudioController =
+            ZoomSDK.getInstance().inMeetingService.inMeetingAudioController;
 
         mInMeetingAudioController.connectAudioWithVoIP()
 
@@ -142,7 +141,6 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
                 .show()
             return
         }
-
 
 
         // Step 3: Get meeting service from zoom SDK instance.
@@ -163,7 +161,7 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
         //		opts.no_bottom_toolbar = true;
         //		opts.no_dial_in_via_phone = true;
         //		opts.no_dial_out_to_phone = true;
-        		opts.no_disconnect_audio = true;
+        opts.no_disconnect_audio = true;
         //		opts.no_share = true;
         //		opts.invite_options = InviteOptions.INVITE_VIA_EMAIL + InviteOptions.INVITE_VIA_SMS;
         //		opts.no_audio = true;
@@ -204,15 +202,19 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     }
 
     override fun onZoomSDKInitializeResult(errorCode: Int, internalErrorCode: Int) {
-        if( errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
-            Toast.makeText(this, "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode, Toast.LENGTH_LONG).show();
+        if (errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
+            Toast.makeText(
+                this,
+                "Failed to initialize Zoom SDK. Error: " + errorCode + ", internalErrorCode=" + internalErrorCode,
+                Toast.LENGTH_LONG
+            ).show();
         } else {
 
 
-            if(mZoomSDK.tryAutoLoginZoom() == ZoomApiError.ZOOM_API_ERROR_SUCCESS) {
+            if (mZoomSDK.tryAutoLoginZoom() == ZoomApiError.ZOOM_API_ERROR_SUCCESS) {
                 mZoomSDK.addAuthenticationListener(this);
-               // mBtnLogin.setVisibility(View.GONE);
-              //  mBtnWithoutLogin.setVisibility(View.GONE);
+                // mBtnLogin.setVisibility(View.GONE);
+                //  mBtnWithoutLogin.setVisibility(View.GONE);
             } else {
 
             }
@@ -220,8 +222,8 @@ class ZoomMeetingActivity : AppCompatActivity(), Constants, ZoomSDKInitializeLis
     }
 
     override fun onZoomSDKLoginResult(p0: Long) {
-  //      Toast.makeText(this,p0.toString(),Toast.LENGTH_LONG).show()
-     }
+        //      Toast.makeText(this,p0.toString(),Toast.LENGTH_LONG).show()
+    }
 
     override fun onZoomIdentityExpired() {
 

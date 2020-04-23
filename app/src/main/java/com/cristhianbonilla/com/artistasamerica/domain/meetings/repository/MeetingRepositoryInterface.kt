@@ -8,8 +8,9 @@ interface MeetingRepositoryInterface {
     fun getMeetingScheduledByUserId(userId: String): DatabaseReference
     fun saveMeeting(
         userId: String,
-        context: Context,
         title: String,
+        name: String,
+        phone: String,
         idEventos: String,
         password: String,
         date: String,

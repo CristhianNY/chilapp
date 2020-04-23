@@ -12,6 +12,7 @@ import com.cristhianbonilla.com.artistasamerica.domain.meetings.MeetingDomain
 import com.cristhianbonilla.com.artistasamerica.ui.activities.MainActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.Splash.SplashActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.login.LoginActivty
+import com.cristhianbonilla.com.artistasamerica.ui.activities.meeting.SuccessMeetingActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.meeting.ZoomMeetingActivity
 import com.cristhianbonilla.com.artistasamerica.ui.activities.register.RegisterActivity
 import com.cristhianbonilla.com.artistasamerica.ui.fragments.addSecret.AddSecretDialogFragment
@@ -44,5 +45,6 @@ interface ChilappComponent {
     fun inject(meetingDomain: MeetingDomain)
     fun inject(dashBoardRepository: DashBoardRepository)
     fun inject(commentsRepository: CommentsRepository)
+    fun inject(successMeetingActivity: SuccessMeetingActivity)
     fun inject(addSecretDialogFragment: AddSecretDialogFragment)
 }

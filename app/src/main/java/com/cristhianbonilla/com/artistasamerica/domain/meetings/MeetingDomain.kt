@@ -13,13 +13,13 @@ import com.google.firebase.database.ValueEventListener
 
 class MeetingDomain : ViewModel() {
 
-    lateinit var meetingRepository: MeetingRepository
+    var meetingRepository: MeetingRepository
 
     var meetingList: MutableLiveData<List<MeetingDto>> = MutableLiveData()
 
     init {
         App.instance.getComponent().inject(this)
-        var meetingRepository = MeetingRepository()
+        meetingRepository = MeetingRepository()
     }
 
     suspend fun getAllSecrets(userId: String) {
@@ -48,7 +48,8 @@ class MeetingDomain : ViewModel() {
 
     suspend fun saveMeeting(
         userId: String,
-        context: Context,
+        name: String,
+        phone: String,
         title: String,
         idEventos: String,
         password: String,
@@ -57,7 +58,8 @@ class MeetingDomain : ViewModel() {
     ) {
         meetingRepository.saveMeeting(
             userId,
-            context,
+            name,
+            phone,
             title, idEventos,
             password,
             date,
