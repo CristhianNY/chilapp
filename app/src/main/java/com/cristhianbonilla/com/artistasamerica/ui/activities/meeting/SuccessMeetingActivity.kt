@@ -56,10 +56,10 @@ class SuccessMeetingActivity : AppCompatActivity() {
         btnShare = findViewById<Button>(R.id.btnShare) as Button
 
 
-        numero.text = "Codigo de videollamada  $numeroDeSerenata.toString()"
-        contraseña.text = "Contraseña $contraseñaSerenata"
-        nombre.text = "Nombre del evento $nombreSerenata"
-        fecha.text = "fechas $fechaSerenata"
+        numero.text = "Codigo de videollamada: $numeroDeSerenata"
+        contraseña.text = "Contraseña: $contraseñaSerenata"
+        nombre.text = "Nombre del evento: $nombreSerenata"
+        fecha.text = "fecha: $fechaSerenata"
         val user = loginDomain.getUserPreference("userId",this)
 
         CoroutineScope(IO).launch {
@@ -72,7 +72,7 @@ class SuccessMeetingActivity : AppCompatActivity() {
 
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "text/plain"
-            val shareBody = "Hola este es el codigo de la serenata virtual y la contraseña: $numeroDeSerenata $contraseñaSerenata , Con estos datos en artistas america puedes ingresar a tu serenata virtual, la hora es $fechaSerenata, ahi nos vemos , abre el siguiente link desde la app y pon el id del evento y la contraseña www.artistasamerica.com/artistasapp"
+            val shareBody = "Tu serenata  fue reservada con el numero $numeroDeSerenata, y contraseña $contraseñaSerenata , Con estos datos en artistas america puedes ingresar a tu serenata virtual, la hora es $fechaSerenata, ahi nos vemos , abre el siguiente link desde la app y pon el id del evento y la contraseña www.artistasamerica.com/artistasapp"
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Artistas América")
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
             startActivity(Intent.createChooser(sharingIntent, "Compartir a cliente"))

@@ -20,14 +20,16 @@
             style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textIsSelectable="true"
             android:layout_marginTop="20dp"
-            android:text="Felicidades haz creado tu serenata virtual" />
+            android:text="Felicidades tu serenata virtual esta agendada , Comparte estos datos con tu cliente" />
 
         <TextView
             android:id="@+id/mdate"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textIsSelectable="true"
             android:layout_marginTop="20dp"
             android:text="12/12/12/10:10" />
 
@@ -35,6 +37,7 @@
             android:id="@+id/mtitle"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
+            android:textIsSelectable="true"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Serenata" />
@@ -42,6 +45,7 @@
         <TextView
             android:id="@+id/mcode"
             style="@style/TextAppearance.AppCompat.Body1"
+            android:textIsSelectable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -52,8 +56,9 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textIsSelectable="true"
             android:layout_marginTop="20dp"
-            android:text="Contraseña" />
+            android:text="Contraseña:" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/violinistaAnimation"
@@ -74,5 +79,10 @@
             android:layout_marginBottom="30dp"
             android:background="@color/blue_50"
             android:text="Compartir" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="60dp"/>
     </LinearLayout>
 </ScrollView>

@@ -44,6 +44,7 @@ class DashboardFragment :BaseFragment(), ListenerActivity, RecyclerpostListener{
     private lateinit var secretPostRecyclerView: RecyclerView
     private lateinit var secretPostRvAdapter: SecretPostRvAdapter
     private lateinit var addNewSecretBtn: FloatingActionButton
+    private lateinit var serenatasBtn: FloatingActionButton
 
     lateinit var progresSecretPost: ProgressBar
     var colorPost:String ="#616161"
@@ -125,6 +126,11 @@ companion object{
             addNewSecretBtn.visibility = View.GONE
         }
 
+        serenatasBtn.setOnClickListener{
+            val intent = Intent(context, ZoomMeetingActivity::class.java)
+            startActivity(intent)
+        }
+
         return root
     }
 
@@ -136,6 +142,7 @@ companion object{
     private fun initViews(root: View?){
         progresSecretPost = root?.findViewById(R.id.progresSecretPost) as ProgressBar
         addNewSecretBtn = root?.findViewById(R.id.add_new_secret_btn) as FloatingActionButton
+        serenatasBtn = root?.findViewById(R.id.serenata_btn) as FloatingActionButton
     }
 
     private  fun showSecretPostInRecyclerView(secretpostArrayList: List<SecretPost>){
