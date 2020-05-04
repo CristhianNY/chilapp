@@ -1,2 +1,3 @@
 include ':app', ':commonlib', ':mobilertc'
 rootProject.name='Chilapp'
+include ':openCVLibrary347'

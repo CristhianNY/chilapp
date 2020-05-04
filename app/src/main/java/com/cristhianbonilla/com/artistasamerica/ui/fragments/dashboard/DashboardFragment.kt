@@ -309,7 +309,7 @@ companion object{
             disLikesImageView.visibility = View.INVISIBLE
         }
         val picasso = Picasso.get()
-        picasso.load("https://www.artistasamerica.com/wp-content/uploads/2019/08/mariachi3.jpg")
+        picasso.load(secretPost.imgaeUrl)
             .into(bandPost, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
                 }

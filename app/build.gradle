@@ -34,6 +34,13 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    sourceSets {
+        main {
+            jni {
+                srcDirs 'src/main/jni', 'src/main/jniLibs/'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -102,4 +109,5 @@ dependencies {
     implementation project(path: ':mobilertc')
     def picassoVersion = "2.71828"
     implementation "com.squareup.picasso:picasso:$picassoVersion"
+    implementation project(path: ':openCVLibrary347')
 }

@@ -4,6 +4,12 @@
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera.front" />
+    <uses-feature android:name="android.hardware.camera.front.autofocus" />
+
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -18,31 +24,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.meeting.SuccessMeetingActivity"></activity>
-
-        <activity android:name=".ui.activities.meeting.AgendaActivity" />
-        <activity android:name=".ui.activities.meeting.ZoomMeetingActivity" >
-            <intent-filter android:label="filer_open_from_url">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="http"
-                    android:host="www.artistasamerica.com"
-                    android:pathPrefix="/artistasapp" />
-                <!-- note that the leading "/" is required for pathPrefix-->
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.activities.Splash.SplashActivity"
-            android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.ActionBar.Transparent">
+        <activity android:name=".ui.activities.opencv.CameraActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.activities.registerband.RegisterBand" />
+        <activity android:name=".ui.activities.meeting.SuccessMeetingActivity" />
+        <activity android:name=".ui.activities.meeting.AgendaActivity" />
+        <activity android:name=".ui.activities.meeting.ZoomMeetingActivity">
+            <intent-filter android:label="filer_open_from_url">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data
+                    android:host="www.artistasamerica.com"
+                    android:pathPrefix="/artistasapp"
+                    android:scheme="http" />
+                <!-- note that the leading "/" is required for pathPrefix -->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activities.Splash.SplashActivity"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.ActionBar.Transparent">
         </activity>
         <activity android:name=".ui.activities.register.RegisterActivity" />
         <activity
